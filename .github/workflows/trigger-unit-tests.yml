@@ -15,6 +15,12 @@ jobs:
         with:
           flutter-version: 3.3.10
 
+      - name: Install Lcov
+        run: sudo apt-get -y install lcov
+
+      - name: Install zip library
+        run:  sudo apt install zip
+
       - name: Install all dependencies
         run: flutter pub get
 
@@ -26,3 +32,20 @@ jobs:
       
       - name: Check if coverage is under minimum coverage
         run: ./check_coverage.sh
+
+      - name: Generate HTML from coverage
+        if: always()
+        run:  genhtml coverage/lcov.info -o coverageReport
+
+      - name: convert folder to zip
+        if: always()
+        run: zip -r ~/coverageReport.zip coverageReport
+
+      - name: Add to artifact
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: UnitTestCoverageReport
+          path: ~/coverageReport.zip
+
+      
