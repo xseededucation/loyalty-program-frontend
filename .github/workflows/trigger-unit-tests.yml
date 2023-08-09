@@ -18,5 +18,11 @@ jobs:
       - name: Install all dependencies
         run: flutter pub get
 
-      - name: Run Jest Tests
+      - name: Run Flutter Tests
         run: flutter test
+
+      - name: Run Test Coverage
+        run: flutter test --coverage
+      
+      - name: Check if coverage is under minimum coverage
+        run: ./check_coverage.sh
