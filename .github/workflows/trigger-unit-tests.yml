@@ -29,6 +29,9 @@ jobs:
 
       - name: Run Test Coverage
         run: flutter test --coverage
+
+      - name: Make Shell script executable
+        run: chmod +x ./check_coverage.sh
       
       - name: Check if coverage is under minimum coverage
         run: ./check_coverage.sh
