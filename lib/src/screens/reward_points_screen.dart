@@ -11,7 +11,8 @@ class RewardPointScreen extends StatefulWidget {
   State<RewardPointScreen> createState() => _RewardPointScreenState();
 }
 
-class _RewardPointScreenState extends State<RewardPointScreen> {
+class _RewardPointScreenState extends State<RewardPointScreen>
+    with SingleTickerProviderStateMixin {
   Widget rewardPointCardView(BoxConstraints constraints) {
     return Card(
       elevation: 10,
@@ -205,7 +206,82 @@ class _RewardPointScreenState extends State<RewardPointScreen> {
   }
 
   Widget mobileView() {
-    return const Center(child: Text("WEB"));
+    TabController tabController = TabController(length: 3, vsync: this);
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      return Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Container(
+                height: 45,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFfff2f1),
+                ),
+                child: TabBar(
+                  controller: tabController,
+                  indicator: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Color(0xFFBB151B),
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  labelColor: const Color(0xFFBB151B),
+                  labelStyle: TextStyle(
+                    fontSize: size(constraints, 12),
+                    fontFamily: "Source Sans Pro",
+                    color: const Color(0xFFBB151B),
+                  ),
+                  unselectedLabelColor: Colors.black,
+                  tabs: const [
+                    Tab(text: 'EARN MORE'),
+                    Tab(text: 'REDEEMED POINTS'),
+                    Tab(text: 'T&C'),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: tabController,
+                  children: const [
+                    Center(
+                      child: Text(
+                        'EARN MORE',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        'REDEEMED POINTS',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        'T&C',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   @override
