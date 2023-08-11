@@ -13,6 +13,129 @@ class RewardPointScreen extends StatefulWidget {
 
 class _RewardPointScreenState extends State<RewardPointScreen>
     with SingleTickerProviderStateMixin {
+  Widget header(BoxConstraints constraints) {
+    return Container(
+      height: size(constraints, 120),
+      width: size(constraints, 300),
+      decoration: const BoxDecoration(
+        color: Color(0xFFBB151B),
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xffCCCDCD),
+            width: 1.0,
+          ),
+        ),
+      ),
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(
+        left: 20,
+        top: 16,
+        bottom: 16,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Reward Points",
+            softWrap: true,
+            style: TextStyle(
+              fontSize: size(constraints, 16),
+              fontFamily: "Source Sans Pro",
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            "Hi, Ayush",
+            softWrap: true,
+            style: TextStyle(
+              fontSize: size(constraints, 14),
+              fontFamily: "Source Sans Pro",
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget progressBar(BoxConstraints constraints) {
+    return Center(
+      child: Text(
+        'Progress Bar',
+        style: TextStyle(
+          fontSize: size(constraints, 18),
+          fontWeight: FontWeight.w500,
+          fontFamily: "Source Sans Pro",
+        ),
+      ),
+    );
+  }
+
+  Widget verticalTab(BoxConstraints constraints) {
+    return VerticalTabView(
+      backgroundColor: Colors.white,
+      tabsWidth: size(constraints, 300),
+      tabTextStyle: TextStyle(fontSize: constraints.maxHeight / 42),
+      tabs: <Tab>[
+        Tab(
+          child: Text(
+            'Available Reward Points',
+            style: TextStyle(
+              fontSize: size(constraints, 14),
+              fontWeight: FontWeight.w600,
+              fontFamily: "Source Sans Pro",
+            ),
+          ),
+        ),
+        Tab(
+          child: Text(
+            'Earn More Points',
+            style: TextStyle(
+              fontSize: size(constraints, 14),
+              fontWeight: FontWeight.w600,
+              fontFamily: "Source Sans Pro",
+            ),
+          ),
+        ),
+        Tab(
+          child: Text(
+            'Redeemed Points',
+            style: TextStyle(
+              fontSize: size(constraints, 14),
+              fontWeight: FontWeight.w600,
+              fontFamily: "Source Sans Pro",
+            ),
+          ),
+        ),
+        Tab(
+          child: Text(
+            'Terms & Conditions',
+            style: TextStyle(
+              fontSize: size(constraints, 14),
+              fontWeight: FontWeight.w600,
+              fontFamily: "Source Sans Pro",
+            ),
+          ),
+        ),
+      ],
+      contents: const <Widget>[
+        Center(
+          child: Text('Available Reward Points'),
+        ),
+        Center(
+          child: Text('Earn More Points'),
+        ),
+        Center(
+          child: Text('Redeemed Points'),
+        ),
+        Center(
+          child: Text('Terms & Conditions'),
+        ),
+      ],
+    );
+  }
+
   Widget rewardPointCardView(BoxConstraints constraints) {
     return Card(
       elevation: 10,
@@ -29,47 +152,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  height: size(constraints, 120),
-                  width: size(constraints, 300),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFBB151B),
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xffCCCDCD),
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(
-                    left: 20,
-                    top: 16,
-                    bottom: 16,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Reward Points",
-                        softWrap: true,
-                        style: TextStyle(
-                            fontSize: size(constraints, 16),
-                            fontFamily: "Source Sans Pro",
-                            color: Colors.white),
-                      ),
-                      Text(
-                        "Hi, Ayush",
-                        softWrap: true,
-                        style: TextStyle(
-                            fontSize: size(constraints, 14),
-                            fontFamily: "Source Sans Pro",
-                            color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
+                header(constraints),
                 Expanded(
                   child: Container(
                     height: size(constraints, 120),
@@ -90,82 +173,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         ),
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        'Progress Bar',
-                        style: TextStyle(
-                          fontSize: size(constraints, 18),
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Source Sans Pro",
-                        ),
-                      ),
-                    ),
+                    child: progressBar(constraints),
                   ),
                 )
               ],
             ),
             Expanded(
-              child: VerticalTabView(
-                backgroundColor: Colors.white,
-                tabsWidth: size(constraints, 300),
-                tabTextStyle: TextStyle(fontSize: constraints.maxHeight / 42),
-                tabs: <Tab>[
-                  Tab(
-                    child: Text(
-                      'Available Reward Points',
-                      style: TextStyle(
-                        fontSize: size(constraints, 14),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Source Sans Pro",
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'Earn More Points',
-                      style: TextStyle(
-                        fontSize: size(constraints, 14),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Source Sans Pro",
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'Redeemed Points',
-                      style: TextStyle(
-                        fontSize: size(constraints, 14),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Source Sans Pro",
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'Terms & Conditions',
-                      style: TextStyle(
-                        fontSize: size(constraints, 14),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Source Sans Pro",
-                      ),
-                    ),
-                  ),
-                ],
-                contents: const <Widget>[
-                  Center(
-                    child: Text('Available Reward Points'),
-                  ),
-                  Center(
-                    child: Text('Earn More Points'),
-                  ),
-                  Center(
-                    child: Text('Redeemed Points'),
-                  ),
-                  Center(
-                    child: Text('Terms & Conditions'),
-                  ),
-                ],
-              ),
+              child: verticalTab(constraints),
             )
           ],
         ),
@@ -188,6 +202,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
             children: [
               Text(
                 "Teach, Earn & Be Rewarded",
+                key: const Key('teachEarnRewardedText'),
                 style: TextStyle(
                   fontSize: size(constraints, 18),
                   fontWeight: FontWeight.w600,
@@ -195,9 +210,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 ),
               ),
               const SizedBox(height: 10),
-              Expanded(
-                child: rewardPointCardView(constraints),
-              )
+              Expanded(child: rewardPointCardView(constraints))
             ],
           ),
         );
@@ -208,80 +221,81 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget mobileView() {
     TabController tabController = TabController(length: 3, vsync: this);
     return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      return Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Container(
-                height: 45,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFfff2f1),
-                ),
-                child: TabBar(
-                  controller: tabController,
-                  indicator: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xFFBB151B),
-                        width: 1.0,
-                      ),
-                    ),
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Container(
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFfff2f1),
                   ),
-                  labelColor: const Color(0xFFBB151B),
-                  labelStyle: TextStyle(
-                    fontSize: size(constraints, 12),
-                    fontFamily: "Source Sans Pro",
-                    color: const Color(0xFFBB151B),
+                  child: TabBar(
+                    controller: tabController,
+                    indicator: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Color(0xFFBB151B),
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                    labelColor: const Color(0xFFBB151B),
+                    labelStyle: TextStyle(
+                      fontSize: size(constraints, 12),
+                      fontFamily: "Source Sans Pro",
+                      color: const Color(0xFFBB151B),
+                    ),
+                    unselectedLabelColor: Colors.black,
+                    tabs: const [
+                      Tab(text: 'EARN MORE'),
+                      Tab(text: 'REDEEMED POINTS'),
+                      Tab(text: 'T&C'),
+                    ],
                   ),
-                  unselectedLabelColor: Colors.black,
-                  tabs: const [
-                    Tab(text: 'EARN MORE'),
-                    Tab(text: 'REDEEMED POINTS'),
-                    Tab(text: 'T&C'),
-                  ],
                 ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: const [
-                    Center(
-                      child: Text(
-                        'EARN MORE',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
+                Expanded(
+                  child: TabBarView(
+                    controller: tabController,
+                    children: const [
+                      Center(
+                        child: Text(
+                          'EARN MORE',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Text(
-                        'REDEEMED POINTS',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
+                      Center(
+                        child: Text(
+                          'REDEEMED POINTS',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Text(
-                        'T&C',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
+                      Center(
+                        child: Text(
+                          'T&C',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   @override
