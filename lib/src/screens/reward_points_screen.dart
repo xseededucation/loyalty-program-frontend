@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/constant.dart';
 import '../utils/vertical_tabview.dart';
+import 'redeem_reward_points_screen.dart';
 
 class RewardPointScreen extends StatefulWidget {
   const RewardPointScreen({super.key});
@@ -127,7 +128,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           child: Text('Earn More Points'),
         ),
         Center(
-          child: Text('Redeemed Points'),
+          child: RedeemRewardPoints(),
         ),
         Center(
           child: Text('Terms & Conditions'),
@@ -270,13 +271,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         ),
                       ),
                       Center(
-                        child: Text(
-                          'REDEEMED POINTS',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        child: RedeemRewardPoints(),
                       ),
                       Center(
                         child: Text(
