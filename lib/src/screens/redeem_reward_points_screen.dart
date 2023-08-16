@@ -21,16 +21,21 @@ class RedeemRewardPoints extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Visibility(
+          Visibility(
             visible: kIsWeb,
             child: Padding(
-              padding: EdgeInsets.only(top: 80.0),
-              child: Text(
-                "View your redeemed reward points.",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black),
+              padding: EdgeInsets.only(left: width * 0.05, top: 80.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Text(
+                    "View your redeemed reward points.",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  ),
+                ],
               ),
             ),
           ),
@@ -136,8 +141,8 @@ class RedeemRewardPoints extends StatelessWidget {
                                         Column(
                                           children: [
                                             Row(
-                                              children:  [
-                                               const Text(
+                                              children: [
+                                                const Text(
                                                   "-3000",
                                                   style: TextStyle(
                                                       color: Color(0xffDC5F67),
@@ -145,10 +150,11 @@ class RedeemRewardPoints extends StatelessWidget {
                                                       fontWeight:
                                                           FontWeight.w700),
                                                 ),
-                                               const SizedBox(
+                                                const SizedBox(
                                                   width: 2,
-                                                ),                                                
-                                                Image.asset("assets/images/coin_image.png")
+                                                ),
+                                                // Image.asset(
+                                                //     "assets/images/coin_image.png")
                                               ],
                                             ),
                                             const SizedBox(
