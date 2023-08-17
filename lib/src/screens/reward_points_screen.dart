@@ -1,7 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
+import 'package:loyalty_program_frontend/src/helpers/tooltip_wrapper.dart';
+import 'package:loyalty_program_frontend/src/screens/available_reward_screen.dart';
 import 'package:loyalty_program_frontend/src/screens/redeem_points_screen.dart';
+import 'package:loyalty_program_frontend/src/widgets/progress_bar.dart';
+import 'package:loyalty_program_frontend/src/widgets/reward_redeem_button.dart';
+import 'package:loyalty_program_frontend/src/widgets/reward_status.dart';
 import '../utils/constant.dart';
 import '../utils/vertical_tabview.dart';
 import 'earn_points_screen.dart';
@@ -15,9 +19,15 @@ class RewardPointScreen extends StatefulWidget {
 
 class _RewardPointScreenState extends State<RewardPointScreen>
     with SingleTickerProviderStateMixin {
+  List<MileStone> mileStones = [
+    MileStone(message: 'winner winner chicken dinner', amount: 100),
+    MileStone(message: 'winner winner chicken dinner', amount: 120),
+    MileStone(message: 'winner winner chicken dinner', amount: 10000),
+  ];
   Widget header(BoxConstraints constraints) {
     return Container(
       height: size(constraints, 120),
+      constraints: const BoxConstraints(minHeight: 94),
       width: size(constraints, 300),
       decoration: const BoxDecoration(
         color: Color(0xFFBB151B),
@@ -61,21 +71,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget progressBar(BoxConstraints constraints) {
-    return Center(
-      child: Text(
-        'Progress Bar',
-        style: TextStyle(
-          fontSize: size(constraints, 18),
-          fontWeight: FontWeight.w500,
-          fontFamily: "Source Sans Pro",
-        ),
-      ),
-    );
-  }
-
   Widget verticalTab(BoxConstraints constraints) {
     return VerticalTabView(
+      onSelect: (int tabIndex) {
+        if (tabIndex == 0) {
+          ToolTipWrapper.showToolTip();
+        }
+      },
       backgroundColor: Colors.white,
       tabsWidth: size(constraints, 300),
       tabTextStyle: TextStyle(fontSize: constraints.maxHeight / 42),
@@ -122,7 +124,12 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
       ],
       contents: <Widget>[
-        const Center(child: Text('Available Reward Points')),
+        AvailableRewardPoint(
+          height: constraints.maxHeight - 250,
+          width: constraints.maxWidth * 0.390,
+          message:
+              'kjsgd askjdgasd askjgasdad kjagsdsd', //todo message that will appear for each stages above "your reward points"
+        ),
         EarnPointScreen(boxConstraints: constraints),
         RedeemPointsScreen(boxConstraints: constraints),
         const Center(child: Text('Terms & Conditions')),
@@ -142,35 +149,49 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                header(constraints),
-                Expanded(
-                  child: Container(
-                    height: size(constraints, 120),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                        top: BorderSide(
-                          color: Color(0xffCCCDCD),
-                          width: 1.0,
-                        ),
-                        right: BorderSide(
-                          color: Color(0xffCCCDCD),
-                          width: 1.0,
-                        ),
-                        bottom: BorderSide(
-                          color: Color(0xffCCCDCD),
-                          width: 1.0,
+            Container(
+              constraints: const BoxConstraints(minHeight: 94),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  header(constraints),
+                  Expanded(
+                    child: Container(
+                      constraints: const BoxConstraints(minHeight: 94),
+                      height: size(constraints, 120),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                          top: BorderSide(
+                            color: Color(0xffCCCDCD),
+                            width: 1.0,
+                          ),
+                          right: BorderSide(
+                            color: Color(0xffCCCDCD),
+                            width: 1.0,
+                          ),
+                          bottom: BorderSide(
+                            color: Color(0xffCCCDCD),
+                            width: 1.0,
+                          ),
                         ),
                       ),
+                      child: ProgressSlider(
+                        currentAmount: 220, //todo current amount of user
+                        mileStones:
+                            mileStones, // todo list containig all the mile stones excluding current amount and 0(zero)
+                        userName:
+                            'Alok', // todo change username the first letter will be visible
+                        onChange: (double value) {
+                          //todo the value from slider will be here
+                        },
+                        width: constraints.maxWidth * 0.390,
+                      ),
                     ),
-                    child: progressBar(constraints),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             Expanded(
               child: verticalTab(constraints),
@@ -219,6 +240,67 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         return Scaffold(
           body: Column(
             children: [
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFFFFFFF),
+                      Color.fromRGBO(255, 252, 252, 0.94),
+                      Color.fromRGBO(255, 241, 240, 0.66),
+                      Color(0xFFFFF1F0),
+                    ],
+                    stops: [0.0, 0.4167, 0.6615, 1.0],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Hi Ayush',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 6,
+                    ),
+                    const Text(
+                      "Let's get started to earn rewards & much more!",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(
+                      height: 130,
+                      child: ProgressSlider(
+                          width: constraints.maxWidth,
+                          currentAmount: 220, //todo
+                          mileStones: mileStones, //todo
+                          userName: 'Alok', //todo
+                          onChange: (v) {
+                            //todo
+                          }),
+                    ),
+                    const SizedBox(
+                      height: 17,
+                    ),
+                    RewardStatus(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      currentAchievement: 5, //todo
+                      totalMileStones: 5, //todo
+                      currentAmount: 300, //todo
+                    ),
+                    RewardRedeemButton(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      onPress: () {
+                        //todo goto redeem screen logic here
+                      },
+                    )
+                  ],
+                ),
+              ),
               Container(
                 height: 45,
                 decoration: const BoxDecoration(
