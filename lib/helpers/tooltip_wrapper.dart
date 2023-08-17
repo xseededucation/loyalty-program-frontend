@@ -25,11 +25,11 @@ class ToolTipWrapper {
       content: Container(
         color: const Color(0xffFFEAC1),
         width: kIsWeb ? 100 : 70,
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
         child: Text(
           message,
           style: const TextStyle(
-            fontWeight: FontWeight.w500,
+            fontWeight: kIsWeb ? FontWeight.w500 : FontWeight.w400,
             fontSize: kIsWeb ? 12 : 8,
           ),
           textAlign: TextAlign.center,

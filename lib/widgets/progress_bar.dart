@@ -26,10 +26,13 @@ class ProgressSlider extends StatefulWidget {
 class _ProgressSliderState extends State<ProgressSlider> {
   int? indexOfSelectedValue;
   int? motivationIndex;
-  bool showMotivation = true;
 
   Future showToolTip() async {
-    await Future.delayed(const Duration(milliseconds: 3));
+    await Future.delayed(
+      const Duration(
+        milliseconds: 3,
+      ),
+    );
     ToolTipWrapper.showToolTip();
   }
 

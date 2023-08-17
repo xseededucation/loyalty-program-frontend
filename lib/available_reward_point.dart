@@ -11,6 +11,7 @@ class AvailableRewardPoints extends StatefulWidget {
 
 class _AvailableRewardPointsState extends State<AvailableRewardPoints> {
   String name = 'Ayush';
+  String msg = 'Let’s get started to earn rewards & much more!';
   List<MileStone> mileStones = [
     MileStone(message: 'winner winner chicken dinner', amount: 100),
     MileStone(message: 'winner winner chicken dinner', amount: 120),
@@ -18,108 +19,144 @@ class _AvailableRewardPointsState extends State<AvailableRewardPoints> {
   ];
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        print(50 / constraints.maxHeight * 100);
-        if (kIsWeb) {
-          return Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 37, right: 37, bottom: 22),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.5,
-                    color: const Color(0xffcccdcd),
-                  ),
-                ),
-                child: ProgressSlider(
-                  currentAmount: 220,
-                  mileStones: mileStones,
-                  userName: 'Alok',
-                  onChange: (v) {},
-                  width: constraints.maxWidth,
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFFFFFFFF),
-                      Color.fromRGBO(255, 252, 252, 0.94),
-                      Color.fromRGBO(255, 241, 240, 0.66),
-                      Color(0xFFFFF1F0),
-                    ],
-                    stops: [0.0, 0.4167, 0.6615, 1.0],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: Column(
-                  children: [],
-                ),
-              )
-            ],
-          );
-        } else {
-          return Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFFFFFFF),
-                  Color.fromRGBO(255, 252, 252, 0.94),
-                  Color.fromRGBO(255, 241, 240, 0.66),
-                  Color(0xFFFFF1F0),
-                ],
-                stops: [0.0, 0.4167, 0.6615, 1.0],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return Expanded(
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (kIsWeb) {
+            final double height = constraints.maxHeight - 174;
+            final double width = constraints.maxWidth;
+            return Column(
               children: [
-                const SizedBox(height: 27),
-                Text(
-                  'Hi $name,',
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(
-                  height: 6,
-                ),
-                const Text(
-                  "Let's get started to earn rewards & much more!",
-                  style: TextStyle(fontSize: 12),
-                ),
-                SizedBox(
-                  height: 111,
+                Container(
+                  padding:
+                      const EdgeInsets.only(left: 37, right: 37, bottom: 22),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 0.5,
+                      color: const Color(0xffcccdcd),
+                    ),
+                  ),
                   child: ProgressSlider(
-                      width: constraints.maxWidth,
-                      currentAmount: 220,
-                      mileStones: mileStones,
-                      userName: 'Alok',
-                      onChange: (v) {}),
+                    currentAmount: 220,
+                    mileStones: mileStones,
+                    userName: 'Alok',
+                    onChange: (v) {},
+                    width: width,
+                  ),
                 ),
-                const SizedBox(
-                  height: 17,
-                ),
-                _rewardStatus(
-                  width: constraints.maxWidth,
-                  currentAchievement: 5,
-                  totalMileStones: 5,
-                  currentAmount: 300,
-                ),
-                _redeemRewardPoint(width: constraints.maxWidth, onPress: () {})
+                Container(
+                  width: width,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFFFFFFFF),
+                        Color.fromRGBO(255, 252, 252, 0.94),
+                        Color.fromRGBO(255, 241, 240, 0.66),
+                        Color(0xFFFFF1F0),
+                      ],
+                      stops: [0.0, 0.4167, 0.6615, 1.0],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: height * 0.103,
+                      ),
+                      Text(
+                        msg,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.099,
+                      ),
+                      _rewardStatus(
+                        width: width * 0.579,
+                        height: height,
+                        currentAchievement: 3000,
+                        totalMileStones: 1,
+                        currentAmount: 2,
+                      ),
+                      _redeemRewardPoint(
+                          width: width * 0.579, height: height, onPress: () {}),
+                      SizedBox(
+                        height: height * 0.102,
+                      ),
+                    ],
+                  ),
+                )
               ],
-            ),
-          );
-        }
-      },
+            );
+          } else {
+            return Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFFFFFFFF),
+                    Color.fromRGBO(255, 252, 252, 0.94),
+                    Color.fromRGBO(255, 241, 240, 0.66),
+                    Color(0xFFFFF1F0),
+                  ],
+                  stops: [0.0, 0.4167, 0.6615, 1.0],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 27),
+                  Text(
+                    'Hi $name,',
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  const Text(
+                    "Let's get started to earn rewards & much more!",
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  SizedBox(
+                    height: 111,
+                    child: ProgressSlider(
+                        width: constraints.maxWidth,
+                        currentAmount: 220,
+                        mileStones: mileStones,
+                        userName: 'Alok',
+                        onChange: (v) {}),
+                  ),
+                  const SizedBox(
+                    height: 17,
+                  ),
+                  _rewardStatus(
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    currentAchievement: 5,
+                    totalMileStones: 5,
+                    currentAmount: 300,
+                  ),
+                  _redeemRewardPoint(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      onPress: () {})
+                ],
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
   Widget _rewardStatus(
       {required double width,
+      required double height,
       required int currentAchievement,
       required int totalMileStones,
       required double currentAmount}) {
@@ -127,8 +164,8 @@ class _AvailableRewardPointsState extends State<AvailableRewardPoints> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          height: 185,
-          width: width,
+          height: kIsWeb ? height * 0.515 : 185,
+          width: kIsWeb ? width * 0.579 : width,
           decoration: BoxDecoration(
               image: currentAchievement != 0
                   ? DecorationImage(
@@ -154,14 +191,14 @@ class _AvailableRewardPointsState extends State<AvailableRewardPoints> {
               ),
               Container(
                 width: width * 0.323,
-                height: width * 0.323,
+                height: kIsWeb ? height * 0.387 : width * 0.323,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Container(
                   width: width * 0.323,
-                  height: width * 0.323,
+                  height: kIsWeb ? height * 0.387 : width * 0.323,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -188,10 +225,10 @@ class _AvailableRewardPointsState extends State<AvailableRewardPoints> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: width * 0.066,
+                        height: kIsWeb ? height * .096 : 26,
                       ),
                       SizedBox(
-                        height: width * .112,
+                        height: kIsWeb ? height * .136 : width * .112,
                         width: width * .112,
                         child: Image.asset(
                           'assets/images/coin.png',
@@ -220,13 +257,15 @@ class _AvailableRewardPointsState extends State<AvailableRewardPoints> {
   }
 
   Widget _redeemRewardPoint(
-      {required double width, required VoidCallback onPress}) {
+      {required double width,
+      required double height,
+      required VoidCallback onPress}) {
     return GestureDetector(
       onTap: onPress,
       behavior: HitTestBehavior.opaque,
       child: Container(
         width: width * 0.835,
-        height: 54,
+        height: kIsWeb ? height * .131 : 54,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           gradient: const LinearGradient(
