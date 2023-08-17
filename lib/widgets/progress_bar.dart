@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/helpers/intl_wrapper.dart';
 
-import 'package:loyalty_program_frontend/helpers/svg_wrapper.dart';
 import 'package:loyalty_program_frontend/helpers/tooltip_wrapper.dart';
 
 class ProgressSlider extends StatefulWidget {
@@ -113,9 +112,9 @@ class _ProgressSliderState extends State<ProgressSlider> {
                                           Stack(
                                             alignment: Alignment.center,
                                             children: [
-                                              SvgWrapper.getSVG(
-                                                  path:
-                                                      'assets/icons/current_status.svg'),
+                                              Image.asset(
+                                                'assets/icons/current_status.png',
+                                              ),
                                               Text(
                                                 widget.userName[0],
                                                 textAlign: TextAlign.center,
