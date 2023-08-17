@@ -120,17 +120,17 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           ),
         ),
       ],
-      contents: const <Widget>[
+      contents:  <Widget>[
         Center(
           child: RedeemRewardScreen(),
         ),
-        Center(
+       const Center(
           child: Text('Earn More Points'),
         ),
-        Center(
+       const Center(
           child: Text('Redeemed Points'),
         ),
-        Center(
+       const Center(
           child: Text('Terms & Conditions'),
         ),
       ],
@@ -260,11 +260,11 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 Expanded(
                   child: TabBarView(
                     controller: tabController,
-                    children: const [
+                    children:  [
                       Center(
                         child: RedeemRewardScreen(),
                       ),
-                      Center(
+                     const Center(
                         child: Text(
                           'REDEEMED POINTS',
                           style: TextStyle(
@@ -273,7 +273,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                           ),
                         ),
                       ),
-                      Center(
+                      const Center(
                         child: Text(
                           'T&C',
                           style: TextStyle(
