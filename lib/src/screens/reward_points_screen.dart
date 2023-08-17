@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/src/screens/redeem_reward_screen.dart';
 
 import '../utils/constant.dart';
 import '../utils/vertical_tabview.dart';
@@ -119,17 +120,17 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           ),
         ),
       ],
-      contents: const <Widget>[
+      contents:  <Widget>[
         Center(
-          child: Text('Available Reward Points'),
+          child: RedeemRewardScreen(),
         ),
-        Center(
+       const Center(
           child: Text('Earn More Points'),
         ),
-        Center(
+       const Center(
           child: Text('Redeemed Points'),
         ),
-        Center(
+       const Center(
           child: Text('Terms & Conditions'),
         ),
       ],
@@ -259,17 +260,11 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 Expanded(
                   child: TabBarView(
                     controller: tabController,
-                    children: const [
+                    children:  [
                       Center(
-                        child: Text(
-                          'EARN MORE',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        child: RedeemRewardScreen(),
                       ),
-                      Center(
+                     const Center(
                         child: Text(
                           'REDEEMED POINTS',
                           style: TextStyle(
@@ -278,7 +273,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                           ),
                         ),
                       ),
-                      Center(
+                      const Center(
                         child: Text(
                           'T&C',
                           style: TextStyle(
