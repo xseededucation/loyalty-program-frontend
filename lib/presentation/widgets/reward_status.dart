@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/confetti_selector.dart';
 
 class RewardStatus extends StatelessWidget {
   final double width;
@@ -93,12 +94,12 @@ class RewardStatus extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: kIsWeb ? 0 : 8,
                       ),
                       Text(
                         currentAmount.toString(),
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: kIsWeb ? width * .065 : 20,
                           fontWeight: FontWeight.w900,
                         ),
                       )
@@ -111,24 +112,5 @@ class RewardStatus extends StatelessWidget {
         )
       ],
     );
-  }
-}
-
-String getConfettiBasedOnLevel(int indexOfMileStone, int lengthOfMileStone) {
-  if (indexOfMileStone == 0) {
-    return '';
-  } else if (indexOfMileStone == lengthOfMileStone - 1) {
-    return 'level_5.png';
-  }
-
-  int totalLevels = 3;
-  int elementsPerLevel = ((lengthOfMileStone - 2) / totalLevels).ceil();
-
-  if (indexOfMileStone < elementsPerLevel + 1) {
-    return 'level_2.png';
-  } else if (indexOfMileStone < 2 * elementsPerLevel + 1) {
-    return 'level3_png';
-  } else {
-    return 'level_4.png';
   }
 }

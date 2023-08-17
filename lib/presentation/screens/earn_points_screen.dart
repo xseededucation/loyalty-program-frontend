@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../utils/constant.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class EarnPointScreen extends StatefulWidget {
   BoxConstraints boxConstraints;
@@ -100,7 +100,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                               ),
                               const SizedBox(width: 10),
                               Image.asset(
-                                'packages/loyalty_program_frontend/assets/reward_point_coin.png',
+                                'packages/loyalty_program_frontend/assets/images/reward_point_coin.png',
                                 width: size(widget.boxConstraints, 20),
                                 height: size(widget.boxConstraints, 20),
                               )

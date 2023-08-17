@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:loyalty_program_frontend/src/helpers/tooltip_wrapper.dart';
-import 'package:loyalty_program_frontend/src/screens/available_reward_screen.dart';
-import 'package:loyalty_program_frontend/src/screens/redeem_points_screen.dart';
-import 'package:loyalty_program_frontend/src/widgets/progress_bar.dart';
-import 'package:loyalty_program_frontend/src/widgets/reward_redeem_button.dart';
-import 'package:loyalty_program_frontend/src/widgets/reward_status.dart';
-import '../utils/constant.dart';
-import '../utils/vertical_tabview.dart';
+import 'package:loyalty_program_frontend/presentation/screens/available_reward_screen.dart';
+import 'package:loyalty_program_frontend/presentation/screens/redeem_points_screen.dart';
+import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/progress_bar.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/vertical_tabview.dart';
+
 import 'earn_points_screen.dart';
 
 class RewardPointScreen extends StatefulWidget {

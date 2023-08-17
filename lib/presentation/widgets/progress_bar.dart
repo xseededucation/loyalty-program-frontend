@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:loyalty_program_frontend/src/helpers/intl_wrapper.dart';
-import 'package:loyalty_program_frontend/src/helpers/tooltip_wrapper.dart';
+import 'package:loyalty_program_frontend/presentation/utils/external_packages/intl_wrapper.dart';
+import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
 
 class ProgressSlider extends StatefulWidget {
   final double currentAmount;

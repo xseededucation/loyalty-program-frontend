@@ -27,7 +27,7 @@ flutter:
 
   # To add assets to your package, add an assets section, like this:
   assets:
-    - assets/reward_point_coin.png
+    - assets/
     - assets/icons/
     - assets/images/confetti/
     - assets/images/

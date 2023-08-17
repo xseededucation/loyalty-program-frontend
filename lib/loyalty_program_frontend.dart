@@ -1,7 +1,7 @@
 library loyalty_program_frontend;
 
-export 'src/screens/reward_points_screen.dart';
-export 'src/utils/loyalty_points_checker.dart';
+export '/presentation/screens/reward_points_screen.dart';
+export '/presentation/utils/helpers/loyalty_points_checker.dart';
 
 /// A Calculator.
 class Calculator {

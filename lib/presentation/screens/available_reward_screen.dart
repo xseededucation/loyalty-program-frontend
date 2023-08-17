@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loyalty_program_frontend/src/widgets/reward_redeem_button.dart';
-import 'package:loyalty_program_frontend/src/widgets/reward_status.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart';
 
 class AvailableRewardPoint extends StatelessWidget {
   final double height;
@@ -67,24 +67,5 @@ class AvailableRewardPoint extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-String getConfettiBasedOnLevel(int indexOfMileStone, int lengthOfMileStone) {
-  if (indexOfMileStone == 0) {
-    return '';
-  } else if (indexOfMileStone == lengthOfMileStone - 1) {
-    return 'level_5.png';
-  }
-
-  int totalLevels = 3;
-  int elementsPerLevel = ((lengthOfMileStone - 2) / totalLevels).ceil();
-
-  if (indexOfMileStone < elementsPerLevel + 1) {
-    return 'level_2.png';
-  } else if (indexOfMileStone < 2 * elementsPerLevel + 1) {
-    return 'level3_png';
-  } else {
-    return 'level_4.png';
   }
 }
