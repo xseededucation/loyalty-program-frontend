@@ -196,7 +196,7 @@ class _VerticalTabViewState extends State<VerticalTabView>
                   Expanded(
                     child: PageView.builder(
                       scrollDirection: widget.contentScrollAxis,
-                      physics: pageScrollPhysics,
+                      physics: NeverScrollableScrollPhysics(),
                       onPageChanged: (index) {
                         if (_changePageByTapView == false) {
                           _selectTab(index);
