@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/src/screens/redeem_reward_screen.dart';
 
 import '../utils/constant.dart';
 import '../utils/vertical_tabview.dart';
@@ -121,7 +122,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
       ],
       contents: const <Widget>[
         Center(
-          child: Text('Available Reward Points'),
+          child: RedeemRewardScreen(),
         ),
         Center(
           child: Text('Earn More Points'),
@@ -261,13 +262,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                     controller: tabController,
                     children: const [
                       Center(
-                        child: Text(
-                          'EARN MORE',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        child: RedeemRewardScreen(),
                       ),
                       Center(
                         child: Text(
