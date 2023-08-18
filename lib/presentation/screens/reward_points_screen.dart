@@ -4,10 +4,7 @@ import 'package:loyalty_program_frontend/presentation/screens/available_reward_s
 import 'package:loyalty_program_frontend/presentation/screens/redeem_points_screen.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/progress_bar.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/vertical_tabview.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 
 import 'earn_points_screen.dart';
 
