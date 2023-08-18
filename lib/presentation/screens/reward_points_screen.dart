@@ -137,7 +137,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                     isRedeemRewardScreenOpen = true;
                   });
                 },
-                height: constraints.maxHeight - 250,
+                height: MediaQuery.of(context).size.height - 450,
                 width: constraints.maxWidth * 0.390,
                 message:
                     'kjsgd askjdgasd askjgasdad kjagsdsd', //todo message that will appear for each stages above "your reward points"
