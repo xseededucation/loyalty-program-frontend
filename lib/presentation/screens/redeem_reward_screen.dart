@@ -12,13 +12,17 @@ class RedeemRewardScreen extends StatefulWidget {
 class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
   TextEditingController currentCreditValue = TextEditingController(text: '0');
   int nearestCurrentCredit = 0;
-
+  int currentIndex = 0;
   Map<String, dynamic> data = {
     "conversionRates": [
       {"credit": 3000, "denomination": 500},
       {"credit": 6000, "denomination": 1000},
       {"credit": 10000, "denomination": 1500},
       {"credit": 15000, "denomination": 2500}
+    ],
+    "products":[
+      {"image":"https://xseed-public-static-assets.s3.us-west-2.amazonaws.com/loyalty-program/amazon_card.png"},
+      {"image":"https://images.template.net/wp-content/uploads/2022/06/Coupon-Sizes1.jpg"}
     ],
     "currentCredit": 12500,
   };
@@ -111,8 +115,6 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     return Scaffold(body: LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          // width: constraints.maxWidth,
-          // height: constraints.maxHeight,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -141,18 +143,34 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                     Text(
                       "Redeem Reward Points",
                       style: TextStyle(
-                          fontSize: size(constraints, 22),
+                          fontSize: kIsWeb
+                              ? size(constraints, 22)
+                              : size(constraints, 16),
                           fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: size(constraints, 8),
                     ),
-                    Text(
-                      "Create a discount coupon and use it during checkout.",
-                      style: TextStyle(
-                        fontSize: size(constraints, 18),
-                        fontWeight: FontWeight.w500,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "Create a discount coupon and use it during checkout.",
+                          style: TextStyle(
+                            fontSize: kIsWeb
+                                ? size(constraints, 18)
+                                : size(constraints, 14),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Image.asset(
+                          'packages/loyalty_program_frontend/assets/images/gift_box.png',
+                          width: size(constraints, 25),
+                          height: size(constraints, 26),
+                        )
+                      ],
                     ),
                   ],
                 ),
@@ -165,19 +183,70 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                   ),
                   SizedBox(
                     height: size(constraints, 200),
-                    child: PageView.builder(
-                      itemCount: 5,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Center(
-                          child: Image.network(
-                            "https://xseed-public-static-assets.s3.us-west-2.amazonaws.com/loyalty-program/amazon_card.png",
-                            height: size(constraints, 237),
-                            width: size(constraints, 344),
-                            fit: BoxFit.contain,
+                    child: Stack(
+                      children: [                        
+                        PageView.builder(
+                          itemCount: data['products'].length,
+                          scrollDirection: Axis.horizontal,
+                          onPageChanged: (value){
+                            setState(() {
+                              currentIndex = value;
+                            });
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            return Center(
+                              child: Image.network(
+                                data['products'][currentIndex]['image'],
+                                height: size(constraints, 237),
+                                width: size(constraints, 344),
+                                fit: BoxFit.contain,
+                              ),
+                            );
+                          },
+                        ),
+                        Visibility(
+                          visible: currentIndex!=0,
+                          child: Align(
+                            alignment:
+                                kIsWeb ? Alignment.center : Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.only(right: kIsWeb? size(constraints, 400):0),
+                              child: IconButton(
+                                  onPressed: () {
+                                     setState(() {
+                                      currentIndex--;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios_outlined,
+                                    size: size(constraints, 20),
+                                  )),
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                        Visibility(
+                          visible: data['products'].length>1 && currentIndex+1!=data['products'].length,
+                          child: Align(
+                            alignment:
+                                kIsWeb ? Alignment.center : Alignment.centerRight,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.only(left: kIsWeb?size(constraints, 400):0),
+                              child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      currentIndex++;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: size(constraints, 20),
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -288,10 +357,13 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                     height: size(constraints, 18),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      _showConfirmationDialog(context, constraints);
+                    },
                     child: Container(
                       height: size(constraints, 64),
                       width: size(constraints, 436),
+                      margin: EdgeInsets.symmetric(horizontal: kIsWeb ? 0 : 10),
                       padding: EdgeInsets.only(
                           left: size(constraints, 11),
                           top: size(constraints, 11),
@@ -319,5 +391,293 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
         );
       },
     ));
+  }
+
+  void _showConfirmationDialog(
+      BuildContext context, BoxConstraints constraints) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0)),
+          ),
+          content: Container(
+            width: size(constraints, 652),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Coupon Code",
+                  style: TextStyle(
+                      fontSize: size(constraints, 22),
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: size(constraints, 10),
+                ),
+                Image.asset(
+                  'packages/loyalty_program_frontend/assets/images/coupon.png',
+                  width: size(constraints, 64),
+                  height: size(constraints, 64),
+                ),
+                SizedBox(
+                  height: size(constraints, 20),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: kIsWeb ? size(constraints, 28) : 0,
+                      right: kIsWeb ? size(constraints, 10) : 0),
+                  child: RichText(
+                    text: TextSpan(
+                      text: '',
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Coupon code worth ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: kIsWeb
+                                ? size(constraints, 18)
+                                : size(constraints, 14),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '₹1,000 ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: 'will be send to your registered email ID ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: kIsWeb
+                                ? size(constraints, 18)
+                                : size(constraints, 14),
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'ayushgupta@gmail.com ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: 'and phone number ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: kIsWeb
+                                ? size(constraints, 18)
+                                : size(constraints, 14),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '+91-9876567833.',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size(constraints, 30),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: kIsWeb
+                            ? size(constraints, 44)
+                            : size(constraints, 34),
+                        width: kIsWeb
+                            ? size(constraints, 258)
+                            : size(constraints, 120),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color(0xffBA181C), width: 1.2),
+                            borderRadius: BorderRadius.circular(2)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xffBA181C),
+                              fontSize: size(constraints, 16)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: size(constraints, 20),
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: kIsWeb
+                            ? size(constraints, 44)
+                            : size(constraints, 34),
+                        width: kIsWeb
+                            ? size(constraints, 258)
+                            : size(constraints, 120),
+                        decoration: BoxDecoration(
+                            color: const Color(0xffBA181C),
+                            borderRadius: BorderRadius.circular(2)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Confirm",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              fontSize: size(constraints, 16)),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showSucessDialog(BuildContext context, BoxConstraints constraints) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0)),
+          ),
+          content: Container(
+            width: size(constraints, 652),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Congratulations!",
+                  style: TextStyle(
+                      fontSize: size(constraints, 22),
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: size(constraints, 10),
+                ),
+                Image.asset(
+                  'packages/loyalty_program_frontend/assets/images/offer.png',
+                  width: size(constraints, 64),
+                  height: size(constraints, 64),
+                ),
+                SizedBox(
+                  height: size(constraints, 20),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: kIsWeb ? size(constraints, 28) : 0,
+                      right: kIsWeb ? size(constraints, 10) : 0),
+                  child: RichText(
+                    text: TextSpan(
+                      text: '',
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text:
+                              'Your coupon code has been successfully sent to your registered email ID ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: kIsWeb
+                                ? size(constraints, 18)
+                                : size(constraints, 14),
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'ayushgupta@gmail.com ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: 'and phone number ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: kIsWeb
+                                ? size(constraints, 18)
+                                : size(constraints, 14),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '+91 9876567833.',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size(constraints, 30),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: size(constraints, 44),
+                        width: size(constraints, 258),
+                        decoration: BoxDecoration(
+                            color: const Color(0xffBA181C),
+                            borderRadius: BorderRadius.circular(2)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "OK",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              fontSize: size(constraints, 18)),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
