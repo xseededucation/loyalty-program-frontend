@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/presentation/screens/available_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/screens/redeem_points_screen.dart';
+import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
@@ -16,7 +17,8 @@ class RewardPointScreen extends StatefulWidget {
 }
 
 class _RewardPointScreenState extends State<RewardPointScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
+  bool isRedeemRewardScreenOpen = false;
   List<MileStone> mileStones = [
     MileStone(message: 'winner winner chicken dinner', amount: 100),
     MileStone(message: 'winner winner chicken dinner', amount: 120),
@@ -72,6 +74,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget verticalTab(BoxConstraints constraints) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
+        setState(() {
+          isRedeemRewardScreenOpen = false;
+        });
         if (tabIndex == 0) {
           ToolTipWrapper.showToolTip();
         }
@@ -122,12 +127,21 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
       ],
       contents: <Widget>[
-        AvailableRewardPoint(
-          height: constraints.maxHeight - 250,
-          width: constraints.maxWidth * 0.390,
-          message:
-              'kjsgd askjdgasd askjgasdad kjagsdsd', //todo message that will appear for each stages above "your reward points"
-        ),
+        isRedeemRewardScreenOpen
+            ? const RedeemRewardScreen()
+            : AvailableRewardPoint(
+                onPress: () {
+                  //todo add logic such that if user has reached first milestone then only it can go to redeem reward screen
+
+                  setState(() {
+                    isRedeemRewardScreenOpen = true;
+                  });
+                },
+                height: constraints.maxHeight - 250,
+                width: constraints.maxWidth * 0.390,
+                message:
+                    'kjsgd askjdgasd askjgasdad kjagsdsd', //todo message that will appear for each stages above "your reward points"
+              ),
         EarnPointScreen(boxConstraints: constraints),
         RedeemPointsScreen(boxConstraints: constraints),
         const Center(child: Text('Terms & Conditions')),
@@ -236,118 +250,123 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Scaffold(
-          body: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFFFFFFFF),
-                      Color.fromRGBO(255, 252, 252, 0.94),
-                      Color.fromRGBO(255, 241, 240, 0.66),
-                      Color(0xFFFFF1F0),
-                    ],
-                    stops: [0.0, 0.4167, 0.6615, 1.0],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          body: isRedeemRewardScreenOpen
+              ? const RedeemRewardScreen()
+              : Column(
                   children: [
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Hi Ayush',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    const Text(
-                      "Let's get started to earn rewards & much more!",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    SizedBox(
-                      height: 130,
-                      child: ProgressSlider(
-                          width: constraints.maxWidth,
-                          currentAmount: 220, //todo
-                          mileStones: mileStones, //todo
-                          userName: 'Alok', //todo
-                          onChange: (v) {
-                            //todo
-                          }),
-                    ),
-                    const SizedBox(
-                      height: 17,
-                    ),
-                    RewardStatus(
-                      width: constraints.maxWidth,
-                      height: constraints.maxHeight,
-                      currentAchievement: 5, //todo
-                      totalMileStones: 5, //todo
-                      currentAmount: 300, //todo
-                    ),
-                    RewardRedeemButton(
-                      width: constraints.maxWidth,
-                      height: constraints.maxHeight,
-                      onPress: () {
-                        //todo goto redeem screen logic here
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                height: 45,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFfff2f1),
-                ),
-                child: TabBar(
-                  controller: tabController,
-                  indicator: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xFFBB151B),
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
-                  labelColor: const Color(0xFFBB151B),
-                  labelStyle: TextStyle(
-                    fontSize: size(constraints, 12),
-                    fontFamily: "Source Sans Pro",
-                    color: const Color(0xFFBB151B),
-                  ),
-                  unselectedLabelColor: Colors.black,
-                  tabs: const [
-                    Tab(text: 'EARN MORE'),
-                    Tab(text: 'REDEEMED POINTS'),
-                    Tab(text: 'T&C'),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: [
-                    EarnPointScreen(boxConstraints: constraints),
-                    RedeemPointsScreen(boxConstraints: constraints),
-                    const Center(
-                      child: Text(
-                        'T&C',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
+                    Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFFFFFFF),
+                            Color.fromRGBO(255, 252, 252, 0.94),
+                            Color.fromRGBO(255, 241, 240, 0.66),
+                            Color(0xFFFFF1F0),
+                          ],
+                          stops: [0.0, 0.4167, 0.6615, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         ),
                       ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Hi Ayush',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          const Text(
+                            "Let's get started to earn rewards & much more!",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          SizedBox(
+                            height: 130,
+                            child: ProgressSlider(
+                                width: constraints.maxWidth,
+                                currentAmount: 220, //todo
+                                mileStones: mileStones, //todo
+                                userName: 'Alok', //todo
+                                onChange: (v) {
+                                  //todo
+                                }),
+                          ),
+                          const SizedBox(
+                            height: 17,
+                          ),
+                          RewardStatus(
+                            width: constraints.maxWidth,
+                            height: constraints.maxHeight,
+                            currentAchievement: 5, //todo
+                            totalMileStones: 5, //todo
+                            currentAmount: 300, //todo
+                          ),
+                          RewardRedeemButton(
+                            width: constraints.maxWidth,
+                            height: constraints.maxHeight,
+                            onPress: () {
+                              //todo goto redeem screen logic here only if user has reached first milestone
+                              setState(() {
+                                isRedeemRewardScreenOpen = true;
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 45,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFfff2f1),
+                      ),
+                      child: TabBar(
+                        controller: tabController,
+                        indicator: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xFFBB151B),
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                        labelColor: const Color(0xFFBB151B),
+                        labelStyle: TextStyle(
+                          fontSize: size(constraints, 12),
+                          fontFamily: "Source Sans Pro",
+                          color: const Color(0xFFBB151B),
+                        ),
+                        unselectedLabelColor: Colors.black,
+                        tabs: const [
+                          Tab(text: 'EARN MORE'),
+                          Tab(text: 'REDEEMED POINTS'),
+                          Tab(text: 'T&C'),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        controller: tabController,
+                        children: [
+                          EarnPointScreen(boxConstraints: constraints),
+                          RedeemPointsScreen(boxConstraints: constraints),
+                          const Center(
+                            child: Text(
+                              'T&C',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
         );
       },
     );

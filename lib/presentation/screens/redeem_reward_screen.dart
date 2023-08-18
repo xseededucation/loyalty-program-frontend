@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class RedeemRewardScreen extends StatefulWidget {
-  RedeemRewardScreen({super.key});
+  const RedeemRewardScreen({super.key});
 
   @override
   State<RedeemRewardScreen> createState() => _RedeemRewardScreenState();
@@ -209,7 +209,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                         child: Padding(
                           padding:
                               EdgeInsets.only(bottom: size(constraints, 8)),
-                          child:  CircleAvatar(
+                          child: CircleAvatar(
                             radius: size(constraints, 25),
                             backgroundColor: Colors.black,
                             child: Icon(
@@ -227,10 +227,13 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             height: size(constraints, 50),
                             width: size(constraints, 108),
                             margin: EdgeInsets.symmetric(
-                                vertical: size(constraints, 5),
-                                horizontal: size(constraints, 20),),
+                              vertical: size(constraints, 5),
+                              horizontal: size(constraints, 20),
+                            ),
                             padding: EdgeInsets.only(
-                                bottom: kIsWeb? size(constraints, 15):size(constraints, 8),
+                                bottom: kIsWeb
+                                    ? size(constraints, 15)
+                                    : size(constraints, 8),
                                 left: size(constraints, 15),
                                 right: size(constraints, 5)),
                             decoration: BoxDecoration(
@@ -242,7 +245,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                               width: size(constraints, 90),
                               child: TextFormField(
                                 controller: currentCreditValue,
-                                enabled: false,                                
+                                enabled: false,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: size(constraints, 20),
@@ -268,20 +271,20 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                         child: Padding(
                           padding:
                               EdgeInsets.only(bottom: size(constraints, 8)),
-                          child:  CircleAvatar(
+                          child: CircleAvatar(
                             radius: size(constraints, 25),
                             backgroundColor: Colors.black,
                             child: Icon(
                               Icons.add,
                               color: Colors.white,
-                             size: size(constraints, 25),
+                              size: size(constraints, 25),
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: size(constraints, 18),
                   ),
                   InkWell(
@@ -298,11 +301,13 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                           color: const Color(0xffFED945),
                           border: Border.all(color: const Color(0xffA5A5A5))),
                       alignment: Alignment.center,
-                      child:  Text(
+                      child: Text(
                         "Redeem",
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: kIsWeb? size(constraints, 24):size(constraints, 16),
+                            fontSize: kIsWeb
+                                ? size(constraints, 24)
+                                : size(constraints, 16),
                             fontWeight: FontWeight.w500),
                       ),
                     ),

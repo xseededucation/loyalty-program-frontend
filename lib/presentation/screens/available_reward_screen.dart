@@ -6,11 +6,14 @@ class AvailableRewardPoint extends StatelessWidget {
   final double height;
   final double width;
   final String message;
-  const AvailableRewardPoint(
-      {super.key,
-      required this.height,
-      required this.width,
-      required this.message});
+  final VoidCallback onPress;
+  const AvailableRewardPoint({
+    super.key,
+    required this.height,
+    required this.width,
+    required this.message,
+    required this.onPress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +60,7 @@ class AvailableRewardPoint extends StatelessWidget {
           RewardRedeemButton(
             width: width * 0.579,
             height: height,
-            onPress: () {
-              //todo add goto redeem page logic here
-            },
+            onPress: onPress,
           ),
           SizedBox(
             height: height * 0.102,
