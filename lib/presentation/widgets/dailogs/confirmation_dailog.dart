@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
 
 class ConfirmationDailogBox extends StatelessWidget{
   final BoxConstraints constraints;
-  final VoidCallback? onConfirm;
-  const ConfirmationDailogBox({super.key, required this.constraints,this.onConfirm});
+  final VoidCallback onConfirm;
+  const ConfirmationDailogBox({super.key, required this.constraints,required this.onConfirm});
   
   @override
   Widget build(BuildContext context) {
@@ -142,7 +143,9 @@ class ConfirmationDailogBox extends StatelessWidget{
                       width: size(constraints, 20),
                     ),
                     InkWell(
-                      onTap: ()=>onConfirm,
+                      onTap: (){
+                        onConfirm();
+                      },
                       child: Container(
                         height: kIsWeb
                             ? size(constraints, 44)
@@ -170,5 +173,12 @@ class ConfirmationDailogBox extends StatelessWidget{
           ),
         );
   }
-
+  void _showSucessDialog(BuildContext context, BoxConstraints constraints) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SucessDailogBox(constraints: constraints);
+      },
+    );
+  }
 }

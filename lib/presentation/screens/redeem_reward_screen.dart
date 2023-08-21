@@ -4,6 +4,8 @@ import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.
 import 'package:loyalty_program_frontend/presentation/widgets/dailogs/confirmation_dailog.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
 
+import '../utils/helpers/redeem_reward_utils.dart';
+
 class RedeemRewardScreen extends StatefulWidget {
   const RedeemRewardScreen({super.key});
 
@@ -35,59 +37,10 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     "currentCredit": 12500,
   };
 
-  // This  will help is nearest creadit less than current credit
-  int findNearestLastCredit(Map<String, dynamic> data) {
-    List<dynamic> conversionRates = data["conversionRates"];
-    int nearestLastCredit = 0;
-
-    for (var rate in conversionRates) {
-      int credit = rate["credit"];
-      if (credit <= data['currentCredit']) {
-        nearestLastCredit = credit;
-      } else {
-        break;
-      }
-    }
-
-    return nearestLastCredit;
-  }
-
-  int findDenomination(List<Map<String, dynamic>> conversionRates, int credit) {
-    int maxDenomination = 0;
-    for (var rate in conversionRates) {
-      if (credit >= rate['credit'] && rate['credit'] > maxDenomination) {
-        maxDenomination = rate['denomination'];
-      }
-    }
-    return maxDenomination;
-  }
-
-//Function will help in getting the next credit number
-  int getNextCredit(
-      List<Map<String, dynamic>> conversionRates, int currentCredit) {
-    for (int i = 0; i < conversionRates.length; i++) {
-      if (conversionRates[i]['credit'] > currentCredit) {
-        return conversionRates[i]['credit'];
-      }
-    }
-    return currentCredit;
-  }
-
-//Function will help in getting the previous credit number
-  int getPrevCredit(
-      List<Map<String, dynamic>> conversionRates, int currentCredit) {
-    for (int i = conversionRates.length - 1; i >= 0; i--) {
-      if (conversionRates[i]['credit'] < currentCredit) {
-        return conversionRates[i]['credit'];
-      }
-    }
-    return currentCredit;
-  }
-
   // Triggered when plus button click
   onChangePointsIncrement() {
     if (int.parse(currentCreditValue.text) < nearestCurrentCredit) {
-      int nextValue = getNextCredit(
+      int nextValue = RedeemRewardUtils.getNextCredit(
           data['conversionRates'], int.parse(currentCreditValue.text));
       setState(() {
         currentCreditValue.text = nextValue > nearestCurrentCredit
@@ -100,7 +53,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
 // Triggered when minus button click
   onChangePointsDecrement() {
     setState(() {
-      currentCreditValue.text = getPrevCredit(
+      currentCreditValue.text = RedeemRewardUtils.getPrevCredit(
               data['conversionRates'], int.parse(currentCreditValue.text))
           .toString();
     });
@@ -108,16 +61,17 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
 
   @override
   void initState() {
-    currentCreditValue.text = findNearestLastCredit(data).toString();
+    currentCreditValue.text =
+        RedeemRewardUtils.findNearestLastCredit(data).toString();
     setState(() {
-      nearestCurrentCredit = findNearestLastCredit(data);
+      nearestCurrentCredit = RedeemRewardUtils.findNearestLastCredit(data);
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int worthValue = findDenomination(
+    int worthValue = RedeemRewardUtils.findDenomination(
         data['conversionRates'], int.parse(currentCreditValue.text));
     double width = MediaQuery.of(context).size.width;
     return Scaffold(body: LayoutBuilder(
@@ -202,14 +156,18 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             });
                           },
                           itemBuilder: (BuildContext context, int index) {
-                            return Center(
-                              child: Image.network(
-                                data['products'][currentIndex]['image'],
+                            // return Center(
+                            //   child: Image.network(
+                            //     data['products'][currentIndex]['image'],
+                            //     height: size(constraints, 237),
+                            //     width: size(constraints, 344),
+                            //     fit: BoxFit.contain,
+                            //   ),
+                            // );
+                            return SizedBox(
                                 height: size(constraints, 237),
                                 width: size(constraints, 344),
-                                fit: BoxFit.contain,
-                              ),
-                            );
+                                child: Text("data"));
                           },
                         ),
                         Visibility(
@@ -283,6 +241,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
+                        key: const Key('decrement'),
                         onTap: () {
                           onChangePointsDecrement();
                         },
@@ -336,7 +295,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             ),
                           ),
                           Text(
-                            "Worth of ₹${findDenomination(data['conversionRates'], int.parse(currentCreditValue.text))}",
+                            "Worth of ₹${RedeemRewardUtils.findDenomination(data['conversionRates'], int.parse(currentCreditValue.text))}",
                             style: TextStyle(
                                 color: const Color(0xff575757),
                                 fontSize: size(constraints, 16),
@@ -345,6 +304,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                         ],
                       ),
                       InkWell(
+                        key: const Key('increment'),
                         onTap: () {
                           onChangePointsIncrement();
                         },
@@ -409,7 +369,13 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ConfirmationDailogBox(constraints:constraints);
+        return ConfirmationDailogBox(
+          constraints: constraints,
+          onConfirm: () {
+            Navigator.pop(context);
+            _showSucessDialog(context, constraints);
+          },
+        );
       },
     );
   }
@@ -418,7 +384,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SucessDailogBox(constraints:constraints);
+        return SucessDailogBox(constraints: constraints);
       },
     );
   }
