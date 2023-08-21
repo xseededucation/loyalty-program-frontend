@@ -41,25 +41,27 @@ class RewardRedeemButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Redeem Reward Points',
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                        fontSize: width * 0.04, fontWeight: FontWeight.w500),
-                  ),
-                  Text(
-                    'Convert your earned points to a gift card',
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      fontSize: width * .03,
-                      color: const Color(0xff787F8C),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Redeem Reward Points',
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                          fontSize: width * 0.04, fontWeight: FontWeight.w500),
                     ),
-                  ),
-                ],
+                    Text(
+                      'Convert your earned points to a gift card',
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                        fontSize: width * .03,
+                        color: const Color(0xff787F8C),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const Icon(
                 size: 18,

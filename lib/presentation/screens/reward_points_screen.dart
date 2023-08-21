@@ -22,7 +22,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   List<MileStone> mileStones = [
     MileStone(message: 'winner winner chicken dinner', amount: 100),
     MileStone(message: 'winner winner chicken dinner', amount: 120),
-    MileStone(message: 'winner winner chicken dinner', amount: 10000),
+    MileStone(message: 'winner winner chicken dinner', amount: 300),
   ];
   Widget header(BoxConstraints constraints) {
     return Container(
@@ -190,7 +190,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         ),
                       ),
                       child: ProgressSlider(
-                        currentAmount: 220, //todo current amount of user
+                        currentAmount: 300, //todo current amount of user
                         mileStones:
                             mileStones, // todo list containig all the mile stones excluding current amount and 0(zero)
                         userName:

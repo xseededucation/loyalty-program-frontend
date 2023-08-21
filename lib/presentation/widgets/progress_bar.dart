@@ -26,12 +26,14 @@ class _ProgressSliderState extends State<ProgressSlider> {
   int? motivationIndex;
 
   Future showToolTip() async {
-    await Future.delayed(
-      const Duration(
-        milliseconds: 3,
-      ),
-    );
-    ToolTipWrapper.showToolTip();
+    if (motivationIndex != -1) {
+      await Future.delayed(
+        const Duration(
+          seconds: 3,
+        ),
+      );
+      await ToolTipWrapper.showToolTip();
+    }
   }
 
   @override
@@ -42,6 +44,12 @@ class _ProgressSliderState extends State<ProgressSlider> {
     getIndexForMotivationMessage();
     showToolTip();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ToolTipWrapper.dispose();
+    super.dispose();
   }
 
   void getIndexForMotivationMessage() {
@@ -117,7 +125,8 @@ class _ProgressSliderState extends State<ProgressSlider> {
                                                     'loyalty_program_frontend',
                                               ),
                                               Text(
-                                                widget.userName[0],
+                                                widget.userName[0]
+                                                    .toUpperCase(),
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                     fontSize: 14,

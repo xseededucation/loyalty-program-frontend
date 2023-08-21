@@ -9,12 +9,20 @@ class ToolTipWrapper {
     _controller = JustTheController();
   }
 
-  static void showToolTip() {
-    _controller?.showTooltip();
+  static Future<void> showToolTip() async {
+    if (_controller != null) {
+      await _controller?.showTooltip();
+    }
   }
 
-  static void hideToolTip() {
-    _controller?.hideTooltip();
+  static Future<void> hideToolTip() async {
+    if (_controller != null) {
+      await _controller?.hideTooltip();
+    }
+  }
+
+  static void dispose() {
+    _controller?.dispose();
   }
 
   static Widget getToolTip({required Widget child, required String message}) {
