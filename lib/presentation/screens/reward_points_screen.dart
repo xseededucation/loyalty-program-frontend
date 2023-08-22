@@ -280,7 +280,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 17),
                           const Text(
                             'Hi Ayush',
                             style: TextStyle(
@@ -308,14 +308,12 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             height: 17,
                           ),
                           RewardStatus(
-                            currentAchievement: 5, //todo
+                            currentAchievement: 4, //todo
                             totalMileStones: 5, //todo
-                            currentAmount: 300, //todo
+                            points: 3000, //todo
                             boxConstraints: constraints,
                           ),
                           RewardRedeemButton(
-                            width: constraints.maxWidth,
-                            height: constraints.maxHeight,
                             boxConstraints: constraints,
                             onPress: () {
                               //todo goto redeem screen logic here only if user has reached first milestone

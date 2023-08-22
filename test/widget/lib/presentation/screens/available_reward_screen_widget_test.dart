@@ -14,8 +14,7 @@ void main() {
           height: 1000,
           width: 1000,
           child: AvailableRewardPoint(
-            height: 750,
-            width: 610,
+            boxConstraints: BoxConstraints(),
             message: 'Congratulations! You have earned a reward.',
             onPress: () {
               isWorking = true;

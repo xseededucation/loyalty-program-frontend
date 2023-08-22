@@ -1,26 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/confetti_selector.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/format_points.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class RewardStatus extends StatelessWidget {
   final int currentAchievement;
   final int totalMileStones;
-  final double currentAmount;
+  final double points;
   final BoxConstraints boxConstraints;
   const RewardStatus(
       {super.key,
       required this.boxConstraints,
       required this.currentAchievement,
       required this.totalMileStones,
-      required this.currentAmount});
+      required this.points});
 
   @override
   Widget build(BuildContext context) {
+    Size sizeForMobile = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
+          width: double.infinity,
           decoration: BoxDecoration(
             image: currentAchievement != 0
                 ? DecorationImage(
@@ -37,18 +40,26 @@ class RewardStatus extends StatelessWidget {
               Text(
                 'Your Reward Points',
                 style: TextStyle(
-                  fontSize: size(boxConstraints, 14),
+                  fontSize: size(boxConstraints, 16),
                   fontWeight: FontWeight.w600,
-                  color: Color(0xffba181c),
+                  color: const Color(0xffba181c),
                 ),
               ),
-              SizedBox(height: size(boxConstraints, 30)),
+              SizedBox(
+                height: kIsWeb ? size(boxConstraints, 18) : 12,
+              ),
               Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Container(
+                  height: kIsWeb
+                      ? size(boxConstraints, 180)
+                      : sizeForMobile.width * 0.323,
+                  width: kIsWeb
+                      ? size(boxConstraints, 180)
+                      : sizeForMobile.width * 0.323,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -75,21 +86,19 @@ class RewardStatus extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: kIsWeb ? size(boxConstraints, 10) : 26,
+                        height: kIsWeb ? size(boxConstraints, 38) : 20,
                       ),
                       SizedBox(
-                        height: kIsWeb
-                            ? size(boxConstraints, 200)
-                            : size(boxConstraints, 150),
-                        width: size(boxConstraints, 200),
+                        height: kIsWeb ? size(boxConstraints, 65) : 60,
+                        width: size(boxConstraints, 65),
                         child: Image.asset(
                           'assets/images/coin.png',
                           package: 'loyalty_program_frontend',
                         ),
                       ),
-                      SizedBox(height: kIsWeb ? size(boxConstraints, 10) : 8),
+                      SizedBox(height: kIsWeb ? size(boxConstraints, 15) : 8),
                       Text(
-                        currentAmount.toString(),
+                        formatPoints(points.toInt()),
                         style: TextStyle(
                           fontSize: kIsWeb ? size(boxConstraints, 20) : 20,
                           fontWeight: FontWeight.w900,
@@ -98,6 +107,9 @@ class RewardStatus extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              SizedBox(
+                height: size(boxConstraints, 30),
               )
             ],
           ),
