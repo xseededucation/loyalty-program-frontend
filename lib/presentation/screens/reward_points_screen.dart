@@ -158,7 +158,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget rewardPointCardView(BoxConstraints constraints) {
+  Widget rewardPointCardView(
+      BoxConstraints constraints, RewardPointsSuccess state) {
     return Card(
       elevation: 10,
       shape: RoundedRectangleBorder(
@@ -246,7 +247,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 ),
               ),
               const SizedBox(height: 10),
-              Expanded(child: rewardPointCardView(constraints))
+              Expanded(
+                child: rewardPointCardView(constraints, state),
+              )
             ],
           ),
         );
@@ -406,7 +409,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   LoadingDialog.showLoadingDialog(context);
                 } else if (state is RewardPointsSuccess ||
                     state is RewardPointsFailure) {
-                  LoadingDialog.hideLoadingDialog();
+                  LoadingDialog.hideLoadingDialog(context);
                 }
               },
             );

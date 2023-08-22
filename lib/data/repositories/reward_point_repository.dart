@@ -38,8 +38,7 @@ class RewardPointRepository {
         ]
       }
     };
-    await Future.delayed(Duration(seconds: 2));
-
+    await Future.delayed(Duration(seconds: 3));
     // var url = "pageInformation";
     // var response = await apiBaseHelper.get(url);
     return data;

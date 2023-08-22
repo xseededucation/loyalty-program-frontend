@@ -8,7 +8,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   RewardPointRepository rewardPointRepository;
 
   RewardPointsBloc({required this.rewardPointRepository})
-      : super(RewardPointsSuccess(pageInformation: PageInformationModel())) {
+      : super(RewardPointsInitial()) {
     on<CanAccessLoyaltyProgram>(_mapCanAccessLoyaltyProgram);
     on<FetchPageInformationEvent>(_mapFetchPageInformation);
   }
