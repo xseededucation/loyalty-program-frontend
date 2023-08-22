@@ -114,21 +114,18 @@ class EventToCreditMap {
 
 class PageDetails {
   String? text;
-  String? textToCredit;
   String? entityType;
 
-  PageDetails({this.text, this.textToCredit, this.entityType});
+  PageDetails({this.text, this.entityType});
 
   PageDetails.fromJson(Map<String, dynamic> json) {
     text = json['text'];
-    textToCredit = json['textToCredit'];
     entityType = json['entityType'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['text'] = text;
-    data['textToCredit'] = textToCredit;
     data['entityType'] = entityType;
     return data;
   }

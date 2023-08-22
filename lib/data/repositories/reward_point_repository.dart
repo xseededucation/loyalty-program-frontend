@@ -8,4 +8,10 @@ class RewardPointRepository {
     var response = await apiBaseHelper.get(url);
     return response;
   }
+
+  fetchPageInformation() async {
+    var url = "pageInformation";
+    var response = await apiBaseHelper.get(url);
+    return response;
+  }
 }
