@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart';
 
 class AvailableRewardPoint extends StatelessWidget {
-  final double height;
-  final double width;
   final String message;
   final VoidCallback onPress;
+  final BoxConstraints boxConstraints;
   const AvailableRewardPoint({
     super.key,
-    required this.height,
-    required this.width,
     required this.message,
     required this.onPress,
+    required this.boxConstraints,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -34,22 +32,17 @@ class AvailableRewardPoint extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SizedBox(
-            height: height * 0.103,
-          ),
+          SizedBox(height: size(boxConstraints, 20)),
           Text(
             message,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: size(boxConstraints, 16),
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(
-            height: height * 0.099,
-          ),
+          SizedBox(height: size(boxConstraints, 30)),
           RewardStatus(
-            width: width * 0.579,
-            height: height,
+            boxConstraints: boxConstraints,
             currentAchievement:
                 1, //todo set this to index of passed milestone. it will be used to show proper confetti
             totalMileStones:
@@ -58,13 +51,12 @@ class AvailableRewardPoint extends StatelessWidget {
                 3000, // todo points that will be displayed in circular widget
           ),
           RewardRedeemButton(
-            width: width * 0.579,
-            height: height,
+            boxConstraints: boxConstraints,
+            width: size(boxConstraints, 10),
+            height: size(boxConstraints, 10),
             onPress: onPress,
           ),
-          SizedBox(
-            height: height * 0.102,
-          ),
+          SizedBox(height: size(boxConstraints, 10)),
         ],
       ),
     );

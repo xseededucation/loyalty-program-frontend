@@ -1,14 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class RewardRedeemButton extends StatelessWidget {
   final double width;
   final double height;
   final VoidCallback onPress;
+
+  final BoxConstraints boxConstraints;
   const RewardRedeemButton(
       {super.key,
       required this.width,
       required this.height,
+      required this.boxConstraints,
       required this.onPress});
 
   @override
@@ -17,8 +21,11 @@ class RewardRedeemButton extends StatelessWidget {
       onTap: onPress,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        width: width * 0.835,
-        height: kIsWeb ? height * .131 : 54,
+        height: kIsWeb ? size(boxConstraints, 50) : size(boxConstraints, 44),
+        margin: EdgeInsets.only(
+          left: size(boxConstraints, 120),
+          right: size(boxConstraints, 120),
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           gradient: const LinearGradient(
@@ -37,7 +44,10 @@ class RewardRedeemButton extends StatelessWidget {
             color: Colors.white,
           ),
           margin: const EdgeInsets.all(1),
-          padding: EdgeInsets.only(left: width * 0.03, right: width * 0.03),
+          padding: EdgeInsets.only(
+            left: size(boxConstraints, 10),
+            right: size(boxConstraints, 10),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

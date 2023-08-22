@@ -3,7 +3,6 @@ import 'package:loyalty_program_frontend/data/repositories/reward_point_reposito
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_event.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
 
-
 class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   RewardPointRepository rewardPointRepository;
 

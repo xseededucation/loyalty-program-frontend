@@ -1,17 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/confetti_selector.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class RewardStatus extends StatelessWidget {
-  final double width;
-  final double height;
   final int currentAchievement;
   final int totalMileStones;
   final double currentAmount;
+  final BoxConstraints boxConstraints;
   const RewardStatus(
       {super.key,
-      required this.width,
-      required this.height,
+      required this.boxConstraints,
       required this.currentAchievement,
       required this.totalMileStones,
       required this.currentAmount});
@@ -22,41 +21,34 @@ class RewardStatus extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          height: kIsWeb ? height * 0.515 : 185,
-          width: kIsWeb ? width * 0.579 : width,
           decoration: BoxDecoration(
-              image: currentAchievement != 0
-                  ? DecorationImage(
-                      fit: BoxFit.fitHeight,
-                      image: AssetImage(
-                        'assets/images/confetti/${getConfettiBasedOnLevel(currentAchievement, totalMileStones)}',
-                        package: 'loyalty_program_frontend',
-                      ),
-                    )
-                  : null),
+            image: currentAchievement != 0
+                ? DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(
+                      'assets/images/confetti/${getConfettiBasedOnLevel(currentAchievement, totalMileStones)}',
+                      package: 'loyalty_program_frontend',
+                    ),
+                  )
+                : null,
+          ),
           child: Column(
             children: [
-              const Text(
+              Text(
                 'Your Reward Points',
                 style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontSize: size(boxConstraints, 14),
+                  fontWeight: FontWeight.w600,
                   color: Color(0xffba181c),
                 ),
               ),
-              const SizedBox(
-                height: 16,
-              ),
+              SizedBox(height: size(boxConstraints, 30)),
               Container(
-                width: width * 0.323,
-                height: kIsWeb ? height * 0.387 : width * 0.323,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Container(
-                  width: width * 0.323,
-                  height: kIsWeb ? height * 0.387 : width * 0.323,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -83,23 +75,23 @@ class RewardStatus extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: kIsWeb ? height * .096 : 26,
+                        height: kIsWeb ? size(boxConstraints, 10) : 26,
                       ),
                       SizedBox(
-                        height: kIsWeb ? height * .136 : width * .112,
-                        width: width * .112,
+                        height: kIsWeb
+                            ? size(boxConstraints, 200)
+                            : size(boxConstraints, 150),
+                        width: size(boxConstraints, 200),
                         child: Image.asset(
                           'assets/images/coin.png',
                           package: 'loyalty_program_frontend',
                         ),
                       ),
-                      const SizedBox(
-                        height: kIsWeb ? 0 : 8,
-                      ),
+                      SizedBox(height: kIsWeb ? size(boxConstraints, 10) : 8),
                       Text(
                         currentAmount.toString(),
                         style: TextStyle(
-                          fontSize: kIsWeb ? width * .065 : 20,
+                          fontSize: kIsWeb ? size(boxConstraints, 20) : 20,
                           fontWeight: FontWeight.w900,
                         ),
                       )

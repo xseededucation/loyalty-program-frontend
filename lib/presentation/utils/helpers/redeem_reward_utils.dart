@@ -1,7 +1,7 @@
 // utility_functions.dart
 
 class RedeemRewardUtils {
-  // This  will help is nearest creadit less than current credit
+  // This  will help is nearest credit less than current credit
   static int findNearestLastCredit(Map<String, dynamic> data) {
     List<dynamic> conversionRates = data["conversionRates"];
     int nearestLastCredit = 0;

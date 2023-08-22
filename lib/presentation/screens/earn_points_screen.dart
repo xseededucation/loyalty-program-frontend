@@ -52,13 +52,14 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                       width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: kIsWeb
-                              ? Border.all(color: Colors.grey, width: 0.5)
-                              : null,
-                          borderRadius: BorderRadius.circular(
-                            size(widget.boxConstraints, 4),
-                          )),
+                        color: Colors.white,
+                        border: kIsWeb
+                            ? Border.all(color: Colors.grey, width: 0.5)
+                            : null,
+                        borderRadius: BorderRadius.circular(
+                          size(widget.boxConstraints, 4),
+                        ),
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -115,7 +116,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                       ),
                     )
                   ],
-                );            
+                );
               },
               separatorBuilder: (context, index) {
                 return kIsWeb
@@ -124,7 +125,6 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
               },
             ),
           ),
-        
         ],
       ),
     );

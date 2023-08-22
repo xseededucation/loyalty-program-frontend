@@ -163,7 +163,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                 width: size(constraints, 344),
                                 fit: BoxFit.contain,
                               ),
-                            );                           
+                            );
                           },
                         ),
                         Visibility(
@@ -230,9 +230,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: size(constraints, 20),
-                  ),
+                  SizedBox(height: size(constraints, 20)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -365,22 +363,22 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ConfirmationDailogBox(
+        return ConfirmationDialogBox(
           constraints: constraints,
           onConfirm: () {
             Navigator.pop(context);
-            _showSucessDialog(context, constraints);
+            _showSuccessDialog(context, constraints);
           },
         );
       },
     );
   }
 
-  void _showSucessDialog(BuildContext context, BoxConstraints constraints) {
+  void _showSuccessDialog(BuildContext context, BoxConstraints constraints) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SucessDailogBox(constraints: constraints);
+        return SuccessDialogBox(constraints: constraints);
       },
     );
   }

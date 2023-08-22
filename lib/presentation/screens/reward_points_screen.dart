@@ -132,15 +132,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
             : AvailableRewardPoint(
                 onPress: () {
                   //todo add logic such that if user has reached first milestone then only it can go to redeem reward screen
-
                   setState(() {
                     isRedeemRewardScreenOpen = true;
                   });
                 },
-                height: MediaQuery.of(context).size.height - 450,
-                width: constraints.maxWidth * 0.390,
                 message:
-                    'kjsgd askjdgasd askjgasdad kjagsdsd', //todo message that will appear for each stages above "your reward points"
+                    'Let’s get started to earn rewards & much more!', //todo message that will appear for each stages above "your reward points"
+                boxConstraints: constraints,
               ),
         EarnPointScreen(boxConstraints: constraints),
         RedeemPointsScreen(boxConstraints: constraints),
@@ -299,15 +297,15 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             height: 17,
                           ),
                           RewardStatus(
-                            width: constraints.maxWidth,
-                            height: constraints.maxHeight,
                             currentAchievement: 5, //todo
                             totalMileStones: 5, //todo
                             currentAmount: 300, //todo
+                            boxConstraints: constraints,
                           ),
                           RewardRedeemButton(
                             width: constraints.maxWidth,
                             height: constraints.maxHeight,
+                            boxConstraints: constraints,
                             onPress: () {
                               //todo goto redeem screen logic here only if user has reached first milestone
                               setState(() {

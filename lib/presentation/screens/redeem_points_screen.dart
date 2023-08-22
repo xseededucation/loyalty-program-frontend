@@ -2,11 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
-
-
 class RedeemPointsScreen extends StatefulWidget {
-  BoxConstraints boxConstraints;
-  RedeemPointsScreen({super.key, required this.boxConstraints});
+  final BoxConstraints boxConstraints;
+  const RedeemPointsScreen({super.key, required this.boxConstraints});
 
   @override
   State<RedeemPointsScreen> createState() => _RedeemPointsScreenState();
