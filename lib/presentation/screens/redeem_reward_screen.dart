@@ -156,18 +156,14 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             });
                           },
                           itemBuilder: (BuildContext context, int index) {
-                            // return Center(
-                            //   child: Image.network(
-                            //     data['products'][currentIndex]['image'],
-                            //     height: size(constraints, 237),
-                            //     width: size(constraints, 344),
-                            //     fit: BoxFit.contain,
-                            //   ),
-                            // );
-                            return SizedBox(
+                            return Center(
+                              child: Image.network(
+                                data['products'][currentIndex]['image'],
                                 height: size(constraints, 237),
                                 width: size(constraints, 344),
-                                child: Text("data"));
+                                fit: BoxFit.contain,
+                              ),
+                            );                           
                           },
                         ),
                         Visibility(
