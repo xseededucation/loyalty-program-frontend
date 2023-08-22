@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/screens/available_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/screens/redeem_points_screen.dart';
 import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 
 import 'earn_points_screen.dart';
@@ -18,6 +21,14 @@ class RewardPointScreen extends StatefulWidget {
 
 class _RewardPointScreenState extends State<RewardPointScreen>
     with TickerProviderStateMixin {
+  RewardPointRepository? _rewardPointRepository;
+  @override
+  void initState() {
+    _rewardPointRepository = RewardPointRepository();
+
+    super.initState();
+  }
+
   bool isRedeemRewardScreenOpen = false;
   List<MileStone> mileStones = [
     MileStone(message: 'winner winner chicken dinner', amount: 100),
@@ -214,7 +225,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget webView() {
+  Widget webView(RewardPointsSuccess state) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Container(
@@ -245,7 +256,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget mobileView() {
+  Widget mobileView(RewardPointsSuccess state) {
     TabController tabController = TabController(length: 3, vsync: this);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -377,7 +388,34 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFFFF8F8),
-        body: kIsWeb ? webView() : mobileView(),
+        body: BlocProvider<RewardPointsBloc>(
+          create: (_) =>
+              RewardPointsBloc(rewardPointRepository: _rewardPointRepository!)
+                ..add(FetchPageInformationEvent()),
+          child: Builder(builder: (context) {
+            return BlocConsumer<RewardPointsBloc, RewardPointsState>(
+              builder: (context, state) {
+                if (state is RewardPointsSuccess) {
+                  if (kIsWeb) {
+                    return webView(state);
+                  } else {
+                    return mobileView(state);
+                  }
+                } else {
+                  return const SizedBox();
+                }
+              },
+              listener: (context, state) {
+                if (state is RewardPointsInProgress) {
+                  LoadingDialog.showLoadingDialog(context);
+                } else if (state is RewardPointsSuccess ||
+                    state is RewardPointsFailure) {
+                  LoadingDialog.hideLoadingDialog();
+                }
+              },
+            );
+          }),
+        ),
       ),
     );
   }

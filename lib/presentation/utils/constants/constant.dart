@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class Constants {
-  static const String baseUrl = "http://117.195.112.195:8245/api/";
+  static const String baseUrl =
+      "https://loyalty-program-apis.xseeddigital.info/api/";
 }
 
 printLog(dynamic log) {
