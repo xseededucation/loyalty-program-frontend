@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
 import 'package:loyalty_program_frontend/domain/models/common.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
+import 'package:loyalty_program_frontend/domain/models/product.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_event.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
 
@@ -22,7 +23,9 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     try {
       emit(RewardPointsInProgress());
       var response = await rewardPointRepository.checkCanAccessLoyaltyProgram();
-      if (response["status"] == "sucess") {
+      if (response["status"] == "success") {
+        // rewardPointsSuccess = rewardPointsSuccess.copyWith(
+        //     product: Product.fromJson(response["data"])!);
         return emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
