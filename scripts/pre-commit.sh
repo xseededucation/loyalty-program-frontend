@@ -14,7 +14,7 @@ fi
 
 printf "I am going to format all your files with prettier spec" >> "$LOG_FILE"
 
-flutter format
+flutter format .
 
 hasMadeSomeFormattingChange=$(git diff)
 
