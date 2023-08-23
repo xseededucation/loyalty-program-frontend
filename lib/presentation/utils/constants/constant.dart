@@ -11,3 +11,9 @@ printLog(dynamic log) {
     print(log);
   }
 }
+
+const String APP_OPEN = 'APP_OPEN';
+const String SWIPE = 'SWIPE';
+const String TIME_BOUND = 'TIME_BOUND';
+
+const String SHARED_PREF_LAST_OPENED = 'lastOpenedDate';
