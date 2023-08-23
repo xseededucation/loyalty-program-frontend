@@ -43,13 +43,10 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
         (json) => PageInformation.fromJson(json),
       );
 
-      print(commonResponse.status);
-      PageInformation pageInformation = commonResponse.data!;
-
-      print(pageInformation.conversionRates);
-      print(pageInformation.currentCredit);
-      print(pageInformation.eventToCreditMap);
-      print(pageInformation.pageDetails);
+      if (commonResponse.data != null) {
+        rewardPointsSuccess =
+            rewardPointsSuccess.copyWith(pageInformation: commonResponse.data!);
+      }
       emit(rewardPointsSuccess);
     } catch (e) {
       print("RewardPointsFailure : $e");

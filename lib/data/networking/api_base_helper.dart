@@ -4,28 +4,34 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiBaseHelper {
-  Future postWithoutToken(String url, Map<String, dynamic> body) async {
-    dynamic responseJson;
-    try {
-      final response =
-          await http.post(Uri.parse(Constants.baseUrl + url), body: body);
-      responseJson = returnResponse(response);
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
-    return responseJson;
+  getToken() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final String? token = sharedPreferences.getString('token');
+    return token;
+  }
+
+  setToken(token) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    sharedPreferences.setString('token', token);
+    return token;
   }
 
   Future get(String url) async {
     dynamic responseJson;
     try {
-      final response = await http.get(Uri.parse(Constants.baseUrl + url),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          });
+      var token = await getToken();
+      print("Authorization token : $token");
+      final response =
+          await http.get(Uri.parse(Constants.baseUrl + url), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': "Bearer $token"
+      });
       responseJson = await returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -35,11 +41,13 @@ class ApiBaseHelper {
 
   Future post(String url, body) async {
     dynamic responseJson;
+    var token = await getToken();
 
     try {
       var headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': "Bearer $token"
       };
 
       final response = await http.post(Uri.parse(Constants.baseUrl + url),

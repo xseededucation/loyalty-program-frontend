@@ -25,9 +25,11 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     with TickerProviderStateMixin {
   RewardPointRepository? _rewardPointRepository;
   @override
-  void initState() {    
+  void initState() {
     _rewardPointRepository = RewardPointRepository();
     Constants.userData = widget.userDetail;
+    BlocProvider.of<RewardPointsBloc>(context).add(FetchPageInformationEvent());
+
     super.initState();
   }
 
@@ -141,8 +143,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
       ],
       contents: <Widget>[
         isRedeemRewardScreenOpen
-            ? const RedeemRewardScreen(              
-            )
+            ? const RedeemRewardScreen()
             : AvailableRewardPoint(
                 onPress: () {
                   //todo add logic such that if user has reached first milestone then only it can go to redeem reward screen
