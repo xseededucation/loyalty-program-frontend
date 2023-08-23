@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:mockito/mockito.dart';
 
@@ -23,7 +24,7 @@ void main() {
 
       final expected = [
         RewardPointsInProgress(),
-        RewardPointsSuccess(),
+        RewardPointsSuccess(pageInformation: PageInformation()),
       ];
 
       bloc.add(CanAccessLoyaltyProgram());
