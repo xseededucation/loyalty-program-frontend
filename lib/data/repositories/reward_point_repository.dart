@@ -1,7 +1,8 @@
 import 'package:loyalty_program_frontend/data/networking/api_base_helper.dart';
+import 'package:http/http.dart' as http;
 
 class RewardPointRepository {
-  ApiBaseHelper apiBaseHelper = ApiBaseHelper();
+  ApiBaseHelper apiBaseHelper = ApiBaseHelper(http.Client());
 
   checkCanAccessLoyaltyProgram() async {
     var url = "canAccessLoyaltyProgram";

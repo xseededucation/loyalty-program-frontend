@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../../../../../lib/presentation/utils/helpers/redeem_reward_utils.dart';
-
+import '../../../lib/presentation/utils/helpers/redeem_reward_utils.dart';
 
 void main() {
   group('Redeem Reward Functions Tests', () {
@@ -48,4 +47,3 @@ void main() {
     });
   });
 }
-

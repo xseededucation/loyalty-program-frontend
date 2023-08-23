@@ -7,6 +7,10 @@ import 'package:loyalty_program_frontend/presentation/utils/constants/constant.d
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiBaseHelper {
+  final http.Client client;
+
+  ApiBaseHelper(this.client);
+
   getToken() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
@@ -27,7 +31,7 @@ class ApiBaseHelper {
       var token = await getToken();
       print("Authorization token : $token");
       final response =
-          await http.get(Uri.parse(Constants.baseUrl + url), headers: {
+          await client.get(Uri.parse(Constants.baseUrl + url), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': "Bearer $token"
@@ -50,7 +54,7 @@ class ApiBaseHelper {
         'Authorization': "Bearer $token"
       };
 
-      final response = await http.post(Uri.parse(Constants.baseUrl + url),
+      final response = await client.post(Uri.parse(Constants.baseUrl + url),
           body: jsonEncode(body), headers: headers);
       responseJson = returnResponse(response);
     } catch (error) {
@@ -65,7 +69,7 @@ class ApiBaseHelper {
     dynamic responseJson;
     try {
       final response =
-          await http.put(Uri.parse(Constants.baseUrl + url), body: body);
+          await client.put(Uri.parse(Constants.baseUrl + url), body: body);
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -76,7 +80,7 @@ class ApiBaseHelper {
   Future delete(String url) async {
     dynamic apiResponse;
     try {
-      final response = await http.delete(Uri.parse(Constants.baseUrl + url));
+      final response = await client.delete(Uri.parse(Constants.baseUrl + url));
       apiResponse = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
