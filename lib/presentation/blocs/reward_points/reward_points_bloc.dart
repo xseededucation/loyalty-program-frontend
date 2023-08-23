@@ -12,6 +12,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       : super(RewardPointsInitial()) {
     on<CanAccessLoyaltyProgram>(_mapCanAccessLoyaltyProgram);
     on<FetchPageInformationEvent>(_mapFetchPageInformation);
+    on<TriggerPaymentEvent>(_mapTriggerPayment);
   }
 
   RewardPointsSuccess rewardPointsSuccess = const RewardPointsSuccess();
@@ -52,6 +53,21 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       emit(rewardPointsSuccess);
     } catch (e) {
       print("RewardPointsFailure : $e");
+      emit(RewardPointsFailure("$e"));
+    }
+  }
+
+  void _mapTriggerPayment(
+      TriggerPaymentEvent event, Emitter<RewardPointsState> emit) async {
+    try {
+      emit(RewardPointsInProgress());
+      var result = await rewardPointRepository.makePayment(
+          event.creditToRedeem, event.productId);
+      rewardPointsSuccess = rewardPointsSuccess.copyWith(
+        message: result['message'],
+      );
+      emit(rewardPointsSuccess);
+    } catch (e) {
       emit(RewardPointsFailure("$e"));
     }
   }

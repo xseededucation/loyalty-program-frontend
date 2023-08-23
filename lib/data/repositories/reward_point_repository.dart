@@ -44,4 +44,16 @@ class RewardPointRepository {
     // var response = await apiBaseHelper.get(url);
     return response;
   }
+
+  makePayment(int creditToRedeem, String productId) async {
+    var url = "makePayment";
+    // var response = await apiBaseHelper
+    //     .post(url, {"creditToRedeem": creditToRedeem, "productId": productId});
+    return {
+      "status": "success",
+      "message":
+          "Your gift card has been sent to following Mobile: +919068408460 Email: mohin.ahmad@xseededucation.com",
+      "data": {}
+    };
+  }
 }
