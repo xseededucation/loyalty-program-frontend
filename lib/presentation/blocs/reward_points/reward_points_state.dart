@@ -13,16 +13,16 @@ class RewardPointsInitial extends RewardPointsState {}
 class RewardPointsInProgress extends RewardPointsState {}
 
 class RewardPointsSuccess extends RewardPointsState {
-  final PageInformationModel pageInformation;
+  final PageInformation? pageInformation;
 
-  const RewardPointsSuccess({required this.pageInformation});
+  const RewardPointsSuccess({this.pageInformation});
 
-  RewardPointsSuccess copyWith({PageInformationModel? pageInformation}) =>
+  RewardPointsSuccess copyWith({PageInformation? pageInformation}) =>
       RewardPointsSuccess(
           pageInformation: pageInformation ?? this.pageInformation);
 
   @override
-  List<Object> get props => [pageInformation];
+  List<Object> get props => [pageInformation ?? {}];
 
   @override
   String toString() => 'RewardPointsSuccess';

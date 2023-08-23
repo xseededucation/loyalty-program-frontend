@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
+import 'package:loyalty_program_frontend/domain/models/common.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_event.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
@@ -13,8 +14,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<FetchPageInformationEvent>(_mapFetchPageInformation);
   }
 
-  RewardPointsSuccess rewardPointsSuccess =
-      RewardPointsSuccess(pageInformation: PageInformationModel());
+  RewardPointsSuccess rewardPointsSuccess = const RewardPointsSuccess();
 
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
@@ -35,11 +35,23 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       FetchPageInformationEvent event, Emitter<RewardPointsState> emit) async {
     try {
       emit(RewardPointsInProgress());
-      var result = await rewardPointRepository.fetchPageInformation();
-      rewardPointsSuccess = rewardPointsSuccess.copyWith(
-          pageInformation: PageInformationModel.fromJson(result));
+      var response = await rewardPointRepository.fetchPageInformation();
+
+      Common<PageInformation> commonResponse = Common<PageInformation>.fromJson(
+        response,
+        (json) => PageInformation.fromJson(json),
+      );
+
+      print(commonResponse.status);
+      PageInformation pageInformation = commonResponse.data!;
+
+      print(pageInformation.conversionRates);
+      print(pageInformation.currentCredit);
+      print(pageInformation.eventToCreditMap);
+      print(pageInformation.pageDetails);
       emit(rewardPointsSuccess);
     } catch (e) {
+      print("RewardPointsFailure : $e");
       emit(RewardPointsFailure("$e"));
     }
   }

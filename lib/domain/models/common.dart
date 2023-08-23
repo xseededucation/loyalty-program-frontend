@@ -1,13 +1,13 @@
 class Common<T> {
   String? status;
-  List<T>? data;
+  T? data;
 
   Common({this.status, this.data});
 
   Common.fromJson(Map<String, dynamic> json, T Function(dynamic) fromJsonT) {
     status = json['status'];
     if (json['data'] != null) {
-      data = List<T>.from(json['data'].map((dynamic item) => fromJsonT(item)));
+      data = fromJsonT(json['data']);
     }
   }
 
@@ -15,7 +15,7 @@ class Common<T> {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data!.map((T item) => toJsonT(item)).toList();
+      data['data'] = toJsonT(this.data!);
     }
     return data;
   }

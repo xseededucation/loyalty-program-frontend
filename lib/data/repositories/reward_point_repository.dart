@@ -10,7 +10,7 @@ class RewardPointRepository {
   }
 
   fetchPageInformation() async {
-    var data = {
+    var response = {
       "status": "success",
       "data": {
         "conversionRates": [
@@ -28,19 +28,20 @@ class RewardPointRepository {
         "pageDetails": [
           {"text": "data", "textToCredit": "", "entityType": "Terms"},
           {
-            "text": "",
+            "text": "Earn More",
             "textToCredit": [
-              {"text": "sample text1", "credit": 2},
-              {"text": "sample text2", "credit": 5}
+              {"text": "sample text1", "credit": 2, "subText": "sample text1"},
+              {"text": "sample text2", "credit": 5, "subText": "sample text2"}
             ],
             "entityType": "EarnMore"
           }
         ]
       }
     };
-    await Future.delayed(Duration(seconds: 3));
+
+    // await Future.delayed(Duration(seconds: 1));
     // var url = "pageInformation";
     // var response = await apiBaseHelper.get(url);
-    return data;
+    return response;
   }
 }
