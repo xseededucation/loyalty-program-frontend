@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/screens/available_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/screens/redeem_points_screen.dart';
@@ -157,7 +158,58 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               ),
         EarnPointScreen(boxConstraints: constraints),
         RedeemPointsScreen(boxConstraints: constraints),
-        const Center(child: Text('Terms & Conditions')),
+        Container(
+          padding: kIsWeb
+              ? EdgeInsets.only(
+                  left: size(constraints, 50),
+                  right: size(constraints, 50),
+                  top: size(constraints, 40),
+                  bottom: size(constraints, 20),
+                )
+              : const EdgeInsets.all(0),
+          color: const Color(0xffFFEDEC),
+          child: BlocConsumer<RewardPointsBloc, RewardPointsState>(
+            builder: (context, state) {
+              print("pageInformation : builder : $state");
+              if (state is RewardPointsSuccess) {
+                List<PageDetail> pageDetails =
+                    state.pageInformation!.pageDetails as List<PageDetail>;
+
+                EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
+                  return element.toJson()["entityType"] == "EarnMore";
+                }) as EarnMoreCredit;
+
+                return Text(
+                  '${pageDetail.text}',
+                  style: TextStyle(
+                    fontSize: size(constraints, 14),
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "Source Sans Pro",
+                  ),
+                );
+              } else {
+                return const SizedBox();
+              }
+            },
+            listener: (context, state) {
+              print("pageInformation : listener : $state");
+              if (state is RewardPointsInProgress) {
+                LoadingDialog.showLoadingDialog(context);
+              } else if (state is RewardPointsSuccess ||
+                  state is RewardPointsFailure) {
+                LoadingDialog.hideLoadingDialog(context);
+              }
+            },
+          ),
+        )
+        // Text(
+        //   'Terms & Conditions',
+        //   style: TextStyle(
+        //     fontSize: size(constraints, 14),
+        //     fontWeight: FontWeight.w600,
+        //     fontFamily: "Source Sans Pro",
+        //   ),
+        // ),
       ],
     );
   }

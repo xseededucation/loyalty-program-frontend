@@ -136,30 +136,6 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
             ),
             const SizedBox(height: 20),
           ],
-          // Expanded(
-          //   child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
-          //     builder: (BuildContext context, RewardPointsState state) {
-          //       // if (state is RewardPointsInProgress) {
-          //       //   return const Center(child: CircularProgressIndicator());
-          //       // }
-
-          //       if (state is RewardPointsSuccess) {
-          //         List<PageDetail> pageDetails =
-          //             state.pageInformation!.pageDetails as List<PageDetail>;
-
-          //         EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
-          //           return element.toJson()["entityType"] == "EarnMore";
-          //         }) as EarnMoreCredit;
-
-          //         return earnPointList(pageDetail.textToCredit);
-          //       }
-          //       if (state is RewardPointsFailure) {
-          //         return const SizedBox();
-          //       }
-          //       return const SizedBox();
-          //     },
-          //   ),
-          // ),
           Expanded(
             child: BlocConsumer<RewardPointsBloc, RewardPointsState>(
               builder: (context, state) {
