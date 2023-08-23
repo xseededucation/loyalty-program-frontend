@@ -1,13 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
 
 class ConfirmationDialogBox extends StatelessWidget {
   final BoxConstraints constraints;
+  final String denomination;  
   final VoidCallback onConfirm;
   const ConfirmationDialogBox(
-      {super.key, required this.constraints, required this.onConfirm});
+      {super.key, required this.constraints, required this.onConfirm,required this.denomination});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '₹1,000 ',
+                      text: '₹${denomination} ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: kIsWeb
@@ -76,7 +78,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: 'ayushgupta@gmail.com ',
+                      text: '${Constants.userData?.email ?? ""} ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: kIsWeb
@@ -95,7 +97,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '+91-9876567833.',
+                      text: '+${Constants.userData?.countryCode + '-'+ Constants.userData?.mobileNumber ?? ""} ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: kIsWeb

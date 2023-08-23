@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class SuccessDialogBox extends StatelessWidget {
@@ -55,7 +56,7 @@ class SuccessDialogBox extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: 'ayushgupta@gmail.com ',
+                      text: '${Constants.userData?.email ?? ""} ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: kIsWeb
@@ -74,7 +75,7 @@ class SuccessDialogBox extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '+91 9876567833.',
+                      text: '+${Constants.userData?.countryCode + '-'+ Constants.userData?.mobileNumber ?? ""}. ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: kIsWeb

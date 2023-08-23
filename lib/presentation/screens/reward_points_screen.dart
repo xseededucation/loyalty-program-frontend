@@ -5,6 +5,7 @@ import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/screens/available_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/screens/redeem_points_screen.dart';
 import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
+import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
@@ -13,7 +14,8 @@ import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 import 'earn_points_screen.dart';
 
 class RewardPointScreen extends StatefulWidget {
-  const RewardPointScreen({super.key});
+  final dynamic userDetail;
+  const RewardPointScreen({super.key, required this.userDetail});
 
   @override
   State<RewardPointScreen> createState() => _RewardPointScreenState();
@@ -23,9 +25,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     with TickerProviderStateMixin {
   RewardPointRepository? _rewardPointRepository;
   @override
-  void initState() {
+  void initState() {    
     _rewardPointRepository = RewardPointRepository();
-
+    Constants.userData = widget.userDetail;
     super.initState();
   }
 
@@ -69,7 +71,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
             ),
           ),
           Text(
-            "Hi, Ayush",
+            "Hi, ${Constants.userData?.name ?? ""}",
             softWrap: true,
             style: TextStyle(
               fontSize: size(constraints, 14),
@@ -139,7 +141,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
       ],
       contents: <Widget>[
         isRedeemRewardScreenOpen
-            ? const RedeemRewardScreen()
+            ? const RedeemRewardScreen(              
+            )
             : AvailableRewardPoint(
                 onPress: () {
                   //todo add logic such that if user has reached first milestone then only it can go to redeem reward screen

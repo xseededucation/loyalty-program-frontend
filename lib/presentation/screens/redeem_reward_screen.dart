@@ -338,7 +338,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        _showConfirmationDialog(context, constraints, () {
+                        _showConfirmationDialog(context, constraints,worthValue,() {
                           context.read<RewardPointsBloc>().add(
                               TriggerPaymentEvent(
                                   int.parse(currentCreditValue.text),
@@ -380,12 +380,13 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     ));
   }
 
-  void _showConfirmationDialog(BuildContext context, BoxConstraints constraints,
+  void _showConfirmationDialog(BuildContext context, BoxConstraints constraints,int worthValue,
       VoidCallback onConfirm) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return ConfirmationDialogBox(
+          denomination: worthValue.toString(),
           constraints: constraints,
           onConfirm: () {
             Navigator.pop(context);

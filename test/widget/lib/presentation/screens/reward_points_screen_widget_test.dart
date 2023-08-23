@@ -13,7 +13,7 @@ void main() {
           body: SizedBox(
             width: 360,
             height: 600,
-            child: RewardPointScreen(),
+            child: RewardPointScreen(userDetail: {},),
           ),
         ),
       ),
