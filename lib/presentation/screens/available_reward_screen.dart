@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart';
@@ -7,15 +8,47 @@ class AvailableRewardPoint extends StatelessWidget {
   final String message;
   final VoidCallback onPress;
   final BoxConstraints boxConstraints;
+  final double currentAchievementLevel;
+  final List<ConversionRates> conversionRate;
   const AvailableRewardPoint({
     super.key,
     required this.message,
     required this.onPress,
     required this.boxConstraints,
+    required this.currentAchievementLevel,
+    required this.conversionRate,
   });
 
   @override
   Widget build(BuildContext context) {
+    int? currentSliderPoint;
+    int? totalPoint;
+    void getPoints() {
+      bool hasZero = false;
+      for (int i = 0; i < conversionRate.length; i++) {
+        if (conversionRate[i].credit == 0) {
+          hasZero = true;
+        }
+      }
+      if (hasZero) {
+        totalPoint = conversionRate.length;
+      } else {
+        totalPoint = conversionRate.length + 1;
+      }
+      conversionRate.sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
+      for (int i = 0; i < conversionRate.length; i++) {
+        if (currentAchievementLevel <= conversionRate[i].credit!) {
+          currentSliderPoint = i;
+          break;
+        }
+      }
+      if (!hasZero) {
+        currentSliderPoint! + 1;
+      }
+    }
+
+    getPoints();
+
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Container(
@@ -46,12 +79,9 @@ class AvailableRewardPoint extends StatelessWidget {
             SizedBox(height: size(boxConstraints, 30)),
             RewardStatus(
               boxConstraints: boxConstraints,
-              currentAchievement:
-                  1, //todo set this to index of passed milestone. it will be used to show proper confetti
-              totalMileStones:
-                  2, // todo set this to total length of milestone excluding current and 0(zero)
-              points:
-                  3000, // todo points that will be displayed in circular widget
+              currentAchievement: currentSliderPoint!,
+              totalMileStones: totalPoint!,
+              points: currentAchievementLevel,
             ),
             RewardRedeemButton(
               boxConstraints: boxConstraints,
