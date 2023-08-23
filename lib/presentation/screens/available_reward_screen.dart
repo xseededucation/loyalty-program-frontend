@@ -6,13 +6,14 @@ import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart
 class AvailableRewardPoint extends StatelessWidget {
   final String message;
   final VoidCallback onPress;
+  final double points;
   final BoxConstraints boxConstraints;
-  const AvailableRewardPoint({
-    super.key,
-    required this.message,
-    required this.onPress,
-    required this.boxConstraints,
-  });
+  const AvailableRewardPoint(
+      {super.key,
+      required this.message,
+      required this.onPress,
+      required this.boxConstraints,
+      required this.points});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class AvailableRewardPoint extends StatelessWidget {
               totalMileStones:
                   2, // todo set this to total length of milestone excluding current and 0(zero)
               points:
-                  3000, // todo points that will be displayed in circular widget
+                  points, // todo points that will be displayed in circular widget
             ),
             RewardRedeemButton(
               boxConstraints: boxConstraints,

@@ -11,10 +11,11 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       : super(RewardPointsInitial()) {
     on<CanAccessLoyaltyProgram>(_mapCanAccessLoyaltyProgram);
     on<FetchPageInformationEvent>(_mapFetchPageInformation);
+    on<ToggleRedeemPageEvent>(_mapToggleRedeemPage);
   }
 
-  RewardPointsSuccess rewardPointsSuccess =
-      RewardPointsSuccess(pageInformation: PageInformationModel());
+  RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
+      pageInformation: PageInformationModel(), isRedeemPageOpen: false);
 
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
@@ -42,5 +43,25 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     } catch (e) {
       emit(RewardPointsFailure("$e"));
     }
+  }
+
+  void _mapToggleRedeemPage(
+      ToggleRedeemPageEvent event, Emitter<RewardPointsState> emit) {
+    bool isAnyMileStoneAchieved = false;
+    List<ConversionRates> list =
+        rewardPointsSuccess.pageInformation.data!.conversionRates!;
+    double currentPoints =
+        rewardPointsSuccess.pageInformation.data!.currentCredit!.toDouble();
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].credit != 0 && list[i].credit! >= currentPoints) {
+        isAnyMileStoneAchieved = true;
+        break;
+      }
+    }
+    if (isAnyMileStoneAchieved) {
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: true);
+    }
+    emit(rewardPointsSuccess);
   }
 }

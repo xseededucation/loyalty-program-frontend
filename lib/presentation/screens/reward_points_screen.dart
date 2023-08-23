@@ -22,6 +22,7 @@ class RewardPointScreen extends StatefulWidget {
 class _RewardPointScreenState extends State<RewardPointScreen>
     with TickerProviderStateMixin {
   RewardPointRepository? _rewardPointRepository;
+  double? pointToShow;
   @override
   void initState() {
     _rewardPointRepository = RewardPointRepository();
@@ -30,11 +31,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   }
 
   bool isRedeemRewardScreenOpen = false;
-  List<MileStone> mileStones = [
-    MileStone(message: 'winner winner chicken dinner', amount: 100),
-    MileStone(message: 'winner winner chicken dinner', amount: 120),
-    MileStone(message: 'winner winner chicken dinner', amount: 300),
-  ];
+
   Widget header(BoxConstraints constraints) {
     return Container(
       height: size(constraints, 120),
@@ -82,7 +79,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget verticalTab(BoxConstraints constraints) {
+  Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
         setState(() {
@@ -138,14 +135,12 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
       ],
       contents: <Widget>[
-        isRedeemRewardScreenOpen
+        state.isRedeemPageOpen
             ? const RedeemRewardScreen()
             : AvailableRewardPoint(
+                points: pointToShow!,
                 onPress: () {
-                  //todo add logic such that if user has reached first milestone then only it can go to redeem reward screen
-                  setState(() {
-                    isRedeemRewardScreenOpen = true;
-                  });
+                  context.read<RewardPointsBloc>().add(ToggleRedeemPageEvent());
                 },
                 message:
                     'Let’s get started to earn rewards & much more!', //todo message that will appear for each stages above "your reward points"
@@ -200,13 +195,16 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         ),
                       ),
                       child: ProgressSlider(
-                        currentAmount: 300, //todo current amount of user
-                        mileStones:
-                            mileStones, // todo list containig all the mile stones excluding current amount and 0(zero)
+                        currentPoint: state.pageInformation.data!.currentCredit!
+                            .toDouble(), //todo current amount of user
+                        conversionRates: state.pageInformation.data!
+                            .conversionRates!, // todo list containig all the mile stones excluding current amount and 0(zero)
                         userName:
                             'Alok', // todo change username the first letter will be visible
                         onChange: (double value) {
-                          //todo the value from slider will be here
+                          setState(() {
+                            pointToShow = value;
+                          });
                         },
                         width: constraints.maxWidth * 0.390,
                       ),
@@ -216,7 +214,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               ),
             ),
             Expanded(
-              child: verticalTab(constraints),
+              child: verticalTab(constraints, state),
             )
           ],
         ),
@@ -300,8 +298,11 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             height: 130,
                             child: ProgressSlider(
                                 width: constraints.maxWidth,
-                                currentAmount: 220, //todo
-                                mileStones: mileStones, //todo
+                                currentPoint: state
+                                    .pageInformation.data!.currentCredit!
+                                    .toDouble(), //todo
+                                conversionRates: state.pageInformation.data!
+                                    .conversionRates!, //todo
                                 userName: 'Alok', //todo
                                 onChange: (v) {
                                   //todo
@@ -407,8 +408,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               listener: (context, state) {
                 if (state is RewardPointsInProgress) {
                   LoadingDialog.showLoadingDialog(context);
-                } else if (state is RewardPointsSuccess ||
-                    state is RewardPointsFailure) {
+                } else if (state is RewardPointsSuccess) {
+                  setState(() {
+                    pointToShow =
+                        state.pageInformation.data!.currentCredit!.toDouble();
+                  });
+                  LoadingDialog.hideLoadingDialog(context);
+                } else if (state is RewardPointsFailure) {
                   LoadingDialog.hideLoadingDialog(context);
                 }
               },

@@ -11,3 +11,8 @@ class FetchPageInformationEvent extends RewardPointsEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ToggleRedeemPageEvent extends RewardPointsEvent {
+  @override
+  List<Object?> get props => [];
+}

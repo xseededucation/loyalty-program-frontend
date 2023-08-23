@@ -14,15 +14,19 @@ class RewardPointsInProgress extends RewardPointsState {}
 
 class RewardPointsSuccess extends RewardPointsState {
   final PageInformationModel pageInformation;
+  final bool isRedeemPageOpen;
 
-  const RewardPointsSuccess({required this.pageInformation});
+  const RewardPointsSuccess(
+      {required this.pageInformation, required this.isRedeemPageOpen});
 
-  RewardPointsSuccess copyWith({PageInformationModel? pageInformation}) =>
+  RewardPointsSuccess copyWith(
+          {PageInformationModel? pageInformation, bool? isRedeemPageOpen}) =>
       RewardPointsSuccess(
-          pageInformation: pageInformation ?? this.pageInformation);
+          pageInformation: pageInformation ?? this.pageInformation,
+          isRedeemPageOpen: isRedeemPageOpen ?? this.isRedeemPageOpen);
 
   @override
-  List<Object> get props => [pageInformation];
+  List<Object> get props => [pageInformation, isRedeemPageOpen];
 
   @override
   String toString() => 'RewardPointsSuccess';
