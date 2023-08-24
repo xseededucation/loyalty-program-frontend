@@ -43,7 +43,7 @@ class ConfirmationDialogBox extends StatelessWidget {
               padding: EdgeInsets.only(
                   left: kIsWeb ? size(constraints, 28) : 0,
                   right: kIsWeb ? size(constraints, 10) : 0),
-              child: RichText(
+              child: RichText(                
                 text: TextSpan(
                   text: '',
                   style: DefaultTextStyle.of(context).style,

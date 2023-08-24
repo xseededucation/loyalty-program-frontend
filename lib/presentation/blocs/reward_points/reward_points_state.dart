@@ -30,7 +30,7 @@ class RewardPointsSuccess extends RewardPointsState {
           );
 
   @override
-  List<Object> get props => [pageInformation ?? {},products!,eventType!,isRedeemPageOpen!];
+  List<Object> get props => [pageInformation ?? {},products!,isRedeemPageOpen!];
 
   @override
   String toString() => 'RewardPointsSuccess';

@@ -21,7 +21,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   }
 
   RewardPointsSuccess rewardPointsSuccess =
-      RewardPointsSuccess(products: [], pageInformation: PageInformation());
+      RewardPointsSuccess(products: [], pageInformation: PageInformation(),isRedeemPageOpen: false);
 
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
@@ -84,8 +84,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       var response = await rewardPointRepository.makePayment(
           event.creditToRedeem, event.productId);
       if (response["status"] == "success") {
-        rewardPointsSuccess =
-            rewardPointsSuccess.copyWith(eventType: "makePayment");
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(eventType: "makePayment");
         return emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));

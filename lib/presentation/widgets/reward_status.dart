@@ -29,7 +29,7 @@ class RewardStatus extends StatelessWidget {
       }
       if (!hasZero) {
         _pageInformation.conversionRates!.add(ConversionRates(
-            credit: 0, denomination: 0, sequenceNo: 0, toolTipText: ""));
+            credit: 1, denomination: 1, sequenceNo: 1, toolTipText: ""));
       }
       _pageInformation.conversionRates!
           .sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
