@@ -20,7 +20,8 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<ToggleRedeemScreen>(_mapToggleRedeemScreen);
   }
 
-  RewardPointsSuccess rewardPointsSuccess = const RewardPointsSuccess();
+  RewardPointsSuccess rewardPointsSuccess =
+      RewardPointsSuccess(products: [], pageInformation: PageInformation());
 
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
@@ -60,7 +61,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
 
         GetIt.I<LoyaltyProgramEvent>().stayedInApp(1);
 
-        rewardPointsSuccess.copyWith(
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(
             isRedeemPageOpen: false, pageInformation: commonResponse.data!);
       }
       emit(rewardPointsSuccess);
@@ -79,7 +80,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       if (response["status"] == "success") {
         rewardPointsSuccess =
             rewardPointsSuccess.copyWith(eventType: "makePayment");
-       return emit(rewardPointsSuccess);
+        return emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
       }
