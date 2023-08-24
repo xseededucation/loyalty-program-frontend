@@ -20,32 +20,11 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
   TextEditingController currentCreditValue = TextEditingController(text: '0');
   int nearestCurrentCredit = 0;
   int currentPageIndex = 0;
-  Map<String, dynamic> data = {
-    "conversionRates": [],
-    "products": [
-      {
-        "id": "64d1df1697a94657bcc091c7",
-        "image":
-            "https://xseed-public-static-assets.s3.us-west-2.amazonaws.com/loyalty-program/amazon_card.png"
-      },
-      {
-        "id": "FakeProductWithFakeId",
-        "image":
-            "https://images.template.net/wp-content/uploads/2022/06/Coupon-Sizes1.jpg"
-      }
-    ],
-    "currentCredit": 1000,
-  };
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   List<Map<String, dynamic>> convertedList = [];
 
   // Triggered when plus button click
-  onChangePointsIncrement(dynamic data) {
+  onChangePointsIncrement() {
     if (int.parse(currentCreditValue.text) < nearestCurrentCredit) {
       int nextValue = RedeemRewardUtils.getNextCredit(
           convertedList, int.parse(currentCreditValue.text));
@@ -58,7 +37,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
   }
 
 // Triggered when minus button click
-  onChangePointsDecrement(dynamic data) {
+  onChangePointsDecrement() {
     setState(() {
       currentCreditValue.text = RedeemRewardUtils.getPrevCredit(
               convertedList, int.parse(currentCreditValue.text))
@@ -266,7 +245,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             InkWell(
                               key: const Key('decrement'),
                               onTap: () {
-                                onChangePointsDecrement(data);
+                                onChangePointsDecrement();
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -330,7 +309,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             InkWell(
                               key: const Key('increment'),
                               onTap: () {
-                                onChangePointsIncrement(data);
+                                onChangePointsIncrement();
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -400,7 +379,8 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
           },
           listener: (context, state) {
             if (state is RewardPointsSuccess) {
-              if (state.message!.isNotEmpty) {
+              print("jghjhjhjhhjghghjhgh");
+              if (state.eventType == "makePayment") {
                 _showSuccessDialog(context, constraints);
               }
             }
@@ -427,8 +407,8 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     );
   }
 
-  void _showSuccessDialog(BuildContext context, BoxConstraints constraints) {
-    showDialog(
+  void _showSuccessDialog(BuildContext context, BoxConstraints constraints) async{
+   await showDialog(
       context: context,
       builder: (BuildContext context) {
         return SuccessDialogBox(constraints: constraints);

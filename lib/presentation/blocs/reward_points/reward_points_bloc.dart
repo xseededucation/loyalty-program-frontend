@@ -74,13 +74,15 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       TriggerPaymentEvent event, Emitter<RewardPointsState> emit) async {
     try {
       emit(RewardPointsInProgress());
-      await rewardPointRepository
-          .makePayment(event.creditToRedeem, event.productId)
-          .then((response) {
-        rewardPointsSuccess = rewardPointsSuccess.copyWith(
-            message: response['message'], isRedeemPageOpen: false);
-        emit(rewardPointsSuccess);
-      });
+      var response = await rewardPointRepository.makePayment(
+          event.creditToRedeem, event.productId);
+      if (response["status"] == "success") {
+        rewardPointsSuccess =
+            rewardPointsSuccess.copyWith(eventType: "makePayment");
+       return emit(rewardPointsSuccess);
+      } else {
+        emit(RewardPointsFailure("${response["message"]}"));
+      }
     } catch (e) {
       emit(RewardPointsFailure("$e"));
     }

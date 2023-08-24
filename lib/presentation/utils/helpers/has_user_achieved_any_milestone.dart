@@ -10,5 +10,5 @@ bool hasUserAchievedAnyMileStone(PageInformation information) {
       break;
     }
   }
-  return isAnyMileStoneAchieved;
+  return true;
 }

@@ -85,8 +85,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
-        BlocProvider.of<RewardPointsBloc>(context)
-            .add(ToggleRedeemScreen(false));
+        // BlocProvider.of<RewardPointsBloc>(context)
+        //     .add(ToggleRedeemScreen(false));
         if (tabIndex == 0) {
           ToolTipWrapper.showToolTip();
         }
