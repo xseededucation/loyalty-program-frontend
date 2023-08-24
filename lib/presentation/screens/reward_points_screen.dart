@@ -173,39 +173,58 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 )
               : const EdgeInsets.all(0),
           color: const Color(0xffFFEDEC),
-          child: BlocConsumer<RewardPointsBloc, RewardPointsState>(
-            builder: (context, state) {
-              print("pageInformation : builder : $state");
-              if (state is RewardPointsSuccess) {
-                List<PageDetail> pageDetails =
-                    state.pageInformation!.pageDetails as List<PageDetail>;
+          child: Builder(
+            builder: (context) {
+              List<PageDetail> pageDetails =
+                  state.pageInformation!.pageDetails as List<PageDetail>;
 
-                EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
-                  return element.toJson()["entityType"] == "EarnMore";
-                }) as EarnMoreCredit;
-
-                return Text(
-                  '${pageDetail.text}',
-                  style: TextStyle(
-                    fontSize: size(constraints, 14),
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Source Sans Pro",
-                  ),
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
-            listener: (context, state) {
-              print("pageInformation : listener : $state");
-              if (state is RewardPointsInProgress) {
-                LoadingDialog.showLoadingDialog(context);
-              } else if (state is RewardPointsSuccess ||
-                  state is RewardPointsFailure) {
-                LoadingDialog.hideLoadingDialog(context);
-              }
+              EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
+                return element.toJson()["entityType"] == "EarnMore";
+              }) as EarnMoreCredit;
+              return Text(
+                '${pageDetail.text}',
+                style: TextStyle(
+                  fontSize: size(constraints, 14),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Source Sans Pro",
+                ),
+              );
             },
           ),
+
+          // child: BlocConsumer<RewardPointsBloc, RewardPointsState>(
+          //   builder: (context, state) {
+          //     print("pageInformation : builder : $state");
+          //     if (state is RewardPointsSuccess) {
+          //       List<PageDetail> pageDetails =
+          //           state.pageInformation!.pageDetails as List<PageDetail>;
+
+          //       EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
+          //         return element.toJson()["entityType"] == "EarnMore";
+          //       }) as EarnMoreCredit;
+
+          //       return Text(
+          //         '${pageDetail.text}',
+          //         style: TextStyle(
+          //           fontSize: size(constraints, 14),
+          //           fontWeight: FontWeight.w600,
+          //           fontFamily: "Source Sans Pro",
+          //         ),
+          //       );
+          //     } else {
+          //       return const SizedBox();
+          //     }
+          //   },
+          //   listener: (context, state) {
+          //     print("pageInformation : listener : $state");
+          //     if (state is RewardPointsInProgress) {
+          //       LoadingDialog.showLoadingDialog(context);
+          //     } else if (state is RewardPointsSuccess ||
+          //         state is RewardPointsFailure) {
+          //       LoadingDialog.hideLoadingDialog(context);
+          //     }
+          //   },
+          // ),
         )
         // Text(
         //   'Terms & Conditions',
