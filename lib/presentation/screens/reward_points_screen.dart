@@ -10,6 +10,7 @@ import 'package:loyalty_program_frontend/presentation/utils/constants/constant.d
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/has_user_achieved_any_milestone.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 
@@ -81,7 +82,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {    
+  Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
         BlocProvider.of<RewardPointsBloc>(context)
@@ -445,32 +446,48 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     return SafeArea(
       child: Scaffold(
           backgroundColor: const Color(0xFFFFF8F8),
-          body: BlocConsumer<RewardPointsBloc, RewardPointsState>(
-            builder: (context, state) {
-              if (state is RewardPointsSuccess) {
-                if (kIsWeb) {
-                  return webView(state);
+          body: LayoutBuilder(builder: (context, constraints) {
+            return BlocConsumer<RewardPointsBloc, RewardPointsState>(
+              builder: (context, state) {
+                if (state is RewardPointsSuccess) {
+                  if (kIsWeb) {
+                    return webView(state);
+                  } else {
+                    return mobileView(state);
+                  }
                 } else {
-                  return mobileView(state);
+                  return const SizedBox();
                 }
-              } else {
-                return const SizedBox();
-              }
-            },
-            listener: (context, state) {
-              if (state is RewardPointsInProgress) {
-                LoadingDialog.showLoadingDialog(context);
-              } else if (state is RewardPointsSuccess) {
-                setState(() {
-                  pointToShow =
-                      state.pageInformation!.currentCredit!.toDouble();
-                });
-                LoadingDialog.hideLoadingDialog(context);
-              } else if (state is RewardPointsFailure) {
-                LoadingDialog.hideLoadingDialog(context);
-              }
-            },
-          )),
+              },
+              listener: (context, state) {
+                if (state is RewardPointsInProgress) {
+                  LoadingDialog.showLoadingDialog(context);
+                } else if (state is RewardPointsSuccess) {
+                  setState(() {
+                    pointToShow =
+                        state.pageInformation!.currentCredit!.toDouble();
+                  });
+                  LoadingDialog.hideLoadingDialog(context);
+                  if (state.eventType == 'makePayment') {
+                    _showSuccessDialog(context, constraints);
+                  }
+                } else if (state is RewardPointsFailure) {
+                  LoadingDialog.hideLoadingDialog(context);
+                }
+              },
+            );
+          })),
+    );
+  }
+
+  void _showSuccessDialog(
+      BuildContext context, BoxConstraints constraints) async {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return SuccessDialogBox(constraints: constraints);
+      },
     );
   }
 }

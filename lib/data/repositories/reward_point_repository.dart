@@ -18,15 +18,9 @@ class RewardPointRepository {
 
   Future makePayment(int creditToRedeem, String productId) async {
     var url = "makePayment";
-    // var response = await apiBaseHelper
-    //     .post(url, {"creditToRedeem": creditToRedeem, "productId": productId});
-    return {
-      "status": "success",
-      "message":
-          "Your gift card has been sent to following Mobile: 7744330099 Email: moksha.nandawat+principal@xseededucation.com",
-      "data": {}
-    };
-// return response;
+    var response = await apiBaseHelper
+        .post(url, {"creditToRedeem": creditToRedeem, "productId": productId});
+    return response;
   }
 
   updateUserActivity(String activity) async {
