@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/domain/models/mile_stone.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/confetti_selector.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/format_points.dart';
@@ -9,32 +10,41 @@ class RewardStatus extends StatelessWidget {
   final PageInformation pageInformation;
   final double pointsToShow;
   final BoxConstraints boxConstraints;
-  const RewardStatus(
-      {super.key,
-      required this.boxConstraints,
-      required this.pointsToShow,
-      required this.pageInformation});
+  const RewardStatus({
+    super.key,
+    required this.boxConstraints,
+    required this.pointsToShow,
+    required this.pageInformation,
+  });
 
   @override
   Widget build(BuildContext context) {
-    PageInformation _pageInformation;
-    _pageInformation = pageInformation;
+    List<MileStones> list = [];
+    for (int i = 0; i < pageInformation.conversionRates!.length; i++) {
+      final MileStones obj = MileStones(
+          credit: pageInformation.conversionRates![i].credit!.toDouble(),
+          denomination:
+              pageInformation.conversionRates![i].denomination!.toDouble(),
+          sequenceNo: pageInformation.conversionRates![i].sequenceNo,
+          toolTipText: pageInformation.conversionRates![i].toolTipText);
+      list.add(obj);
+    }
+
     int? currentSliderPoint;
     void getPoints() {
       bool hasZero = false;
-      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
-        if (_pageInformation.conversionRates![i].credit == 0) {
+      for (int i = 0; i < list.length; i++) {
+        if (list[i].credit == 0) {
           hasZero = true;
         }
       }
       if (!hasZero) {
-        _pageInformation.conversionRates!.add(ConversionRates(
+        list.add(MileStones(
             credit: 0, denomination: 0, sequenceNo: 0, toolTipText: ""));
       }
-      _pageInformation.conversionRates!
-          .sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
-      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
-        if (pointsToShow >= _pageInformation.conversionRates![i].credit!) {
+      list.sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
+      for (int i = 0; i < list.length; i++) {
+        if (pointsToShow >= list[i].credit!) {
           currentSliderPoint = i;
         }
       }
@@ -52,7 +62,7 @@ class RewardStatus extends StatelessWidget {
                 ? DecorationImage(
                     fit: BoxFit.fitHeight,
                     image: AssetImage(
-                      'assets/images/confetti/${getConfettiBasedOnLevel(currentSliderPoint!, _pageInformation.conversionRates!.length)}',
+                      'assets/images/confetti/${getConfettiBasedOnLevel(currentSliderPoint!, list.length)}',
                       package: 'loyalty_program_frontend',
                     ),
                   )
