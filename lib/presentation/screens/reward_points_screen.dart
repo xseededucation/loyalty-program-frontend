@@ -146,7 +146,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 return const RedeemRewardScreen();
               } else {
                 return AvailableRewardPoint(
-                  conversionRate: state.pageInformation!.conversionRates!,
+                  pageInformation: state.pageInformation!,
                   currentAchievementLevel: pointToShow!.toDouble(),
                   onPress: () {
                     BlocProvider.of<RewardPointsBloc>(context)

@@ -61,7 +61,8 @@ class ConversionRates {
   int? sequenceNo;
   String? toolTipText;
 
-  ConversionRates({this.credit, this.denomination});
+  ConversionRates(
+      {this.credit, this.denomination, this.toolTipText, this.sequenceNo});
 
   ConversionRates.fromJson(Map<String, dynamic> json) {
     credit = json['credit'];

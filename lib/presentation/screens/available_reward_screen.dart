@@ -9,41 +9,39 @@ class AvailableRewardPoint extends StatelessWidget {
   final VoidCallback onPress;
   final BoxConstraints boxConstraints;
   final double currentAchievementLevel;
-  final List<ConversionRates> conversionRate;
+  final PageInformation pageInformation;
   const AvailableRewardPoint({
     super.key,
     required this.message,
     required this.onPress,
     required this.boxConstraints,
     required this.currentAchievementLevel,
-    required this.conversionRate,
+    required this.pageInformation,
   });
 
   @override
   Widget build(BuildContext context) {
+    PageInformation _pageInformation;
+    _pageInformation = pageInformation;
     int? currentSliderPoint;
-    int? totalPoint;
     void getPoints() {
       bool hasZero = false;
-      for (int i = 0; i < conversionRate.length; i++) {
-        if (conversionRate[i].credit == 0) {
+      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
+        if (_pageInformation.conversionRates![i].credit == 0) {
           hasZero = true;
         }
       }
-      if (hasZero) {
-        totalPoint = conversionRate.length;
-      } else {
-        totalPoint = conversionRate.length + 1;
-      }
-      conversionRate.sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
-      for (int i = 0; i < conversionRate.length; i++) {
-        if (currentAchievementLevel <= conversionRate[i].credit!) {
-          currentSliderPoint = i;
-          break;
-        }
-      }
       if (!hasZero) {
-        currentSliderPoint! + 1;
+        _pageInformation.conversionRates!.add(ConversionRates(
+            credit: 0, denomination: 0, sequenceNo: 0, toolTipText: ""));
+      }
+      _pageInformation.conversionRates!
+          .sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
+      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
+        if (currentAchievementLevel >=
+            _pageInformation.conversionRates![i].credit!) {
+          currentSliderPoint = i;
+        }
       }
     }
 
@@ -80,7 +78,7 @@ class AvailableRewardPoint extends StatelessWidget {
             RewardStatus(
               boxConstraints: boxConstraints,
               currentAchievement: currentSliderPoint!,
-              totalMileStones: totalPoint!,
+              totalMileStones: _pageInformation.conversionRates!.length,
               points: currentAchievementLevel,
             ),
             RewardRedeemButton(
