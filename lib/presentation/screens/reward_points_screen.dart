@@ -8,7 +8,6 @@ import 'package:loyalty_program_frontend/presentation/screens/redeem_points_scre
 import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
-import 'package:loyalty_program_frontend/presentation/utils/helpers/has_user_achieved_any_milestone.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
@@ -84,14 +83,10 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   }
 
   Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
-    context.read<RewardPointsBloc>().add(
-          ToggleRedeemScreen(false),
-        );
     return VerticalTabView(
       onSelect: (int tabIndex) {
-        context.read<RewardPointsBloc>().add(
-              ToggleRedeemScreen(false),
-            );
+        BlocProvider.of<RewardPointsBloc>(context)
+            .add(ToggleRedeemScreen(false));
         if (tabIndex == 0) {
           ToolTipWrapper.showToolTip();
         }
@@ -142,7 +137,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
       ],
       contents: <Widget>[
-        BlocBuilder(
+        BlocBuilder<RewardPointsBloc, RewardPointsState>(
           bloc: context.read<RewardPointsBloc>(),
           builder: (_, state) {
             if (state is RewardPointsSuccess) {
@@ -154,10 +149,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   pageInformation: state.pageInformation!,
                   currentAchievementLevel: pointToShow!.toDouble(),
                   onPress: () {
-                    if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
-                      BlocProvider.of<RewardPointsBloc>(context)
-                          .add(ToggleRedeemScreen(true));
-                    }
+                    BlocProvider.of<RewardPointsBloc>(context)
+                        .add(ToggleRedeemScreen(true));
                   },
                   message: 'Let’s get started to earn rewards & much more!',
                   boxConstraints: constraints,
@@ -452,41 +445,33 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFFFF8F8),
-        body: BlocProvider<RewardPointsBloc>(
-          create: (_) =>
-              RewardPointsBloc(rewardPointRepository: _rewardPointRepository!)
-                ..add(FetchPageInformationEvent()),
-          child: Builder(builder: (context) {
-            return BlocConsumer<RewardPointsBloc, RewardPointsState>(
-              builder: (context, state) {
-                if (state is RewardPointsSuccess) {
-                  if (kIsWeb) {
-                    return webView(state);
-                  } else {
-                    return mobileView(state);
-                  }
+          backgroundColor: const Color(0xFFFFF8F8),
+          body: BlocConsumer<RewardPointsBloc, RewardPointsState>(
+            builder: (context, state) {
+              if (state is RewardPointsSuccess) {
+                if (kIsWeb) {
+                  return webView(state);
                 } else {
-                  return const SizedBox();
+                  return mobileView(state);
                 }
-              },
-              listener: (context, state) {
-                if (state is RewardPointsInProgress) {
-                  LoadingDialog.showLoadingDialog(context);
-                } else if (state is RewardPointsSuccess) {
-                  setState(() {
-                    pointToShow =
-                        state.pageInformation!.currentCredit!.toDouble();
-                  });
-                  LoadingDialog.hideLoadingDialog(context);
-                } else if (state is RewardPointsFailure) {
-                  LoadingDialog.hideLoadingDialog(context);
-                }
-              },
-            );
-          }),
-        ),
-      ),
+              } else {
+                return const SizedBox();
+              }
+            },
+            listener: (context, state) {
+              if (state is RewardPointsInProgress) {
+                LoadingDialog.showLoadingDialog(context);
+              } else if (state is RewardPointsSuccess) {
+                setState(() {
+                  pointToShow =
+                      state.pageInformation!.currentCredit!.toDouble();
+                });
+                LoadingDialog.hideLoadingDialog(context);
+              } else if (state is RewardPointsFailure) {
+                LoadingDialog.hideLoadingDialog(context);
+              }
+            },
+          )),
     );
   }
 }
