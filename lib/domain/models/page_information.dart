@@ -55,18 +55,24 @@ class PageInformation {
 class ConversionRates {
   int? credit;
   int? denomination;
+  int? sequenceNo;
+  String? toolTipText;
 
   ConversionRates({this.credit, this.denomination});
 
   ConversionRates.fromJson(Map<String, dynamic> json) {
     credit = json['credit'];
     denomination = json['denomination'];
+    sequenceNo = json['sequenceNo'];
+    toolTipText = json['toolTipText'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['credit'] = this.credit;
     data['denomination'] = this.denomination;
+    data['sequenceNo'] = this.sequenceNo;
+    data['toolTipText'] = this.toolTipText;
     return data;
   }
 }

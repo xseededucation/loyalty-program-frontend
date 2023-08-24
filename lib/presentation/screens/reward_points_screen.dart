@@ -8,6 +8,7 @@ import 'package:loyalty_program_frontend/presentation/screens/redeem_points_scre
 import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/has_user_reached_milestone.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
@@ -35,11 +36,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   }
 
   bool isRedeemRewardScreenOpen = false;
-  List<MileStone> mileStones = [
-    MileStone(message: 'winner winner chicken dinner', amount: 100),
-    MileStone(message: 'winner winner chicken dinner', amount: 120),
-    MileStone(message: 'winner winner chicken dinner', amount: 300),
-  ];
+  double? pointToShow;
   Widget header(BoxConstraints constraints) {
     return Container(
       height: size(constraints, 120),
@@ -87,7 +84,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget verticalTab(BoxConstraints constraints) {
+  Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
         setState(() {
@@ -146,14 +143,16 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         isRedeemRewardScreenOpen
             ? const RedeemRewardScreen()
             : AvailableRewardPoint(
+                conversionRate: state.pageInformation!.conversionRates!,
+                currentAchievementLevel: pointToShow!.toDouble(),
                 onPress: () {
-                  //todo add logic such that if user has reached first milestone then only it can go to redeem reward screen
-                  setState(() {
-                    isRedeemRewardScreenOpen = true;
-                  });
+                  if (hasUserReachedAnyMileStone(state.pageInformation!)) {
+                    setState(() {
+                      isRedeemRewardScreenOpen = true;
+                    });
+                  }
                 },
-                message:
-                    'Let’s get started to earn rewards & much more!', //todo message that will appear for each stages above "your reward points"
+                message: 'Let’s get started to earn rewards & much more!',
                 boxConstraints: constraints,
               ),
         EarnPointScreen(boxConstraints: constraints),
@@ -256,13 +255,15 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         ),
                       ),
                       child: ProgressSlider(
-                        currentAmount: 300, //todo current amount of user
-                        mileStones:
-                            mileStones, // todo list containig all the mile stones excluding current amount and 0(zero)
-                        userName:
-                            'Alok', // todo change username the first letter will be visible
+                        currentPoint:
+                            state.pageInformation!.currentCredit!.toDouble(),
+                        conversionRates:
+                            state.pageInformation!.conversionRates!,
+                        userName: "${Constants.userData?.name ?? ""}",
                         onChange: (double value) {
-                          //todo the value from slider will be here
+                          setState(() {
+                            pointToShow = value;
+                          });
                         },
                         width: constraints.maxWidth * 0.390,
                       ),
@@ -272,7 +273,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               ),
             ),
             Expanded(
-              child: verticalTab(constraints),
+              child: verticalTab(constraints, state),
             )
           ],
         ),
@@ -352,17 +353,17 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             "Let's get started to earn rewards & much more!",
                             style: TextStyle(fontSize: 12),
                           ),
-                          SizedBox(
-                            height: 130,
-                            child: ProgressSlider(
-                                width: constraints.maxWidth,
-                                currentAmount: 220, //todo
-                                mileStones: mileStones, //todo
-                                userName: 'Alok', //todo
-                                onChange: (v) {
-                                  //todo
-                                }),
-                          ),
+                          // SizedBox(
+                          //   height: 130,
+                          //   child: ProgressSlider(
+                          //       width: constraints.maxWidth,
+                          //       currentAmount: 220, //todo
+                          //       mileStones: mileStones, //todo
+                          //       userName: 'Alok', //todo
+                          //       onChange: (v) {
+                          //         //todo
+                          //       }),
+                          // ),
                           const SizedBox(
                             height: 17,
                           ),
@@ -375,7 +376,6 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                           RewardRedeemButton(
                             boxConstraints: constraints,
                             onPress: () {
-                              //todo goto redeem screen logic here only if user has reached first milestone
                               setState(() {
                                 isRedeemRewardScreenOpen = true;
                               });
@@ -463,8 +463,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               listener: (context, state) {
                 if (state is RewardPointsInProgress) {
                   LoadingDialog.showLoadingDialog(context);
-                } else if (state is RewardPointsSuccess ||
-                    state is RewardPointsFailure) {
+                } else if (state is RewardPointsSuccess) {
+                  setState(() {
+                    pointToShow =
+                        state.pageInformation!.currentCredit!.toDouble();
+                  });
+                  LoadingDialog.hideLoadingDialog(context);
+                } else if (state is RewardPointsFailure) {
                   LoadingDialog.hideLoadingDialog(context);
                 }
               },

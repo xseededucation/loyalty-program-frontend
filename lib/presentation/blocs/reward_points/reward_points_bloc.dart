@@ -22,7 +22,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     try {
       emit(RewardPointsInProgress());
       var response = await rewardPointRepository.checkCanAccessLoyaltyProgram();
-      if (response["status"] == true) {
+      if (response["status"] == "sucess") {
         return emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
