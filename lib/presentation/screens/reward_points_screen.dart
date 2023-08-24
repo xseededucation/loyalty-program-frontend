@@ -355,10 +355,12 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(height: 17),
-                          const Text(
-                            'Hi Ayush',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w500),
+                          Text(
+                            "${Constants.userData?.name ?? ""}",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                           const SizedBox(
                             height: 6,
@@ -367,29 +369,41 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             "Let's get started to earn rewards & much more!",
                             style: TextStyle(fontSize: 12),
                           ),
-                          // SizedBox(
-                          //   height: 130,
-                          //   child: ProgressSlider(
-                          //       width: constraints.maxWidth,
-                          //       currentAmount: 220, //todo
-                          //       mileStones: mileStones, //todo
-                          //       userName: 'Alok', //todo
-                          //       onChange: (v) {
-                          //         //todo
-                          //       }),
-                          // ),
+                          SizedBox(
+                            height: 130,
+                            child: ProgressSlider(
+                                tooltipMessageZeroIndex:
+                                    state.pageInformation!.zeroCreditMessage!,
+                                currentPoint: state
+                                    .pageInformation!.currentCredit!
+                                    .toDouble(),
+                                conversionRates:
+                                    state.pageInformation!.conversionRates!,
+                                width: constraints.maxWidth,
+                                userName: "${Constants.userData?.name ?? ""}",
+                                onChange: (double value) {
+                                  setState(() {
+                                    pointToShow = value;
+                                  });
+                                }),
+                          ),
                           const SizedBox(
                             height: 17,
                           ),
                           RewardStatus(
-                            currentAchievement: 4, //todo
-                            totalMileStones: 5, //todo
-                            points: 3000, //todo
+                            pointsToShow: pointToShow!,
+                            pageInformation: state.pageInformation!,
                             boxConstraints: constraints,
                           ),
                           RewardRedeemButton(
                             boxConstraints: constraints,
-                            onPress: () {},
+                            onPress: () {
+                              if (hasUserAchievedAnyMileStone(
+                                  state.pageInformation!)) {
+                                BlocProvider.of<RewardPointsBloc>(context)
+                                    .add(ToggleRedeemScreen(true));
+                              }
+                            },
                           )
                         ],
                       ),

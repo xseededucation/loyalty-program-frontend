@@ -21,32 +21,6 @@ class AvailableRewardPoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PageInformation _pageInformation;
-    _pageInformation = pageInformation;
-    int? currentSliderPoint;
-    void getPoints() {
-      bool hasZero = false;
-      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
-        if (_pageInformation.conversionRates![i].credit == 0) {
-          hasZero = true;
-        }
-      }
-      if (!hasZero) {
-        _pageInformation.conversionRates!.add(ConversionRates(
-            credit: 0, denomination: 0, sequenceNo: 0, toolTipText: ""));
-      }
-      _pageInformation.conversionRates!
-          .sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
-      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
-        if (currentAchievementLevel >=
-            _pageInformation.conversionRates![i].credit!) {
-          currentSliderPoint = i;
-        }
-      }
-    }
-
-    getPoints();
-
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Container(
@@ -77,9 +51,8 @@ class AvailableRewardPoint extends StatelessWidget {
             SizedBox(height: size(boxConstraints, 30)),
             RewardStatus(
               boxConstraints: boxConstraints,
-              currentAchievement: currentSliderPoint!,
-              totalMileStones: _pageInformation.conversionRates!.length,
-              points: currentAchievementLevel,
+              pointsToShow: currentAchievementLevel,
+              pageInformation: pageInformation,
             ),
             RewardRedeemButton(
               boxConstraints: boxConstraints,

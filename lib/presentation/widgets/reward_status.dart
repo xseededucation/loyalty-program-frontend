@@ -1,23 +1,46 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/confetti_selector.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/format_points.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class RewardStatus extends StatelessWidget {
-  final int currentAchievement;
-  final int totalMileStones;
-  final double points;
+  final PageInformation pageInformation;
+  final double pointsToShow;
   final BoxConstraints boxConstraints;
   const RewardStatus(
       {super.key,
       required this.boxConstraints,
-      required this.currentAchievement,
-      required this.totalMileStones,
-      required this.points});
+      required this.pointsToShow,
+      required this.pageInformation});
 
   @override
   Widget build(BuildContext context) {
+    PageInformation _pageInformation;
+    _pageInformation = pageInformation;
+    int? currentSliderPoint;
+    void getPoints() {
+      bool hasZero = false;
+      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
+        if (_pageInformation.conversionRates![i].credit == 0) {
+          hasZero = true;
+        }
+      }
+      if (!hasZero) {
+        _pageInformation.conversionRates!.add(ConversionRates(
+            credit: 0, denomination: 0, sequenceNo: 0, toolTipText: ""));
+      }
+      _pageInformation.conversionRates!
+          .sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
+      for (int i = 0; i < _pageInformation.conversionRates!.length; i++) {
+        if (pointsToShow >= _pageInformation.conversionRates![i].credit!) {
+          currentSliderPoint = i;
+        }
+      }
+    }
+
+    getPoints();
     Size sizeForMobile = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,11 +48,11 @@ class RewardStatus extends StatelessWidget {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            image: currentAchievement != 0
+            image: currentSliderPoint != 0
                 ? DecorationImage(
                     fit: BoxFit.fitHeight,
                     image: AssetImage(
-                      'assets/images/confetti/${getConfettiBasedOnLevel(currentAchievement, totalMileStones)}',
+                      'assets/images/confetti/${getConfettiBasedOnLevel(currentSliderPoint!, _pageInformation.conversionRates!.length)}',
                       package: 'loyalty_program_frontend',
                     ),
                   )
@@ -98,7 +121,7 @@ class RewardStatus extends StatelessWidget {
                       ),
                       SizedBox(height: kIsWeb ? size(boxConstraints, 15) : 8),
                       Text(
-                        formatPoints(points.toInt()),
+                        formatPoints(pointsToShow.toInt()),
                         style: TextStyle(
                           fontSize: kIsWeb ? size(boxConstraints, 20) : 20,
                           fontWeight: FontWeight.w900,
