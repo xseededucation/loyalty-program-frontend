@@ -59,7 +59,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
             commonResponse.data!.eventToCreditMap!.firstWhere(
                 (EventToCreditMap element) => element.event == TIME_BOUND);
 
-        GetIt.I<LoyaltyProgramEvent>().stayedInApp(1);
+        GetIt.I<LoyaltyProgramEvent>().stayedInApp(timeBoundEvent.timeInMins!);
 
         rewardPointsSuccess = rewardPointsSuccess.copyWith(
             isRedeemPageOpen: false, pageInformation: commonResponse.data!);
