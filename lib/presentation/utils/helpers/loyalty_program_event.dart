@@ -45,7 +45,7 @@ class LoyaltyProgramEvent {
       if (balanceSeconds > 0) {
         _setLastSetTimer(balanceSeconds);
       } else {
-        timer.cancel();
+        _timer!.cancel();
         _timer = null;
         _triggerApiCall(TIME_BOUND);
         _clearTimeBoundPref();
