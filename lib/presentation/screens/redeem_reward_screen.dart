@@ -87,12 +87,12 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   currentCreditValue.text =
                       RedeemRewardUtils.findNearestLastCredit(
-                              convertedList, state.pageInformation?.currentCredit??0)
+                              convertedList, 3500)
                           .toString();
                   setState(() {
                     nearestCurrentCredit =
                         RedeemRewardUtils.findNearestLastCredit(
-                            convertedList, state.pageInformation?.currentCredit??0);
+                            convertedList, 3500);
                   });
                 });
               }
@@ -171,7 +171,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                           child: Stack(
                             children: [
                               PageView.builder(
-                                itemCount: data['products'].length,
+                                itemCount: state.products?.length ?? 0,
                                 scrollDirection: Axis.horizontal,
                                 onPageChanged: (value) {
                                   setState(() {
@@ -181,8 +181,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return Center(
                                     child: Image.network(
-                                      data['products'][currentPageIndex]
-                                          ['image'],
+                                      state.products?[currentPageIndex].url??"",
                                       height: size(constraints, 237),
                                       width: size(constraints, 344),
                                       fit: BoxFit.contain,
@@ -215,9 +214,9 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                 ),
                               ),
                               Visibility(
-                                visible: data['products'].length > 1 &&
+                                visible: state.products!.length > 1 &&
                                     currentPageIndex + 1 !=
-                                        data['products'].length,
+                                        state.products!.length,
                                 child: Align(
                                   alignment: kIsWeb
                                       ? Alignment.center
@@ -353,15 +352,15 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            if(int.parse(currentCreditValue.text)>300){
-                            _showConfirmationDialog(
-                                context, constraints, worthValue, () {
-                              context.read<RewardPointsBloc>().add(
-                                  TriggerPaymentEvent(
-                                      int.parse(currentCreditValue.text),
-                                      data['products'][currentPageIndex]
-                                          ['id']));
-                            });
+                            if (int.parse(currentCreditValue.text) > 300) {
+                              _showConfirmationDialog(
+                                  context, constraints, worthValue, () {
+                                context.read<RewardPointsBloc>().add(
+                                    TriggerPaymentEvent(
+                                        int.parse(currentCreditValue.text),
+                                        state.products![currentPageIndex].id!
+                                            ));
+                              });
                             }
                           },
                           child: Container(

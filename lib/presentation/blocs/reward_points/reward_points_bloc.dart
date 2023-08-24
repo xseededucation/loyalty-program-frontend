@@ -24,8 +24,11 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       emit(RewardPointsInProgress());
       var response = await rewardPointRepository.checkCanAccessLoyaltyProgram();
       if (response["status"] == "success") {
-        // rewardPointsSuccess = rewardPointsSuccess.copyWith(
-        //     product: Product.fromJson(response["data"])!);
+        List<ProductList> products = [];
+        response["data"].forEach((product) {
+          products.add(ProductList.fromJson(product));
+        });
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(products: products);
         return emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
@@ -60,13 +63,15 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   void _mapTriggerPayment(
       TriggerPaymentEvent event, Emitter<RewardPointsState> emit) async {
     try {
-      emit(RewardPointsInProgress());
-      var result = await rewardPointRepository.makePayment(
-          event.creditToRedeem, event.productId);
-      rewardPointsSuccess = rewardPointsSuccess.copyWith(
-        message: result['message'],
-      );
-      emit(rewardPointsSuccess);
+      // emit(RewardPointsInProgress());
+      await rewardPointRepository
+          .makePayment(event.creditToRedeem, event.productId)
+          .then((response) {
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(
+          message: response['message'],
+        );
+        emit(rewardPointsSuccess);
+      });
     } catch (e) {
       emit(RewardPointsFailure("$e"));
     }

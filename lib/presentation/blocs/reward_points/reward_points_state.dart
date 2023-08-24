@@ -15,20 +15,20 @@ class RewardPointsInProgress extends RewardPointsState {}
 
 class RewardPointsSuccess extends RewardPointsState {
   final PageInformation? pageInformation;
-  final Product? product;
+  final List<ProductList>? products;
   final String? message;
 
-  const RewardPointsSuccess({this.pageInformation,this.message,this.product});
+  const RewardPointsSuccess({this.pageInformation,this.message,this.products});
 
-  RewardPointsSuccess copyWith({PageInformation? pageInformation, String? message, Product? product}) =>
+  RewardPointsSuccess copyWith({PageInformation? pageInformation, String? message, List<ProductList>? products}) =>
       RewardPointsSuccess(
           pageInformation: pageInformation ?? this.pageInformation,    
-          product: product ?? this.product,      
+          products: products ?? this.products,      
           message:  message ?? this.message
           );
 
   @override
-  List<Object> get props => [pageInformation ?? {},product!,message!];
+  List<Object> get props => [pageInformation ?? {},products!,message!];
 
   @override
   String toString() => 'RewardPointsSuccess';
