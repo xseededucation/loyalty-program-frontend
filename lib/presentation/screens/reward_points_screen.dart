@@ -83,10 +83,14 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   }
 
   Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
+    context.read<RewardPointsBloc>().add(
+          ToggleRedeemScreen(false),
+        );
     return VerticalTabView(
       onSelect: (int tabIndex) {
-        BlocProvider.of<RewardPointsBloc>(context)
-            .add(ToggleRedeemScreen(false));
+        context.read<RewardPointsBloc>().add(
+              ToggleRedeemScreen(false),
+            );
         if (tabIndex == 0) {
           ToolTipWrapper.showToolTip();
         }
@@ -137,7 +141,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
       ],
       contents: <Widget>[
-        BlocBuilder<RewardPointsBloc, RewardPointsState>(
+        BlocBuilder(
           bloc: context.read<RewardPointsBloc>(),
           builder: (_, state) {
             if (state is RewardPointsSuccess) {

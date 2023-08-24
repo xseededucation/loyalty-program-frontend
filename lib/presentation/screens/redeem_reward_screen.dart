@@ -181,7 +181,8 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return Center(
                                     child: Image.network(
-                                      state.products?[currentPageIndex].url??"",
+                                      state.products?[currentPageIndex].url ??
+                                          "",
                                       height: size(constraints, 237),
                                       width: size(constraints, 344),
                                       fit: BoxFit.contain,
@@ -358,8 +359,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                 context.read<RewardPointsBloc>().add(
                                     TriggerPaymentEvent(
                                         int.parse(currentCreditValue.text),
-                                        state.products![currentPageIndex].id!
-                                            ));
+                                        state.products![currentPageIndex].id!));
                               });
                             }
                           },
