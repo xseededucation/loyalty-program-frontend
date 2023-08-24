@@ -86,8 +86,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
-        // BlocProvider.of<RewardPointsBloc>(context)
-        //     .add(ToggleRedeemScreen(false));
+        BlocProvider.of<RewardPointsBloc>(context)
+            .add(ToggleRedeemScreen(false));
         if (tabIndex == 0) {
           ToolTipWrapper.showToolTip();
         }
@@ -323,6 +323,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   }
 
   Widget mobileView(RewardPointsSuccess state) {
+    List<PageDetail> pageDetails =
+        state.pageInformation!.pageDetails as List<PageDetail>;
+
+    EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
+      return element.toJson()["entityType"] == "EarnMore";
+    }) as EarnMoreCredit;
+
     TabController tabController = TabController(length: 3, vsync: this);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -437,12 +444,12 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         children: [
                           EarnPointScreen(boxConstraints: constraints),
                           RedeemPointsScreen(boxConstraints: constraints),
-                          const Center(
+                          Center(
                             child: Text(
-                              'T&C',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w600,
+                              pageDetail.text ?? "",
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
