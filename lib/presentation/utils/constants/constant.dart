@@ -17,3 +17,4 @@ const String SWIPE = 'SWIPE';
 const String TIME_BOUND = 'TIME_BOUND';
 
 const String SHARED_PREF_LAST_OPENED = 'lastOpenedDate';
+const String SHARED_PREF_LAST_TIME_BOUND = 'timeBound';

@@ -22,4 +22,8 @@ class RewardPointRepository {
         .post(url, {"creditToRedeem": creditToRedeem, "productId": productId});    
     return response;
   }
+
+  updateUserActivity() async {
+    print('add credit record');
+  }
 }

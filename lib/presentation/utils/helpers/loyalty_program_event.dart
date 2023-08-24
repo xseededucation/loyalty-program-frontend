@@ -5,32 +5,69 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 class LoyaltyProgramEvent {
+  Timer? _timer;
+  SharedPreferences? sharedPreferences;
+
+  Future<void> initialize() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
   void appOpened() async {
     String currentDate = _getCurrentDate();
     if (await _getAppLastOpenedDate() != currentDate) {
       _setLastOpenedDate(currentDate);
+      _clearTimeBoundPref();
       _triggerApiCall(APP_OPEN);
     }
   }
 
-  void stayedInApp() {
-    _triggerApiCall(TIME_BOUND);
+  void stayedInApp(int mins) async {
+    await _startTimer(mins);
   }
 
   void completedLesson() {
     _triggerApiCall(SWIPE);
   }
 
-  void _triggerApiCall(String event) async {}
+  Future<void> _startTimer(int mins) async {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+    final int timerInSeconds = mins * 60;
+    int balanceSeconds = timerInSeconds - _getLasTimerInSeconds();
 
-  void _setLastOpenedDate(String currentDate) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(SHARED_PREF_LAST_OPENED, currentDate);
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+      balanceSeconds - 1;
+      if (balanceSeconds > 0) {
+        _setLastSetTimer(balanceSeconds);
+      } else {
+        timer.cancel();
+        await _triggerApiCall(TIME_BOUND);
+        _startTimer(mins);
+      }
+    });
   }
 
-  Future<String> _getAppLastOpenedDate() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString(SHARED_PREF_LAST_OPENED) ?? '';
+  Future<void> _triggerApiCall(String event) async {}
+
+  void _clearTimeBoundPref() {
+    sharedPreferences!.remove(SHARED_PREF_LAST_TIME_BOUND);
+  }
+
+  int _getLasTimerInSeconds() {
+    return sharedPreferences!.getInt(SHARED_PREF_LAST_TIME_BOUND) ?? 0;
+  }
+
+  void _setLastOpenedDate(String currentDate) {
+    sharedPreferences!.setString(SHARED_PREF_LAST_OPENED, currentDate);
+  }
+
+  void _setLastSetTimer(int time) {
+    sharedPreferences!.setInt(SHARED_PREF_LAST_TIME_BOUND, time);
+  }
+
+  String _getAppLastOpenedDate() {
+    return sharedPreferences!.getString(SHARED_PREF_LAST_OPENED) ?? '';
   }
 
   String _getCurrentDate() {
