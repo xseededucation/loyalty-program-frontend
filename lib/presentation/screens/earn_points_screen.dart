@@ -55,12 +55,13 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                             '${earnMoreCredit[index].text}',
                             style: TextStyle(
                               fontSize: size(widget.boxConstraints, 14),
-                              fontWeight: FontWeight.w600,
+                              fontWeight:
+                                  kIsWeb ? FontWeight.w600 : FontWeight.w500,
                               fontFamily: "Source Sans Pro",
                               color: Colors.black,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: kIsWeb ? 8 : 4),
                           Text(
                             '${earnMoreCredit[index].subText}',
                             style: TextStyle(

@@ -86,12 +86,12 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                   'Reward points redeemed',
                   style: TextStyle(
                     fontSize: size(widget.boxConstraints, 14),
-                    fontWeight: FontWeight.w600,
+                    fontWeight: kIsWeb ? FontWeight.w600 : FontWeight.w500,
                     fontFamily: "Source Sans Pro",
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: kIsWeb ? 10 : 6),
                 Text(
                   'You have redeemed ₹500',
                   style: TextStyle(

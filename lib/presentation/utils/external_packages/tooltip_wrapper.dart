@@ -29,10 +29,14 @@ class ToolTipWrapper {
     return JustTheTooltip(
       backgroundColor: const Color(0xffFFEAC1),
       preferredDirection: AxisDirection.up,
+      elevation: 0,
+      offset: -13,
       controller: _controller,
+      tailBaseWidth: 10,
+      tailLength: 8,
       content: Container(
         color: const Color(0xffFFEAC1),
-        width: kIsWeb ? 100 : 70,
+        width: kIsWeb ? 120 : 70,
         padding: const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
         child: Text(
           message,

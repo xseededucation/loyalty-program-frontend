@@ -463,7 +463,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         children: [
                           EarnPointScreen(boxConstraints: constraints),
                           RedeemPointsScreen(boxConstraints: constraints),
-                          Center(
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 12, right: 12, top: 22),
                             child: Text(
                               pageDetail.text ?? "",
                               style: const TextStyle(

@@ -105,12 +105,13 @@ class _ProgressSliderState extends State<ProgressSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.only(left: kIsWeb ? 20 : 0),
       width: widget.width,
       child: Column(
         children: [
           const SizedBox(
-            height: kIsWeb ? 0 : 30,
+            height: kIsWeb ? 10 : 30,
           ),
           Stack(
             alignment: Alignment.center,
@@ -155,7 +156,9 @@ class _ProgressSliderState extends State<ProgressSlider> {
                                           const Text(
                                             'You are here',
                                             style: TextStyle(
-                                                fontSize: kIsWeb ? 10 : 8),
+                                                fontSize: kIsWeb ? 10 : 8,
+                                                letterSpacing:
+                                                    kIsWeb ? 0.7 : null),
                                             textAlign: TextAlign.center,
                                           )
                                         ],
