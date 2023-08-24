@@ -2,13 +2,13 @@
 
 class RedeemRewardUtils {
   // This  will help is nearest credit less than current credit
-  static int findNearestLastCredit(Map<String, dynamic> data) {
-    List<dynamic> conversionRates = data["conversionRates"];
+  static int findNearestLastCredit(
+      List<Map<String, dynamic>> conversionRates, int currentCredit) {
     int nearestLastCredit = 0;
 
     for (var rate in conversionRates) {
       int credit = rate["credit"];
-      if (credit <= data['currentCredit']) {
+      if (credit <= currentCredit) {
         nearestLastCredit = credit;
       } else {
         break;
