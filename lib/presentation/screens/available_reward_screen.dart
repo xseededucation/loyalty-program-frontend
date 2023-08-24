@@ -45,7 +45,7 @@ class AvailableRewardPoint extends StatelessWidget {
               message,
               style: TextStyle(
                 fontSize: size(boxConstraints, 16),
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
             SizedBox(height: size(boxConstraints, 30)),

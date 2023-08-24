@@ -25,10 +25,8 @@ class RewardPointScreen extends StatefulWidget {
 
 class _RewardPointScreenState extends State<RewardPointScreen>
     with TickerProviderStateMixin {
-  RewardPointRepository? _rewardPointRepository;
   @override
   void initState() {
-    _rewardPointRepository = RewardPointRepository();
     Constants.userData = widget.userDetail;
     BlocProvider.of<RewardPointsBloc>(context).add(FetchPageInformationEvent());
 
@@ -191,49 +189,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               );
             },
           ),
-
-          // child: BlocConsumer<RewardPointsBloc, RewardPointsState>(
-          //   builder: (context, state) {
-          //     print("pageInformation : builder : $state");
-          //     if (state is RewardPointsSuccess) {
-          //       List<PageDetail> pageDetails =
-          //           state.pageInformation!.pageDetails as List<PageDetail>;
-
-          //       EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
-          //         return element.toJson()["entityType"] == "EarnMore";
-          //       }) as EarnMoreCredit;
-
-          //       return Text(
-          //         '${pageDetail.text}',
-          //         style: TextStyle(
-          //           fontSize: size(constraints, 14),
-          //           fontWeight: FontWeight.w600,
-          //           fontFamily: "Source Sans Pro",
-          //         ),
-          //       );
-          //     } else {
-          //       return const SizedBox();
-          //     }
-          //   },
-          //   listener: (context, state) {
-          //     print("pageInformation : listener : $state");
-          //     if (state is RewardPointsInProgress) {
-          //       LoadingDialog.showLoadingDialog(context);
-          //     } else if (state is RewardPointsSuccess ||
-          //         state is RewardPointsFailure) {
-          //       LoadingDialog.hideLoadingDialog(context);
-          //     }
-          //   },
-          // ),
         )
-        // Text(
-        //   'Terms & Conditions',
-        //   style: TextStyle(
-        //     fontSize: size(constraints, 14),
-        //     fontWeight: FontWeight.w600,
-        //     fontFamily: "Source Sans Pro",
-        //   ),
-        // ),
       ],
     );
   }
@@ -241,7 +197,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget rewardPointCardView(
       BoxConstraints constraints, RewardPointsSuccess state) {
     return Card(
-      elevation: 10,
+      elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -267,15 +223,15 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         border: Border(
                           top: BorderSide(
                             color: Color(0xffCCCDCD),
-                            width: 1.0,
+                            width: 0.4,
                           ),
                           right: BorderSide(
                             color: Color(0xffCCCDCD),
-                            width: 1.0,
+                            width: 0.4,
                           ),
                           bottom: BorderSide(
                             color: Color(0xffCCCDCD),
-                            width: 1.0,
+                            width: 0.4,
                           ),
                         ),
                       ),
