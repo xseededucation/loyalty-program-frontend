@@ -1,17 +1,17 @@
-import 'dart:io';
-
 class PageInformation {
   List<ConversionRates>? conversionRates;
   int? currentCredit;
   List<EventToCreditMap>? eventToCreditMap;
   List<PageDetail>? pageDetails;
   String? zeroCreditMessage;
+  DebitActivity? debitActivity;
 
   PageInformation(
       {this.conversionRates,
       this.currentCredit,
       this.eventToCreditMap,
-      this.pageDetails});
+      this.pageDetails,
+      this.debitActivity});
 
   PageInformation.fromJson(Map<String, dynamic> json) {
     if (json['conversionRates'] != null) {
@@ -34,6 +34,9 @@ class PageInformation {
         pageDetails!.add(PageContext().fromJson(v));
       });
     }
+    debitActivity = json['debitActivity'] != null
+        ? new DebitActivity.fromJson(json['debitActivity'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +54,9 @@ class PageInformation {
     if (this.pageDetails != null) {
       data['pageDetails'] = this.pageDetails!.map((v) => v.toJson()).toList();
     }
+    if (this.debitActivity != null) {
+      data['debitActivity'] = this.debitActivity;
+    }
     return data;
   }
 }
@@ -62,7 +68,7 @@ class ConversionRates {
   String? toolTipText;
 
   ConversionRates(
-      {this.credit, this.denomination, this.toolTipText, this.sequenceNo});
+      {this.credit, this.denomination, this.sequenceNo, this.toolTipText});
 
   ConversionRates.fromJson(Map<String, dynamic> json) {
     credit = json['credit'];
@@ -194,6 +200,117 @@ class TextToCredit {
     data['text'] = this.text;
     data['credit'] = this.credit;
     data['subText'] = this.subText;
+    return data;
+  }
+}
+
+class DebitActivity {
+  final Map<String, dynamic> debitActivityMap;
+
+  DebitActivity({required this.debitActivityMap});
+
+  factory DebitActivity.fromJson(Map<String, dynamic> json) {
+    final Map<String, dynamic> activityMap = {};
+
+    json.forEach((key, value) {
+      if (value is List) {
+        activityMap[key] = value.map((entry) {
+          if (entry is Map<String, dynamic>) {
+            return Transaction.fromJson(entry);
+          }
+          return entry;
+        }).toList();
+      } else {
+        activityMap[key] = value;
+      }
+    });
+
+    return DebitActivity(debitActivityMap: activityMap);
+  }
+}
+
+// class DebitActivity {
+//   List<Transaction>? yesterday;
+//   List<Transaction>? today;
+
+//   DebitActivity({this.yesterday, this.today});
+
+//   DebitActivity.fromJson(Map<String, dynamic> json) {
+//     if (json['Transaction'] != null) {
+//       yesterday = <Transaction>[];
+//       json['Transaction'].forEach((v) {
+//         yesterday!.add(new Transaction.fromJson(v));
+//       });
+//     }
+//     if (json['Today'] != null) {
+//       today = <Transaction>[];
+//       json['Today'].forEach((v) {
+//         today!.add(new Transaction.fromJson(v));
+//       });
+//     }
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     if (this.yesterday != null) {
+//       data['Transaction'] = this.yesterday!.map((v) => v.toJson()).toList();
+//     }
+//     if (this.today != null) {
+//       data['Today'] = this.today!.map((v) => v.toJson()).toList();
+//     }
+//     return data;
+//   }
+// }
+
+class Transaction {
+  String? sId;
+  String? caaUserId;
+  int? credit;
+  String? transactionType;
+  String? refNo;
+  String? status;
+  String? sourceApp;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+
+  Transaction(
+      {this.sId,
+      this.caaUserId,
+      this.credit,
+      this.transactionType,
+      this.refNo,
+      this.status,
+      this.sourceApp,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
+
+  Transaction.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    caaUserId = json['caaUserId'];
+    credit = json['credit'];
+    transactionType = json['transactionType'];
+    refNo = json['refNo'];
+    status = json['status'];
+    sourceApp = json['sourceApp'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['caaUserId'] = this.caaUserId;
+    data['credit'] = this.credit;
+    data['transactionType'] = this.transactionType;
+    data['refNo'] = this.refNo;
+    data['status'] = this.status;
+    data['sourceApp'] = this.sourceApp;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
     return data;
   }
 }
