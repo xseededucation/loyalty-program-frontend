@@ -255,6 +255,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         ),
                       ),
                       child: ProgressSlider(
+                        tooltipMessageZeroIndex:
+                            state.pageInformation!.zeroCreditMessage ?? "",
                         currentPoint:
                             state.pageInformation!.currentCredit!.toDouble(),
                         conversionRates:

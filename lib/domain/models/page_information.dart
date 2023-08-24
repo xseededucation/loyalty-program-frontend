@@ -5,6 +5,7 @@ class PageInformation {
   int? currentCredit;
   List<EventToCreditMap>? eventToCreditMap;
   List<PageDetail>? pageDetails;
+  String? zeroCreditMessage;
 
   PageInformation(
       {this.conversionRates,
@@ -19,6 +20,7 @@ class PageInformation {
         conversionRates!.add(new ConversionRates.fromJson(v));
       });
     }
+    zeroCreditMessage = json['zeroCreditMessage'];
     currentCredit = json['currentCredit'];
     if (json['eventToCreditMap'] != null) {
       eventToCreditMap = <EventToCreditMap>[];
@@ -41,6 +43,7 @@ class PageInformation {
           this.conversionRates!.map((v) => v.toJson()).toList();
     }
     data['currentCredit'] = this.currentCredit;
+    data['zeroCreditMessage'] = this.zeroCreditMessage;
     if (this.eventToCreditMap != null) {
       data['eventToCreditMap'] =
           this.eventToCreditMap!.map((v) => v.toJson()).toList();

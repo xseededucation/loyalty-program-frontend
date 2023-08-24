@@ -10,10 +10,12 @@ class ProgressSlider extends StatefulWidget {
   final String userName;
   final Function(double) onChange;
   final double width;
+  final String tooltipMessageZeroIndex;
   const ProgressSlider(
       {super.key,
       required this.currentPoint,
       required this.conversionRates,
+      required this.tooltipMessageZeroIndex,
       required this.userName,
       required this.onChange,
       required this.width});
@@ -57,9 +59,13 @@ class _ProgressSliderState extends State<ProgressSlider> {
 
   void getIndexForMotivationMessage() {
     for (int i = 0; i < mileStones.length; i++) {
-      if (widget.currentPoint <= mileStones[i].points!) {
+      if (widget.currentPoint == mileStones[i].points!) {
         indexOfSelectedValue = i;
         indexOfCurrentStatus = i;
+        break;
+      } else if (widget.currentPoint < mileStones[i].points!) {
+        indexOfSelectedValue = i - 1;
+        indexOfCurrentStatus = i - 1;
         break;
       }
     }
@@ -237,8 +243,10 @@ class _ProgressSliderState extends State<ProgressSlider> {
                                   e == mileStones[motivationIndex!]
                               ? ToolTipWrapper.getToolTip(
                                   child: const SizedBox(),
-                                  message: mileStones[indexOfCurrentStatus!]
-                                      .toolTipMessage,
+                                  message: indexOfCurrentStatus == 0
+                                      ? widget.tooltipMessageZeroIndex
+                                      : mileStones[indexOfCurrentStatus!]
+                                          .toolTipMessage,
                                 )
                               : null,
                         ),
