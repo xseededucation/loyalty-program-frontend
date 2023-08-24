@@ -81,7 +81,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
+  Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {    
     return VerticalTabView(
       onSelect: (int tabIndex) {
         BlocProvider.of<RewardPointsBloc>(context)

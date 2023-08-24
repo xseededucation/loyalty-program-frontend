@@ -172,14 +172,5 @@ class ConfirmationDialogBox extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _showSucessDialog(BuildContext context, BoxConstraints constraints) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SuccessDialogBox(constraints: constraints);
-      },
-    );
-  }
+  } 
 }

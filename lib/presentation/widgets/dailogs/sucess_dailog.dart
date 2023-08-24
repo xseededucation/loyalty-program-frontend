@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
@@ -95,6 +97,8 @@ class SuccessDialogBox extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
+                    BlocProvider.of<RewardPointsBloc>(context)
+                        .add(ToggleRedeemScreen(false));
                     Navigator.pop(context);
                   },
                   child: Container(

@@ -20,8 +20,10 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<ToggleRedeemScreen>(_mapToggleRedeemScreen);
   }
 
-  RewardPointsSuccess rewardPointsSuccess =
-      RewardPointsSuccess(products: [], pageInformation: PageInformation(),isRedeemPageOpen: false);
+  RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
+      products: [],
+      pageInformation: PageInformation(),
+      isRedeemPageOpen: false);
 
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
@@ -84,8 +86,9 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       var response = await rewardPointRepository.makePayment(
           event.creditToRedeem, event.productId);
       if (response["status"] == "success") {
-        rewardPointsSuccess = rewardPointsSuccess.copyWith(eventType: "makePayment");
-        return emit(rewardPointsSuccess);
+        rewardPointsSuccess =
+            rewardPointsSuccess.copyWith(eventType: "makePayment");     
+        emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
       }
@@ -99,10 +102,10 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     emit(RewardPointsInProgress());
     if (!event.setToOpen) {
       rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: false);
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: false,eventType: "");
     } else {
       rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: true);
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: true,eventType: "");
     }
     emit(rewardPointsSuccess);
   }
