@@ -35,18 +35,20 @@ class LoyaltyProgramEvent {
 
   Future<void> _startTimer(int mins) async {
     if (_timer != null) {
-      _timer!.cancel();
+      return;
     }
     final int timerInSeconds = mins * 60;
-    int balanceSeconds = timerInSeconds - _getLasTimerInSeconds();
+    int balanceSeconds = _getLasTimerInSeconds() ?? timerInSeconds;
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      balanceSeconds - 1;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      balanceSeconds = balanceSeconds - 1;
       if (balanceSeconds > 0) {
         _setLastSetTimer(balanceSeconds);
       } else {
         timer.cancel();
-        await _triggerApiCall(TIME_BOUND);
+        _timer = null;
+        _triggerApiCall(TIME_BOUND);
+        _clearTimeBoundPref();
         _startTimer(mins);
       }
     });
@@ -60,8 +62,8 @@ class LoyaltyProgramEvent {
     _sharedPreferences!.remove(SHARED_PREF_LAST_TIME_BOUND);
   }
 
-  int _getLasTimerInSeconds() {
-    return _sharedPreferences!.getInt(SHARED_PREF_LAST_TIME_BOUND) ?? 0;
+  int? _getLasTimerInSeconds() {
+    return _sharedPreferences!.getInt(SHARED_PREF_LAST_TIME_BOUND);
   }
 
   void _setLastOpenedDate(String currentDate) {

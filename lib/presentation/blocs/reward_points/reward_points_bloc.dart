@@ -5,6 +5,9 @@ import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/domain/models/product.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_event.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
+import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
+import 'package:get_it/get_it.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/loyalty_program_event.dart';
 
 class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   RewardPointRepository rewardPointRepository;
@@ -51,7 +54,13 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       );
 
       if (commonResponse.data != null) {
-        rewardPointsSuccess = rewardPointsSuccess.copyWith(
+        final EventToCreditMap timeBoundEvent =
+            commonResponse.data!.eventToCreditMap!.firstWhere(
+                (EventToCreditMap element) => element.event == TIME_BOUND);
+
+        GetIt.I<LoyaltyProgramEvent>().stayedInApp(1);
+
+        rewardPointsSuccess.copyWith(
             isRedeemPageOpen: false, pageInformation: commonResponse.data!);
       }
       emit(rewardPointsSuccess);
