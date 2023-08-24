@@ -77,7 +77,8 @@ class SuccessDialogBox extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '+${Constants.userData?.countryCode + '-'+ Constants.userData?.mobileNumber ?? ""}. ',
+                      text:
+                          '+${Constants.userData?.countryCode ?? ""} ${Constants.userData?.mobileNumber ?? ""}. ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: kIsWeb

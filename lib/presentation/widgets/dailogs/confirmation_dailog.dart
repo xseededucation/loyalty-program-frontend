@@ -6,10 +6,13 @@ import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dai
 
 class ConfirmationDialogBox extends StatelessWidget {
   final BoxConstraints constraints;
-  final String denomination;  
+  final String denomination;
   final VoidCallback onConfirm;
   const ConfirmationDialogBox(
-      {super.key, required this.constraints, required this.onConfirm,required this.denomination});
+      {super.key,
+      required this.constraints,
+      required this.onConfirm,
+      required this.denomination});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class ConfirmationDialogBox extends StatelessWidget {
               padding: EdgeInsets.only(
                   left: kIsWeb ? size(constraints, 28) : 0,
                   right: kIsWeb ? size(constraints, 10) : 0),
-              child: RichText(                
+              child: RichText(
                 text: TextSpan(
                   text: '',
                   style: DefaultTextStyle.of(context).style,
@@ -97,7 +100,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '+${Constants.userData?.countryCode + '-'+ Constants.userData?.mobileNumber ?? ""} ',
+                      text:
+                          '+${Constants.userData?.countryCode ?? ""}  ${Constants.userData?.mobileNumber ?? ""}',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: kIsWeb
@@ -172,5 +176,5 @@ class ConfirmationDialogBox extends StatelessWidget {
         ),
       ),
     );
-  } 
+  }
 }
