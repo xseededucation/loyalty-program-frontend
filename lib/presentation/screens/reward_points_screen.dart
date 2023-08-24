@@ -177,9 +177,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               List<PageDetail> pageDetails =
                   state.pageInformation!.pageDetails as List<PageDetail>;
 
-              EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
-                return element.toJson()["entityType"] == "EarnMore";
-              }) as EarnMoreCredit;
+              Terms pageDetail = pageDetails.firstWhere((element) {
+                return element.toJson()["entityType"] == "Terms";
+              }) as Terms;
               return Text(
                 '${pageDetail.text}',
                 style: TextStyle(
@@ -302,9 +302,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     List<PageDetail> pageDetails =
         state.pageInformation!.pageDetails as List<PageDetail>;
 
-    EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
-      return element.toJson()["entityType"] == "EarnMore";
-    }) as EarnMoreCredit;
+    Terms pageDetail = pageDetails.firstWhere((element) {
+      return element.toJson()["entityType"] == "Terms";
+    }) as Terms;
 
     TabController tabController = TabController(length: 3, vsync: this);
     return LayoutBuilder(
