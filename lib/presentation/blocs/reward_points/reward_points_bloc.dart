@@ -13,6 +13,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<CanAccessLoyaltyProgram>(_mapCanAccessLoyaltyProgram);
     on<FetchPageInformationEvent>(_mapFetchPageInformation);
     on<TriggerPaymentEvent>(_mapTriggerPayment);
+    on<ToggleRedeemScreen>(_mapToggleRedeemScreen);
   }
 
   RewardPointsSuccess rewardPointsSuccess = const RewardPointsSuccess();
@@ -44,8 +45,8 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       );
 
       if (commonResponse.data != null) {
-        rewardPointsSuccess =
-            rewardPointsSuccess.copyWith(pageInformation: commonResponse.data!);
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(
+            isRedeemPageOpen: false, pageInformation: commonResponse.data!);
       }
       emit(rewardPointsSuccess);
     } catch (e) {
@@ -67,5 +68,31 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     } catch (e) {
       emit(RewardPointsFailure("$e"));
     }
+  }
+
+  void _mapToggleRedeemScreen(
+      ToggleRedeemScreen event, Emitter<RewardPointsState> emit) async {
+    emit(RewardPointsInProgress());
+    if (!event.setToOpen) {
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: false);
+    } else {
+      bool isAnyMileStoneAchieved = false;
+      List<ConversionRates> list =
+          rewardPointsSuccess.pageInformation!.conversionRates!;
+      double currentPoints =
+          rewardPointsSuccess.pageInformation!.currentCredit!.toDouble();
+      for (int i = 0; i < list.length; i++) {
+        if (list[i].credit != 0 && list[i].credit! >= currentPoints) {
+          isAnyMileStoneAchieved = true;
+          break;
+        }
+      }
+      if (isAnyMileStoneAchieved) {
+        rewardPointsSuccess =
+            rewardPointsSuccess.copyWith(isRedeemPageOpen: true);
+      }
+    }
+    emit(rewardPointsSuccess);
   }
 }

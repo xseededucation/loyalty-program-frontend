@@ -20,3 +20,11 @@ class TriggerPaymentEvent extends RewardPointsEvent {
   @override
   List<Object?> get props => [creditToRedeem, productId];
 }
+
+class ToggleRedeemScreen extends RewardPointsEvent {
+  final bool setToOpen;
+
+  ToggleRedeemScreen(this.setToOpen);
+  @override
+  List<Object?> get props => [setToOpen];
+}

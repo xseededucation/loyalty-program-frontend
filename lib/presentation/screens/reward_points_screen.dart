@@ -8,7 +8,6 @@ import 'package:loyalty_program_frontend/presentation/screens/redeem_points_scre
 import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
-import 'package:loyalty_program_frontend/presentation/utils/helpers/has_user_reached_milestone.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
@@ -35,7 +34,6 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     super.initState();
   }
 
-  bool isRedeemRewardScreenOpen = false;
   double? pointToShow;
   Widget header(BoxConstraints constraints) {
     return Container(
@@ -87,9 +85,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
-        setState(() {
-          isRedeemRewardScreenOpen = false;
-        });
+        BlocProvider.of<RewardPointsBloc>(context)
+            .add(ToggleRedeemScreen(false));
         if (tabIndex == 0) {
           ToolTipWrapper.showToolTip();
         }
@@ -140,21 +137,29 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
       ],
       contents: <Widget>[
-        isRedeemRewardScreenOpen
-            ? const RedeemRewardScreen()
-            : AvailableRewardPoint(
-                conversionRate: state.pageInformation!.conversionRates!,
-                currentAchievementLevel: pointToShow!.toDouble(),
-                onPress: () {
-                  if (hasUserReachedAnyMileStone(state.pageInformation!)) {
-                    setState(() {
-                      isRedeemRewardScreenOpen = true;
-                    });
-                  }
-                },
-                message: 'Let’s get started to earn rewards & much more!',
-                boxConstraints: constraints,
-              ),
+        BlocBuilder<RewardPointsBloc, RewardPointsState>(
+          bloc: context.read<RewardPointsBloc>(),
+          builder: (_, state) {
+            if (state is RewardPointsSuccess) {
+              if (state.isRedeemPageOpen != null &&
+                  state.isRedeemPageOpen == true) {
+                return const RedeemRewardScreen();
+              } else {
+                return AvailableRewardPoint(
+                  conversionRate: state.pageInformation!.conversionRates!,
+                  currentAchievementLevel: pointToShow!.toDouble(),
+                  onPress: () {
+                    BlocProvider.of<RewardPointsBloc>(context)
+                        .add(ToggleRedeemScreen(true));
+                  },
+                  message: 'Let’s get started to earn rewards & much more!',
+                  boxConstraints: constraints,
+                );
+              }
+            }
+            return const SizedBox();
+          },
+        ),
         EarnPointScreen(boxConstraints: constraints),
         RedeemPointsScreen(boxConstraints: constraints),
         Container(
@@ -321,7 +326,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Scaffold(
-          body: isRedeemRewardScreenOpen
+          body: state.isRedeemPageOpen!
               ? const RedeemRewardScreen()
               : Column(
                   children: [
@@ -377,11 +382,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                           ),
                           RewardRedeemButton(
                             boxConstraints: constraints,
-                            onPress: () {
-                              setState(() {
-                                isRedeemRewardScreenOpen = true;
-                              });
-                            },
+                            onPress: () {},
                           )
                         ],
                       ),
