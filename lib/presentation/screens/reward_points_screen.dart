@@ -8,6 +8,7 @@ import 'package:loyalty_program_frontend/presentation/screens/redeem_points_scre
 import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/has_user_achieved_any_milestone.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
@@ -153,8 +154,10 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   pageInformation: state.pageInformation!,
                   currentAchievementLevel: pointToShow!.toDouble(),
                   onPress: () {
-                    BlocProvider.of<RewardPointsBloc>(context)
-                        .add(ToggleRedeemScreen(true));
+                    if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
+                      BlocProvider.of<RewardPointsBloc>(context)
+                          .add(ToggleRedeemScreen(true));
+                    }
                   },
                   message: 'Let’s get started to earn rewards & much more!',
                   boxConstraints: constraints,

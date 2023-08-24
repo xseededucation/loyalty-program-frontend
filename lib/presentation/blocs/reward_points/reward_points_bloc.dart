@@ -84,21 +84,8 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       rewardPointsSuccess =
           rewardPointsSuccess.copyWith(isRedeemPageOpen: false);
     } else {
-      bool isAnyMileStoneAchieved = false;
-      List<ConversionRates> list =
-          rewardPointsSuccess.pageInformation!.conversionRates!;
-      double currentPoints =
-          rewardPointsSuccess.pageInformation!.currentCredit!.toDouble();
-      for (int i = 0; i < list.length; i++) {
-        if (list[i].credit != 0 && list[i].credit! >= currentPoints) {
-          isAnyMileStoneAchieved = true;
-          break;
-        }
-      }
-      if (isAnyMileStoneAchieved) {
-        rewardPointsSuccess =
-            rewardPointsSuccess.copyWith(isRedeemPageOpen: true);
-      }
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: true);
     }
     emit(rewardPointsSuccess);
   }
