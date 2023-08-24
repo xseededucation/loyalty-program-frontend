@@ -19,11 +19,13 @@ class RewardPointRepository {
   Future makePayment(int creditToRedeem, String productId) async {
     var url = "makePayment";
     var response = await apiBaseHelper
-        .post(url, {"creditToRedeem": creditToRedeem, "productId": productId});    
+        .post(url, {"creditToRedeem": creditToRedeem, "productId": productId});
     return response;
   }
 
-  updateUserActivity() async {
-    print('add credit record');
+  updateUserActivity(String activity) async {
+    var url = "updateUserActivity";
+    var response = await apiBaseHelper.post(url, {"activityType": activity});
+    return response;
   }
 }

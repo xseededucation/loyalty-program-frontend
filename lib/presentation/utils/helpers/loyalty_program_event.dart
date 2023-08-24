@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -7,9 +8,11 @@ import 'package:intl/intl.dart';
 class LoyaltyProgramEvent {
   Timer? _timer;
   SharedPreferences? _sharedPreferences;
+  RewardPointRepository? _rewardPointRepository;
 
   Future<void> initialize() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+    _rewardPointRepository = RewardPointRepository();
   }
 
   void appOpened() async {
@@ -50,7 +53,7 @@ class LoyaltyProgramEvent {
   }
 
   Future<void> _triggerApiCall(String event) async {
-    print('TRIGGER API CALL $event');
+    _rewardPointRepository!.updateUserActivity(event);
   }
 
   void _clearTimeBoundPref() {
