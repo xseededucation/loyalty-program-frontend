@@ -149,8 +149,10 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   pageInformation: state.pageInformation!,
                   currentAchievementLevel: pointToShow!.toDouble(),
                   onPress: () {
-                    BlocProvider.of<RewardPointsBloc>(context)
-                        .add(ToggleRedeemScreen(true));
+                    if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
+                      BlocProvider.of<RewardPointsBloc>(context)
+                          .add(ToggleRedeemScreen(true));
+                    }
                   },
                   message: 'Let’s get started to earn rewards & much more!',
                   boxConstraints: constraints,
@@ -476,7 +478,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   });
                   LoadingDialog.hideLoadingDialog(context);
                   if (state.eventType == 'makePayment') {
-                    _showSuccessDialog(context, constraints);
+                    _showSuccessDialog(context);
                   }
                 } else if (state is RewardPointsFailure) {
                   LoadingDialog.hideLoadingDialog(context);
@@ -488,12 +490,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   }
 
   void _showSuccessDialog(
-      BuildContext context, BoxConstraints constraints) async {
+    BuildContext context,
+  ) async {
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return SuccessDialogBox(constraints: constraints);
+        return const SuccessDialogBox();
       },
     );
   }

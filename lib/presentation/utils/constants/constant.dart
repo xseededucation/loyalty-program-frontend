@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class Constants {
   static const String baseUrl =
       "https://loyalty-program-apis.xseeddigital.info/api/";
-  static dynamic userData;     
+  static dynamic userData;
+  static BoxConstraints redeemRewardContraints = const BoxConstraints();     
 }
 
 printLog(dynamic log) {
