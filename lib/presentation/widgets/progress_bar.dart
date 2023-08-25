@@ -58,6 +58,10 @@ class _ProgressSliderState extends State<ProgressSlider> {
   }
 
   void getIndexForMotivationMessage() {
+    if (widget.currentPoint > mileStones[mileStones.length - 1].points!) {
+      indexOfCurrentStatus = mileStones.length - 1;
+      indexOfSelectedValue = mileStones.length - 1;
+    }
     for (int i = 0; i < mileStones.length; i++) {
       if (widget.currentPoint == mileStones[i].points!) {
         indexOfSelectedValue = i;
@@ -192,11 +196,21 @@ class _ProgressSliderState extends State<ProgressSlider> {
                         divisions: mileStones.length - 1,
                         value: indexOfSelectedValue!.toDouble(),
                         onChanged: (double value) {
-                          setState(() {
-                            indexOfSelectedValue = value.toInt();
-                            widget.onChange(
-                                mileStones[indexOfSelectedValue!].points!);
-                          });
+                          setState(
+                            () {
+                              indexOfSelectedValue = value.toInt();
+                              if ((indexOfSelectedValue ==
+                                      mileStones.length - 1) &&
+                                  widget.currentPoint >
+                                      mileStones[mileStones.length - 1]
+                                          .points!) {
+                                widget.onChange(widget.currentPoint);
+                              } else {
+                                widget.onChange(
+                                    mileStones[indexOfSelectedValue!].points!);
+                              }
+                            },
+                          );
                         },
                       ),
                     ),
