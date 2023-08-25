@@ -147,9 +147,14 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   state.isRedeemPageOpen == true) {
                 return const RedeemRewardScreen();
               } else {
+                if (state.pageInformation == null ||
+                    state.pageInformation?.currentCredit == null) {
+                  return SizedBox();
+                }
                 return AvailableRewardPoint(
                   pageInformation: state.pageInformation!,
-                  currentAchievementLevel: pointToShow!.toDouble(),
+                  currentAchievementLevel:
+                      (state.pageInformation?.currentCredit ?? 0).toDouble(),
                   onPress: () {
                     if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
                       BlocProvider.of<RewardPointsBloc>(context)
@@ -251,6 +256,10 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         },
                         builder: (context, state) {
                           if (state is RewardPointsSuccess) {
+                            if (state.pageInformation == null ||
+                                state.pageInformation!.currentCredit == null) {
+                              return SizedBox();
+                            }
                             return ProgressSlider(
                               tooltipMessageZeroIndex:
                                   state.pageInformation!.zeroCreditMessage ??
@@ -492,36 +501,6 @@ class _RewardPointScreenState extends State<RewardPointScreen>
             } else {
               return mobileView();
             }
-            return const SizedBox();
-            // return BlocConsumer<RewardPointsBloc, RewardPointsState>(
-            //   builder: (context, state) {
-            //     if (state is RewardPointsSuccess) {
-            //       if (kIsWeb) {
-            //         return webView();
-            //       } else {
-            //         return mobileView(state);
-            //       }
-            //     } else {
-            //       return const SizedBox();
-            //     }
-            //   },
-            //   listener: (context, state) {
-            //     if (state is RewardPointsInProgress) {
-            //       LoadingDialog.showLoadingDialog(context);
-            //     } else if (state is RewardPointsSuccess) {
-            //       setState(() {
-            //         pointToShow =
-            //             state.pageInformation!.currentCredit!.toDouble();
-            //       });
-            //       LoadingDialog.hideLoadingDialog(context);
-            //       if (state.eventType == 'makePayment') {
-            //         _showSuccessDialog(context, constraints);
-            //       }
-            //     } else if (state is RewardPointsFailure) {
-            //       LoadingDialog.hideLoadingDialog(context);
-            //     }
-            //   },
-            // );
           },
         ),
       ),
