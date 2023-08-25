@@ -282,18 +282,22 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                       border:
                                           Border.all(color: Color(0xffA5A5A5))),
                                   alignment: Alignment.center,
-                                  child: TextField(
-                                    controller: currentCreditValue,
-                                    enabled: false,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                  // child: TextField(
+                                  //   controller: currentCreditValue,
+                                  //   enabled: false,
+                                  //   textAlign: TextAlign.center,
+                                  //   style: TextStyle(
+                                  //       fontWeight: FontWeight.w600,
+                                  //       fontSize: size(constraints, 22),
+                                  //       color: Colors.black),
+                                  //   decoration: const InputDecoration(                                       
+                                  //       border: InputBorder.none),
+                                  // ),
+                                  child: Text(currentCreditValue.text,
+                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: size(constraints, 20),
+                                        fontSize: size(constraints, 22),
                                         color: Colors.black),
-                                    decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                            bottom: size(constraints, 15)),
-                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
@@ -384,7 +388,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
             }
           },
           listener: (context, state) {
-            if (state is RewardPointsSuccess) {
+            if (state is RewardPointsSuccess) {              
               if (state.eventType == "makePayment") {
                 _showSuccessDialog(context, constraints);
               }
