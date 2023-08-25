@@ -22,7 +22,6 @@ class AvailableRewardPoint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
       child: Container(
         constraints: BoxConstraints(minHeight: size(boxConstraints, 497)),
         decoration: const BoxDecoration(
