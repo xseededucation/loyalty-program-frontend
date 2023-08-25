@@ -7,7 +7,7 @@ import 'package:loyalty_program_frontend/presentation/utils/helpers/format_point
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class RewardStatus extends StatelessWidget {
-  final PageInformation pageInformation;
+  final PageInformation? pageInformation;
   final double pointsToShow;
   final BoxConstraints boxConstraints;
   const RewardStatus({
@@ -20,14 +20,14 @@ class RewardStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<MileStones> list = [];
-    if (pageInformation.conversionRates != null) {
-      for (int i = 0; i < pageInformation.conversionRates!.length; i++) {
+    if (pageInformation?.conversionRates != null) {
+      for (int i = 0; i < pageInformation!.conversionRates!.length; i++) {
         final MileStones obj = MileStones(
-            credit: pageInformation.conversionRates![i].credit!.toDouble(),
+            credit: pageInformation?.conversionRates![i].credit!.toDouble(),
             denomination:
-                pageInformation.conversionRates![i].denomination!.toDouble(),
-            sequenceNo: pageInformation.conversionRates![i].sequenceNo,
-            toolTipText: pageInformation.conversionRates![i].toolTipText);
+                pageInformation?.conversionRates![i].denomination!.toDouble(),
+            sequenceNo: pageInformation?.conversionRates![i].sequenceNo,
+            toolTipText: pageInformation?.conversionRates![i].toolTipText);
         list.add(obj);
       }
     }

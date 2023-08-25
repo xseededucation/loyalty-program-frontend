@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
 import 'package:loyalty_program_frontend/domain/models/common.dart';
@@ -83,6 +85,9 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       TriggerPaymentEvent event, Emitter<RewardPointsState> emit) async {
     try {
       emit(RewardPointsInProgress());
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(eventType: "makePayment");
+      emit(rewardPointsSuccess);
       var response = await rewardPointRepository.makePayment(
           event.creditToRedeem, event.productId);
       if (response["status"] == "success") {

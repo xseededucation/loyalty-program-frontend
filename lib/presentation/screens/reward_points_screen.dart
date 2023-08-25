@@ -149,10 +149,12 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               } else {
                 if (state.pageInformation == null ||
                     state.pageInformation?.currentCredit == null) {
-                  return SizedBox();
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
                 return AvailableRewardPoint(
-                  pageInformation: state.pageInformation!,
+                  pageInformation: state.pageInformation,
                   currentAchievementLevel:
                       (state.pageInformation?.currentCredit ?? 0).toDouble(),
                   onPress: () {
@@ -166,7 +168,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 );
               }
             }
-            return const SizedBox();
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ),
         EarnPointScreen(boxConstraints: constraints),
@@ -256,29 +260,29 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         },
                         builder: (context, state) {
                           if (state is RewardPointsSuccess) {
-                            if (state.pageInformation == null ||
-                                state.pageInformation!.currentCredit == null) {
-                              return SizedBox();
+                            if (state.pageInformation!.zeroCreditMessage !=
+                                null) {
+                              return ProgressSlider(
+                                tooltipMessageZeroIndex:
+                                    state.pageInformation!.zeroCreditMessage ??
+                                        "",
+                                currentPoint: state
+                                    .pageInformation!.currentCredit!
+                                    .toDouble(),
+                                conversionRates:
+                                    state.pageInformation!.conversionRates!,
+                                userName: "${Constants.userData?.name ?? ""}",
+                                onChange: (double value) {
+                                  setState(() {
+                                    pointToShow = value;
+                                  });
+                                },
+                                width: constraints.maxWidth * 0.390,
+                              );
                             }
-                            return ProgressSlider(
-                              tooltipMessageZeroIndex:
-                                  state.pageInformation!.zeroCreditMessage ??
-                                      "",
-                              currentPoint: state
-                                  .pageInformation!.currentCredit!
-                                  .toDouble(),
-                              conversionRates:
-                                  state.pageInformation!.conversionRates!,
-                              userName: "${Constants.userData?.name ?? ""}",
-                              onChange: (double value) {
-                                setState(() {
-                                  pointToShow = value;
-                                });
-                              },
-                              width: constraints.maxWidth * 0.390,
-                            );
                           }
-                          return const SizedBox();
+                          return const Center(
+                              child: CircularProgressIndicator());
                         },
                       ),
                     ),
@@ -481,7 +485,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                         ],
                       );
               }
-              return Container(color: Colors.amber);
+              return Container(color: Colors.white);
             },
           ),
         );
@@ -494,28 +498,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFFFF8F8),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            if (kIsWeb) {
-              return webView();
-            } else {
-              return mobileView();
-            }
-          },
-        ),
+        body: kIsWeb ? webView() : mobileView(),
       ),
-    );
-  }
-
-  void _showSuccessDialog(
-    BuildContext context,
-  ) async {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return const SuccessDialogBox();
-      },
     );
   }
 }

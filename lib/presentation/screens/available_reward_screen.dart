@@ -9,7 +9,7 @@ class AvailableRewardPoint extends StatelessWidget {
   final VoidCallback onPress;
   final BoxConstraints boxConstraints;
   final double currentAchievementLevel;
-  final PageInformation pageInformation;
+  final PageInformation? pageInformation;
   const AvailableRewardPoint({
     super.key,
     required this.message,

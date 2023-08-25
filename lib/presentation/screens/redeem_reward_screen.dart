@@ -179,15 +179,16 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                             ? size(constraints, 400)
                                             : 0),
                                     child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            currentPageIndex--;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          Icons.arrow_back_ios_outlined,
-                                          size: size(constraints, 20),
-                                        )),
+                                      onPressed: () {
+                                        setState(() {
+                                          currentPageIndex--;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_back_ios_outlined,
+                                        size: size(constraints, 20),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -282,32 +283,24 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                       border:
                                           Border.all(color: Color(0xffA5A5A5))),
                                   alignment: Alignment.center,
-                                  // child: TextField(
-                                  //   controller: currentCreditValue,
-                                  //   enabled: false,
-                                  //   textAlign: TextAlign.center,
-                                  //   style: TextStyle(
-                                  //       fontWeight: FontWeight.w600,
-                                  //       fontSize: size(constraints, 22),
-                                  //       color: Colors.black),
-                                  //   decoration: const InputDecoration(                                       
-                                  //       border: InputBorder.none),
-                                  // ),
-                                  child: Text(currentCreditValue.text,
-                                     style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: size(constraints, 22),
-                                        color: Colors.black),
+                                  child: Text(
+                                    currentCreditValue.text,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: size(constraints, 22),
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                                 Text(
                                   "Worth of ₹${RedeemRewardUtils.findDenomination(convertedList, int.parse(currentCreditValue.text))}",
                                   style: TextStyle(
-                                      color: const Color(0xff575757),
-                                      fontSize: kIsWeb
-                                          ? size(constraints, 16)
-                                          : size(constraints, 14),
-                                      fontWeight: FontWeight.w500),
+                                    color: const Color(0xff575757),
+                                    fontSize: kIsWeb
+                                        ? size(constraints, 16)
+                                        : size(constraints, 14),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -336,9 +329,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: size(constraints, 18),
-                        ),
+                        SizedBox(height: size(constraints, 18)),
                         InkWell(
                           onTap: () {
                             if (int.parse(currentCreditValue.text) > 300) {
@@ -357,24 +348,28 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             margin: const EdgeInsets.symmetric(
                                 horizontal: kIsWeb ? 0 : 10),
                             padding: EdgeInsets.only(
-                                left: size(constraints, 11),
-                                top: size(constraints, 11),
-                                right: size(constraints, 11),
-                                bottom: size(constraints, 11)),
+                              left: size(constraints, 11),
+                              top: size(constraints, 11),
+                              right: size(constraints, 11),
+                              bottom: size(constraints, 11),
+                            ),
                             decoration: BoxDecoration(
-                                color: const Color(0xffFED945),
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xffA5A5A5))),
+                              color: const Color(0xffFED945),
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: const Color(0xffA5A5A5),
+                              ),
+                            ),
                             alignment: Alignment.center,
                             child: Text(
                               "Redeem",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: kIsWeb
-                                      ? size(constraints, 24)
-                                      : size(constraints, 16),
-                                  fontWeight: FontWeight.w500),
+                                color: Colors.black,
+                                fontSize: kIsWeb
+                                    ? size(constraints, 24)
+                                    : size(constraints, 16),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         )
@@ -384,11 +379,11 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                 ),
               );
             } else {
-              return const SizedBox();
+              return const Center(child: CircularProgressIndicator());
             }
           },
           listener: (context, state) {
-            if (state is RewardPointsSuccess) {              
+            if (state is RewardPointsSuccess) {
               if (state.eventType == "makePayment") {
                 _showSuccessDialog(context, constraints);
               }
@@ -422,7 +417,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return SuccessDialogBox();
+        return const SuccessDialogBox();
       },
     );
   }
