@@ -299,12 +299,17 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   }
 
   Widget mobileView(RewardPointsSuccess state) {
-    List<PageDetail> pageDetails =
-        state.pageInformation!.pageDetails as List<PageDetail>;
+    Terms? pageDetail;
+    try {
+      List<PageDetail> pageDetails =
+          state.pageInformation!.pageDetails as List<PageDetail>;
 
-    Terms pageDetail = pageDetails.firstWhere((element) {
-      return element.toJson()["entityType"] == "Terms";
-    }) as Terms;
+      pageDetail = pageDetails.firstWhere((element) {
+        return element.toJson()["entityType"] == "Terms";
+      }) as Terms;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
 
     TabController tabController = TabController(length: 3, vsync: this);
     return LayoutBuilder(
@@ -424,7 +429,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             padding: const EdgeInsets.only(
                                 left: 12, right: 12, top: 22),
                             child: Text(
-                              pageDetail.text ?? "",
+                              (pageDetail != null && pageDetail.text != null)
+                                  ? pageDetail.text!
+                                  : "",
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
