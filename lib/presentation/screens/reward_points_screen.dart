@@ -38,7 +38,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget header(BoxConstraints constraints) {
     return Container(
       height: size(constraints, 120),
-      constraints: const BoxConstraints(minHeight: 94),
+      constraints: const BoxConstraints(minHeight: 102),
       width: size(constraints, 300),
       decoration: const BoxDecoration(
         color: Color(0xFFBB151B),
@@ -209,7 +209,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              constraints: const BoxConstraints(minHeight: 94),
+              constraints: const BoxConstraints(minHeight: 102),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -217,7 +217,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   header(constraints),
                   Expanded(
                     child: Container(
-                      constraints: const BoxConstraints(minHeight: 94),
+                      constraints: const BoxConstraints(minHeight: 102),
                       height: size(constraints, 120),
                       decoration: const BoxDecoration(
                         color: Colors.white,
