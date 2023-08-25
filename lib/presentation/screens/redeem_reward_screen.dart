@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
+import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/dailogs/confirmation_dailog.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
@@ -36,7 +37,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
   }
 
 // Triggered when minus button click
-  onChangePointsDecrement(int currentcredit) {
+  onChangePointsDecrement() {
     setState(() {
       currentCreditValue.text = RedeemRewardUtils.getPrevCredit(
               convertedList, int.parse(currentCreditValue.text))
@@ -51,6 +52,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
       builder: (context, constraints) {
         return BlocConsumer<RewardPointsBloc, RewardPointsState>(
           builder: (context, state) {
+            Constants.redeemRewardContraints = constraints;           
             if (state is RewardPointsSuccess) {
               if (convertedList.isEmpty) {
                 convertedList =
@@ -65,12 +67,12 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   currentCreditValue.text =
                       RedeemRewardUtils.findNearestLastCredit(
-                              convertedList, 7000)
+                              convertedList, state.pageInformation?.currentCredit ?? 0)
                           .toString();
                   setState(() {
                     nearestCurrentCredit =
                         RedeemRewardUtils.findNearestLastCredit(
-                            convertedList, 7000);
+                            convertedList, state.pageInformation?.currentCredit ?? 0);
                   });
                 });
               }
@@ -251,7 +253,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             InkWell(
                               key: const Key('decrement'),
                               onTap: () {
-                                onChangePointsDecrement(7000);
+                                onChangePointsDecrement();
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -274,7 +276,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Container(
+                                Container(                                  
                                   height: size(constraints, 50),
                                   width: size(constraints, 108),
                                   margin: EdgeInsets.symmetric(
@@ -287,24 +289,17 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                       border:
                                           Border.all(color: Color(0xffA5A5A5))),
                                   alignment: Alignment.center,
-                                  child: SizedBox(
-                                    width: size(constraints, 90),
-                                    child: TextField(
-                                      controller: currentCreditValue,
-                                      enabled: false,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: size(constraints, 20),
-                                          color: Colors.black),
-                                      decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                            bottom: kIsWeb
-                                                ? size(constraints, 15)
-                                                : size(constraints, 8),
-                                            left: size(constraints, 19),
-                                          ),
-                                          border: InputBorder.none),
-                                    ),
+                                  child: TextField(
+                                    controller: currentCreditValue,
+                                    enabled: false,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(                                          
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: size(constraints, 20),
+                                        color: Colors.black),
+                                    decoration:  InputDecoration( 
+                                      contentPadding: EdgeInsets.only(bottom: size(constraints, 15)),                                        
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
@@ -433,7 +428,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return SuccessDialogBox(constraints: constraints);
+        return SuccessDialogBox();
       },
     );
   }

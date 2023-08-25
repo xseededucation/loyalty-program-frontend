@@ -6,11 +6,12 @@ import 'package:loyalty_program_frontend/presentation/utils/constants/constant.d
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class SuccessDialogBox extends StatelessWidget {
-  final BoxConstraints constraints;
-  const SuccessDialogBox({super.key, required this.constraints});
+  
+  const SuccessDialogBox({super.key});
 
   @override
   Widget build(BuildContext context) {
+    BoxConstraints constraints = Constants.redeemRewardContraints;
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(0)),
