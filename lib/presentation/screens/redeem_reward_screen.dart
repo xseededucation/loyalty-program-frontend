@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
@@ -21,7 +22,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
   int nearestCurrentCredit = 0;
   int currentPageIndex = 0;
 
-  List<Map<String, dynamic>> convertedList = [];
+  List<ConversionRates> convertedList = [];
 
   // Triggered when plus button click
   onChangePointsIncrement() {
@@ -52,28 +53,20 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
       builder: (context, constraints) {
         return BlocConsumer<RewardPointsBloc, RewardPointsState>(
           builder: (context, state) {
-            Constants.redeemRewardContraints = constraints;           
+            Constants.redeemRewardContraints = constraints;
             if (state is RewardPointsSuccess) {
               if (convertedList.isEmpty) {
-                convertedList =
-                    state.pageInformation!.conversionRates!.map((rate) {
-                  return {
-                    "credit": rate.credit,
-                    "denomination": rate.denomination
-                  };
-                }).toList();
+                convertedList = state.pageInformation!.conversionRates!;
                 currentCreditValue.text =
                     state.pageInformation!.currentCredit.toString();
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   currentCreditValue.text =
-                      RedeemRewardUtils.findNearestLastCredit(
-                              convertedList, state.pageInformation?.currentCredit ?? 0)
+                      RedeemRewardUtils.findNearestLastCredit(convertedList,
+                              state.pageInformation?.currentCredit ?? 0)
                           .toString();
-                  setState(() {
-                    nearestCurrentCredit =
-                        RedeemRewardUtils.findNearestLastCredit(
-                            convertedList, state.pageInformation?.currentCredit ?? 0);
-                  });
+                  nearestCurrentCredit =
+                      RedeemRewardUtils.findNearestLastCredit(convertedList,
+                          state.pageInformation?.currentCredit ?? 0);
                 });
               }
               int worthValue = RedeemRewardUtils.findDenomination(
@@ -276,7 +269,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Container(                                  
+                                Container(
                                   height: size(constraints, 50),
                                   width: size(constraints, 108),
                                   margin: EdgeInsets.symmetric(
@@ -293,12 +286,13 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                     controller: currentCreditValue,
                                     enabled: false,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(                                          
+                                    style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: size(constraints, 20),
                                         color: Colors.black),
-                                    decoration:  InputDecoration( 
-                                      contentPadding: EdgeInsets.only(bottom: size(constraints, 15)),                                        
+                                    decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            bottom: size(constraints, 15)),
                                         border: InputBorder.none),
                                   ),
                                 ),

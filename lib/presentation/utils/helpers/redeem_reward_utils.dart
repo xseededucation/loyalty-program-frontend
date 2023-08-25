@@ -1,13 +1,15 @@
 // utility_functions.dart
 
+import 'package:loyalty_program_frontend/domain/models/page_information.dart';
+
 class RedeemRewardUtils {
   // This  will help is nearest credit less than current credit
   static int findNearestLastCredit(
-      List<Map<String, dynamic>> conversionRates, int currentCredit) {
+      List<ConversionRates> conversionRates, int currentCredit) {
     int nearestLastCredit = 0;
 
     for (var rate in conversionRates) {
-      int credit = rate["credit"];
+      int credit = rate.credit!;
       if (credit <= currentCredit) {
         nearestLastCredit = credit;
       } else {
@@ -19,11 +21,11 @@ class RedeemRewardUtils {
   }
 
   static int findDenomination(
-      List<Map<String, dynamic>> conversionRates, int credit) {
+      List<ConversionRates> conversionRates, int credit) {
     int maxDenomination = 0;
     for (var rate in conversionRates) {
-      if (credit >= rate['credit'] && rate['credit'] > maxDenomination) {
-        maxDenomination = rate['denomination'];
+      if (credit >= rate.credit! && rate.credit! > maxDenomination) {
+        maxDenomination = rate.denomination!;
       }
     }
     return maxDenomination;
@@ -31,10 +33,10 @@ class RedeemRewardUtils {
 
 //Function will help in getting the next credit number
   static int getNextCredit(
-      List<Map<String, dynamic>> conversionRates, int currentCredit) {
+      List<ConversionRates> conversionRates, int currentCredit) {
     for (int i = 0; i < conversionRates.length; i++) {
-      if (conversionRates[i]['credit'] > currentCredit) {
-        return conversionRates[i]['credit'];
+      if (conversionRates[i].credit! > currentCredit) {
+        return conversionRates[i].credit!;
       }
     }
     return currentCredit;
@@ -42,10 +44,10 @@ class RedeemRewardUtils {
 
 //Function will help in getting the previous credit number
   static int getPrevCredit(
-      List<Map<String, dynamic>> conversionRates, int currentCredit) {
+      List<ConversionRates> conversionRates, int currentCredit) {
     for (int i = conversionRates.length - 1; i >= 0; i--) {
-      if (conversionRates[i]['credit'] < currentCredit) {
-        return conversionRates[i]['credit'];
+      if (conversionRates[i].credit! < currentCredit) {
+        return conversionRates[i].credit!;
       }
     }
     return currentCredit;
