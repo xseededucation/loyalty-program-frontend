@@ -20,14 +20,16 @@ class RewardStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<MileStones> list = [];
-    for (int i = 0; i < pageInformation.conversionRates!.length; i++) {
-      final MileStones obj = MileStones(
-          credit: pageInformation.conversionRates![i].credit!.toDouble(),
-          denomination:
-              pageInformation.conversionRates![i].denomination!.toDouble(),
-          sequenceNo: pageInformation.conversionRates![i].sequenceNo,
-          toolTipText: pageInformation.conversionRates![i].toolTipText);
-      list.add(obj);
+    if (pageInformation.conversionRates != null) {
+      for (int i = 0; i < pageInformation.conversionRates!.length; i++) {
+        final MileStones obj = MileStones(
+            credit: pageInformation.conversionRates![i].credit!.toDouble(),
+            denomination:
+                pageInformation.conversionRates![i].denomination!.toDouble(),
+            sequenceNo: pageInformation.conversionRates![i].sequenceNo,
+            toolTipText: pageInformation.conversionRates![i].toolTipText);
+        list.add(obj);
+      }
     }
 
     int? currentSliderPoint;

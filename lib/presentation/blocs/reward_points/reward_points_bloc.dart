@@ -87,7 +87,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
           event.creditToRedeem, event.productId);
       if (response["status"] == "success") {
         rewardPointsSuccess =
-            rewardPointsSuccess.copyWith(eventType: "makePayment");     
+            rewardPointsSuccess.copyWith(eventType: "makePayment");
         emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
@@ -102,10 +102,10 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     emit(RewardPointsInProgress());
     if (!event.setToOpen) {
       rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: false,eventType: "");
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: false, eventType: "");
     } else {
       rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: true,eventType: "");
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: true, eventType: "");
     }
     emit(rewardPointsSuccess);
   }

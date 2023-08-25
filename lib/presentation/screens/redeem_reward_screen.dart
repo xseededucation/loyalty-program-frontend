@@ -385,13 +385,9 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
           },
           listener: (context, state) {
             if (state is RewardPointsSuccess) {
-              print("awaaaaaa pawaiglaaaaa");
               if (state.eventType == "makePayment") {
                 _showSuccessDialog(context, constraints);
               }
-            } else {
-              print(state.toString());
-              print("awaaaaaa pawaiglaaaaa 2");
             }
           },
         );
