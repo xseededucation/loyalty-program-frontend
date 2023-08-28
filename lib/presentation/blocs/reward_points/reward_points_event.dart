@@ -28,3 +28,11 @@ class ToggleRedeemScreen extends RewardPointsEvent {
   @override
   List<Object?> get props => [setToOpen];
 }
+
+class ChangeSliderPoints extends RewardPointsEvent {
+  final double points;
+
+  ChangeSliderPoints(this.points);
+  @override
+  List<Object?> get props => [points];
+}

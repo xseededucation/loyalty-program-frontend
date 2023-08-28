@@ -36,7 +36,6 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     super.initState();
   }
 
-  double? pointToShow;
   Widget header(BoxConstraints constraints) {
     return Container(
       height: size(constraints, 120),
@@ -155,8 +154,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 }
                 return AvailableRewardPoint(
                   pageInformation: state.pageInformation,
-                  currentAchievementLevel:
-                      (state.pageInformation?.currentCredit ?? 0).toDouble(),
+                  currentAchievementLevel: state.pointsToShow!,
                   onPress: () {
                     if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
                       BlocProvider.of<RewardPointsBloc>(context)
@@ -266,16 +264,14 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                 tooltipMessageZeroIndex:
                                     state.pageInformation!.zeroCreditMessage ??
                                         "",
-                                currentPoint: state
-                                    .pageInformation!.currentCredit!
-                                    .toDouble(),
+                                currentPoint: state.pointsToShow!,
                                 conversionRates:
                                     state.pageInformation!.conversionRates!,
                                 userName: "${Constants.userData?.name ?? ""}",
                                 onChange: (double value) {
-                                  setState(() {
-                                    pointToShow = value;
-                                  });
+                                  context.read<RewardPointsBloc>().add(
+                                        ChangeSliderPoints(value),
+                                      );
                                 },
                                 width: constraints.maxWidth * 0.390,
                               );
@@ -395,9 +391,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                           tooltipMessageZeroIndex: state
                                               .pageInformation!
                                               .zeroCreditMessage!,
-                                          currentPoint: state
-                                              .pageInformation!.currentCredit!
-                                              .toDouble(),
+                                          currentPoint: state.pointsToShow!,
                                           conversionRates: state
                                               .pageInformation!
                                               .conversionRates!,
@@ -405,9 +399,11 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                           userName:
                                               "${Constants.userData?.name ?? ""}",
                                           onChange: (double value) {
-                                            setState(() {
-                                              pointToShow = value;
-                                            });
+                                            context
+                                                .read<RewardPointsBloc>()
+                                                .add(
+                                                  ChangeSliderPoints(value),
+                                                );
                                           },
                                         )
                                       : const SizedBox(),
@@ -416,7 +412,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                   height: 17,
                                 ),
                                 RewardStatus(
-                                  pointsToShow: pointToShow ?? 0,
+                                  pointsToShow: state.pointsToShow!,
                                   pageInformation: state.pageInformation!,
                                   boxConstraints: constraints,
                                 ),

@@ -20,6 +20,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<FetchPageInformationEvent>(_mapFetchPageInformation);
     on<TriggerPaymentEvent>(_mapTriggerPayment);
     on<ToggleRedeemScreen>(_mapToggleRedeemScreen);
+    on<ChangeSliderPoints>(_mapChangeSliderPoint);
   }
 
   RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
@@ -73,6 +74,9 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
 
         rewardPointsSuccess = rewardPointsSuccess.copyWith(
             isRedeemPageOpen: false, pageInformation: commonResponse.data!);
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(
+            pointsToShow:
+                rewardPointsSuccess.pageInformation!.currentCredit!.toDouble());
       }
       emit(rewardPointsSuccess);
     } catch (e) {
@@ -112,6 +116,14 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       rewardPointsSuccess =
           rewardPointsSuccess.copyWith(isRedeemPageOpen: true, eventType: "");
     }
+    emit(rewardPointsSuccess);
+  }
+
+  void _mapChangeSliderPoint(
+      ChangeSliderPoints event, Emitter<RewardPointsState> emit) {
+    emit(RewardPointsInProgress());
+    rewardPointsSuccess =
+        rewardPointsSuccess.copyWith(pointsToShow: event.points);
     emit(rewardPointsSuccess);
   }
 }

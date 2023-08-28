@@ -45,7 +45,7 @@ class _ProgressSliderState extends State<ProgressSlider> {
   void initState() {
     ToolTipWrapper.initToolTipController();
     addCurrentAmountToList();
-    sortMileStoneBasedOnPoints();
+    sortMileStoneBasedOnSequence();
     getIndexForMotivationMessage();
     showToolTip();
     super.initState();
@@ -95,13 +95,20 @@ class _ProgressSliderState extends State<ProgressSlider> {
       }
     }
     if (!isPresent) {
-      mileStones.add(
-        MileStone(amount: 0, points: 0, sequence: 0),
-      );
+      mileStones.sort((a, b) => a.points!.compareTo(b.points!));
+      if (widget.currentPoint < widget.conversionRates.first.credit!) {
+        mileStones.add(
+          MileStone(amount: 0, points: widget.currentPoint, sequence: 0),
+        );
+      } else {
+        mileStones.add(
+          MileStone(amount: 0, points: 0, sequence: 0),
+        );
+      }
     }
   }
 
-  void sortMileStoneBasedOnPoints() {
+  void sortMileStoneBasedOnSequence() {
     mileStones.sort(
       (a, b) => a.sequence!.compareTo(b.sequence!),
     );
@@ -196,9 +203,12 @@ class _ProgressSliderState extends State<ProgressSlider> {
                         divisions: mileStones.length - 1,
                         value: indexOfSelectedValue!.toDouble(),
                         onChanged: (double value) {
+                          indexOfSelectedValue = value.toInt();
+                          if (indexOfCurrentStatus! > indexOfSelectedValue!) {
+                            return;
+                          }
                           setState(
                             () {
-                              indexOfSelectedValue = value.toInt();
                               if ((indexOfSelectedValue ==
                                       mileStones.length - 1) &&
                                   widget.currentPoint >
