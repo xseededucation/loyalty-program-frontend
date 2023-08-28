@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +36,6 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     super.initState();
   }
 
-  double? pointToShow;
   Widget header(BoxConstraints constraints) {
     return Container(
       height: size(constraints, 120),
@@ -82,7 +83,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget verticalTab(BoxConstraints constraints, RewardPointsSuccess state) {
+  Widget verticalTab(BoxConstraints constraints) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
         BlocProvider.of<RewardPointsBloc>(context)
@@ -145,9 +146,15 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   state.isRedeemPageOpen == true) {
                 return const RedeemRewardScreen();
               } else {
+                if (state.pageInformation == null ||
+                    state.pageInformation?.currentCredit == null) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return AvailableRewardPoint(
-                  pageInformation: state.pageInformation!,
-                  currentAchievementLevel: pointToShow!.toDouble(),
+                  pageInformation: state.pageInformation,
+                  currentAchievementLevel: state.pointsToShow!,
                   onPress: () {
                     if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
                       BlocProvider.of<RewardPointsBloc>(context)
@@ -159,7 +166,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 );
               }
             }
-            return const SizedBox();
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ),
         EarnPointScreen(boxConstraints: constraints),
@@ -174,22 +183,28 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 )
               : const EdgeInsets.all(0),
           color: const Color(0xffFFEDEC),
-          child: Builder(
-            builder: (context) {
-              List<PageDetail> pageDetails =
-                  state.pageInformation!.pageDetails as List<PageDetail>;
+          child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+            buildWhen: (context, state) {
+              return state is RewardPointsSuccess;
+            },
+            builder: (context, state) {
+              if (state is RewardPointsSuccess) {
+                List<PageDetail> pageDetails =
+                    state.pageInformation!.pageDetails as List<PageDetail>;
 
-              Terms pageDetail = pageDetails.firstWhere((element) {
-                return element.toJson()["entityType"] == "Terms";
-              }) as Terms;
-              return Text(
-                '${pageDetail.text}',
-                style: TextStyle(
-                  fontSize: size(constraints, 14),
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Source Sans Pro",
-                ),
-              );
+                Terms pageDetail = pageDetails.firstWhere((element) {
+                  return element.toJson()["entityType"] == "Terms";
+                }) as Terms;
+                return Text(
+                  '${pageDetail.text}',
+                  style: TextStyle(
+                    fontSize: size(constraints, 14),
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "Source Sans Pro",
+                  ),
+                );
+              }
+              return const SizedBox();
             },
           ),
         )
@@ -197,8 +212,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget rewardPointCardView(
-      BoxConstraints constraints, RewardPointsSuccess state) {
+  Widget rewardPointCardView(BoxConstraints constraints) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -238,36 +252,48 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                           ),
                         ),
                       ),
-                      child: ProgressSlider(
-                        tooltipMessageZeroIndex:
-                            state.pageInformation!.zeroCreditMessage ?? "",
-                        currentPoint:
-                            state.pageInformation!.currentCredit!.toDouble(),
-                        conversionRates:
-                            state.pageInformation!.conversionRates!,
-                        userName: "${Constants.userData?.name ?? ""}",
-                        onChange: (double value) {
-                          setState(() {
-                            pointToShow = value;
-                          });
+                      child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+                        buildWhen: (context, state) {
+                          return state is RewardPointsSuccess;
                         },
-                        width: constraints.maxWidth * 0.390,
+                        builder: (context, state) {
+                          if (state is RewardPointsSuccess) {
+                            if (state.pageInformation!.zeroCreditMessage !=
+                                null) {
+                              return ProgressSlider(
+                                tooltipMessageZeroIndex:
+                                    state.pageInformation!.zeroCreditMessage ??
+                                        "",
+                                currentPoint: state.pointsToShow!,
+                                conversionRates:
+                                    state.pageInformation!.conversionRates!,
+                                userName: "${Constants.userData?.name ?? ""}",
+                                onChange: (double value) {
+                                  context.read<RewardPointsBloc>().add(
+                                        ChangeSliderPoints(value),
+                                      );
+                                },
+                                width: constraints.maxWidth * 0.390,
+                              );
+                            }
+                          }
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        },
                       ),
                     ),
                   )
                 ],
               ),
             ),
-            Expanded(
-              child: verticalTab(constraints, state),
-            )
+            Expanded(child: verticalTab(constraints))
           ],
         ),
       ),
     );
   }
 
-  Widget webView(RewardPointsSuccess state) {
+  Widget webView() {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Container(
@@ -291,7 +317,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: rewardPointCardView(constraints, state),
+                child: rewardPointCardView(constraints),
               )
             ],
           ),
@@ -300,151 +326,164 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget mobileView(RewardPointsSuccess state) {
+  Widget mobileView() {
     Terms? pageDetail;
-    try {
-      List<PageDetail> pageDetails =
-          state.pageInformation!.pageDetails as List<PageDetail>;
-
-      pageDetail = pageDetails.firstWhere((element) {
-        return element.toJson()["entityType"] == "Terms";
-      }) as Terms;
-    } catch (e) {
-      debugPrint(e.toString());
-    }
 
     TabController tabController = TabController(length: 3, vsync: this);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Scaffold(
-          body: state.isRedeemPageOpen!
-              ? const RedeemRewardScreen()
-              : Column(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFFFFFFF),
-                            Color.fromRGBO(255, 252, 252, 0.94),
-                            Color.fromRGBO(255, 241, 240, 0.66),
-                            Color(0xFFFFF1F0),
-                          ],
-                          stops: [0.0, 0.4167, 0.6615, 1.0],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+          body: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+            buildWhen: (context, state) {
+              return state is RewardPointsSuccess;
+            },
+            builder: (context, state) {
+              if (state is RewardPointsSuccess) {
+                if (state.pageInformation?.pageDetails != null) {
+                  List<PageDetail> pageDetails =
+                      state.pageInformation?.pageDetails as List<PageDetail>;
+                  pageDetail = pageDetails.firstWhere((element) {
+                    return element.toJson()["entityType"] == "Terms";
+                  }) as Terms;
+                }
+                return state.isRedeemPageOpen!
+                    ? const RedeemRewardScreen()
+                    : Column(
                         children: [
-                          const SizedBox(height: 17),
-                          Text(
-                            "${Constants.userData?.name ?? ""}",
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          const Text(
-                            "Let's get started to earn rewards & much more!",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          SizedBox(
-                            height: 130,
-                            child: ProgressSlider(
-                                tooltipMessageZeroIndex:
-                                    state.pageInformation!.zeroCreditMessage!,
-                                currentPoint: state
-                                    .pageInformation!.currentCredit!
-                                    .toDouble(),
-                                conversionRates:
-                                    state.pageInformation!.conversionRates!,
-                                width: constraints.maxWidth,
-                                userName: "${Constants.userData?.name ?? ""}",
-                                onChange: (double value) {
-                                  setState(() {
-                                    pointToShow = value;
-                                  });
-                                }),
-                          ),
-                          const SizedBox(
-                            height: 17,
-                          ),
-                          RewardStatus(
-                            pointsToShow: pointToShow!,
-                            pageInformation: state.pageInformation!,
-                            boxConstraints: constraints,
-                          ),
-                          RewardRedeemButton(
-                            boxConstraints: constraints,
-                            onPress: () {
-                              if (hasUserAchievedAnyMileStone(
-                                  state.pageInformation!)) {
-                                BlocProvider.of<RewardPointsBloc>(context)
-                                    .add(ToggleRedeemScreen(true));
-                              }
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 45,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFfff2f1),
-                      ),
-                      child: TabBar(
-                        controller: tabController,
-                        indicator: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xFFBB151B),
-                              width: 1.0,
-                            ),
-                          ),
-                        ),
-                        labelColor: const Color(0xFFBB151B),
-                        labelStyle: TextStyle(
-                          fontSize: size(constraints, 12),
-                          fontFamily: "Source Sans Pro",
-                          color: const Color(0xFFBB151B),
-                        ),
-                        unselectedLabelColor: Colors.black,
-                        tabs: const [
-                          Tab(text: 'EARN MORE'),
-                          Tab(text: 'REDEEMED POINTS'),
-                          Tab(text: 'T&C'),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        controller: tabController,
-                        children: [
-                          EarnPointScreen(boxConstraints: constraints),
-                          RedeemPointsScreen(boxConstraints: constraints),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 12, right: 12, top: 22),
-                            child: Text(
-                              (pageDetail != null && pageDetail.text != null)
-                                  ? pageDetail.text!
-                                  : "",
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                          Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFFFFFFFF),
+                                  Color.fromRGBO(255, 252, 252, 0.94),
+                                  Color.fromRGBO(255, 241, 240, 0.66),
+                                  Color(0xFFFFF1F0),
+                                ],
+                                stops: [0.0, 0.4167, 0.6615, 1.0],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                               ),
                             ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 17),
+                                Text(
+                                  "${Constants.userData?.name ?? ""}",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                const Text(
+                                  "Let's get started to earn rewards & much more!",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                SizedBox(
+                                  height: 130,
+                                  child: state.pageInformation
+                                              ?.zeroCreditMessage !=
+                                          null
+                                      ? ProgressSlider(
+                                          tooltipMessageZeroIndex: state
+                                              .pageInformation!
+                                              .zeroCreditMessage!,
+                                          currentPoint: state.pointsToShow!,
+                                          conversionRates: state
+                                              .pageInformation!
+                                              .conversionRates!,
+                                          width: constraints.maxWidth,
+                                          userName:
+                                              "${Constants.userData?.name ?? ""}",
+                                          onChange: (double value) {
+                                            context
+                                                .read<RewardPointsBloc>()
+                                                .add(
+                                                  ChangeSliderPoints(value),
+                                                );
+                                          },
+                                        )
+                                      : const SizedBox(),
+                                ),
+                                const SizedBox(
+                                  height: 17,
+                                ),
+                                RewardStatus(
+                                  pointsToShow: state.pointsToShow!,
+                                  pageInformation: state.pageInformation!,
+                                  boxConstraints: constraints,
+                                ),
+                                RewardRedeemButton(
+                                  boxConstraints: constraints,
+                                  onPress: () {
+                                    if (hasUserAchievedAnyMileStone(
+                                        state.pageInformation!)) {
+                                      BlocProvider.of<RewardPointsBloc>(context)
+                                          .add(ToggleRedeemScreen(true));
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 45,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFfff2f1),
+                            ),
+                            child: TabBar(
+                              controller: tabController,
+                              indicator: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xFFBB151B),
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              labelColor: const Color(0xFFBB151B),
+                              labelStyle: TextStyle(
+                                fontSize: size(constraints, 12),
+                                fontFamily: "Source Sans Pro",
+                                color: const Color(0xFFBB151B),
+                              ),
+                              unselectedLabelColor: Colors.black,
+                              tabs: const [
+                                Tab(text: 'EARN MORE'),
+                                Tab(text: 'REDEEMED POINTS'),
+                                Tab(text: 'T&C'),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              controller: tabController,
+                              children: [
+                                EarnPointScreen(boxConstraints: constraints),
+                                RedeemPointsScreen(boxConstraints: constraints),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 12, right: 12, top: 22),
+                                  child: Text(
+                                    "${pageDetail?.text}",
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                    ),
-                  ],
-                ),
+                      );
+              }
+              return Container(color: Colors.white);
+            },
+          ),
         );
       },
     );
@@ -454,50 +493,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: const Color(0xFFFFF8F8),
-          body: LayoutBuilder(builder: (context, constraints) {
-            return BlocConsumer<RewardPointsBloc, RewardPointsState>(
-              builder: (context, state) {
-                if (state is RewardPointsSuccess) {
-                  if (kIsWeb) {
-                    return webView(state);
-                  } else {
-                    return mobileView(state);
-                  }
-                } else {
-                  return const SizedBox();
-                }
-              },
-              listener: (context, state) {
-                if (state is RewardPointsInProgress) {
-                  LoadingDialog.showLoadingDialog(context);
-                } else if (state is RewardPointsSuccess) {
-                  setState(() {
-                    pointToShow =
-                        state.pageInformation!.currentCredit!.toDouble();
-                  });
-                  LoadingDialog.hideLoadingDialog(context);
-                  if (state.eventType == 'makePayment') {
-                    _showSuccessDialog(context);
-                  }
-                } else if (state is RewardPointsFailure) {
-                  LoadingDialog.hideLoadingDialog(context);
-                }
-              },
-            );
-          })),
-    );
-  }
-
-  void _showSuccessDialog(
-    BuildContext context,
-  ) async {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return const SuccessDialogBox();
-      },
+        backgroundColor: const Color(0xFFFFF8F8),
+        body: kIsWeb ? webView() : mobileView(),
+      ),
     );
   }
 }

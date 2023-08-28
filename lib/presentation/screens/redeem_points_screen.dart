@@ -195,20 +195,16 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
             const SizedBox(height: 20),
           ],
           Expanded(
-            child: BlocConsumer<RewardPointsBloc, RewardPointsState>(
+            child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+              buildWhen: (context, state) {
+                return state is RewardPointsSuccess;
+              },
               builder: (context, state) {
-                print("pageInformation : builder : $state");
                 if (state is RewardPointsSuccess) {
                   DebitActivity? jsonData =
                       state.pageInformation?.debitActivity;
                   List<String> listOfKeys =
                       jsonData!.debitActivityMap.keys.toList();
-
-                  print(
-                      "pageInformation : ListView : ${json.encode(jsonData.debitActivityMap)}");
-                  print("pageInformation : jsonData : $jsonData");
-                  print("pageInformation : listOfKeys : $listOfKeys");
-
                   return ListView.separated(
                     shrinkWrap: true,
                     itemCount: listOfKeys.length,
@@ -219,11 +215,6 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                         return Transaction.fromJson(
                             json.decode(json.encode(data)));
                       }).toList();
-                      print("listOfKeys:json : ${listOfKeys[index]}");
-
-                      print("pageInformation : transactions : $transactions");
-                      print(
-                          "pageInformation : transactions : ${json.encode(jsonData.debitActivityMap[listOfKeys[index]])}");
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -251,20 +242,15 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                       return const SizedBox(height: 10);
                     },
                   );
-                } else {
-                  return const SizedBox();
                 }
-              },
-              listener: (context, state) {
-                if (state is RewardPointsInProgress) {
-                  LoadingDialog.showLoadingDialog(context);
-                } else if (state is RewardPointsSuccess ||
-                    state is RewardPointsFailure) {
-                  LoadingDialog.hideLoadingDialog(context);
+                if (state is RewardPointsInProgress ||
+                    state is RewardPointsInitial) {
+                  return const Center(child: CircularProgressIndicator());
                 }
+                return Container(color: Colors.white);
               },
             ),
-          ),
+          )
         ],
       ),
     );

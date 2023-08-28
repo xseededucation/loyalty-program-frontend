@@ -141,33 +141,31 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
             const SizedBox(height: 20),
           ],
           Expanded(
-            child: BlocConsumer<RewardPointsBloc, RewardPointsState>(
-              builder: (context, state) {
-                print("pageInformation : builder : $state");
-                if (state is RewardPointsSuccess) {
-                  List<PageDetail> pageDetails =
-                      state.pageInformation!.pageDetails as List<PageDetail>;
-
-                  EarnMoreCredit pageDetail = pageDetails.firstWhere((element) {
-                    return element.toJson()["entityType"] == "EarnMore";
-                  }) as EarnMoreCredit;
-
-                  return earnPointList(pageDetail.textToCredit);
-                } else {
-                  return const SizedBox();
-                }
+            child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+              buildWhen: (context, state) {
+                return state is RewardPointsSuccess;
               },
-              listener: (context, state) {
-                print("pageInformation : listener : $state");
-                if (state is RewardPointsInProgress) {
-                  LoadingDialog.showLoadingDialog(context);
-                } else if (state is RewardPointsSuccess ||
-                    state is RewardPointsFailure) {
-                  LoadingDialog.hideLoadingDialog(context);
+              builder: (context, state) {
+                if (state is RewardPointsSuccess) {
+                  EarnMoreCredit? pageDetail;
+                  if (state.pageInformation?.pageDetails != null) {
+                    List<PageDetail> pageDetails =
+                        state.pageInformation?.pageDetails as List<PageDetail>;
+
+                    pageDetail = pageDetails.firstWhere((element) {
+                      return element.toJson()["entityType"] == "EarnMore";
+                    }) as EarnMoreCredit;
+                  }
+                  if (pageDetail != null) {
+                    return earnPointList(pageDetail.textToCredit);
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
                 }
+                return Container(color: Colors.white);
               },
             ),
-          ),
+          )
         ],
       ),
     );

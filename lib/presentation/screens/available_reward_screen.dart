@@ -9,7 +9,7 @@ class AvailableRewardPoint extends StatelessWidget {
   final VoidCallback onPress;
   final BoxConstraints boxConstraints;
   final double currentAchievementLevel;
-  final PageInformation pageInformation;
+  final PageInformation? pageInformation;
   const AvailableRewardPoint({
     super.key,
     required this.message,
@@ -57,7 +57,9 @@ class AvailableRewardPoint extends StatelessWidget {
               boxConstraints: boxConstraints,
               onPress: onPress,
             ),
-            SizedBox(height: size(boxConstraints, 10)),
+            SizedBox(
+              height: size(boxConstraints, 10),
+            ),
           ],
         ),
       ),

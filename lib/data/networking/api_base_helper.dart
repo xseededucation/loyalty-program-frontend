@@ -29,7 +29,6 @@ class ApiBaseHelper {
     dynamic responseJson;
     try {
       var token = await getToken();
-      print("Authorization token : $token");
       final response =
           await client.get(Uri.parse(Constants.baseUrl + url), headers: {
         'Content-Type': 'application/json',

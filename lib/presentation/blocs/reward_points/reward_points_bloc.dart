@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
 import 'package:loyalty_program_frontend/domain/models/common.dart';
@@ -18,6 +20,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<FetchPageInformationEvent>(_mapFetchPageInformation);
     on<TriggerPaymentEvent>(_mapTriggerPayment);
     on<ToggleRedeemScreen>(_mapToggleRedeemScreen);
+    on<ChangeSliderPoints>(_mapChangeSliderPoint);
   }
 
   RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
@@ -71,6 +74,9 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
 
         rewardPointsSuccess = rewardPointsSuccess.copyWith(
             isRedeemPageOpen: false, pageInformation: commonResponse.data!);
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(
+            pointsToShow:
+                rewardPointsSuccess.pageInformation!.currentCredit!.toDouble());
       }
       emit(rewardPointsSuccess);
     } catch (e) {
@@ -83,11 +89,14 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       TriggerPaymentEvent event, Emitter<RewardPointsState> emit) async {
     try {
       emit(RewardPointsInProgress());
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(eventType: "makePayment");
+      emit(rewardPointsSuccess);
       var response = await rewardPointRepository.makePayment(
           event.creditToRedeem, event.productId);
       if (response["status"] == "success") {
         rewardPointsSuccess =
-            rewardPointsSuccess.copyWith(eventType: "makePayment");     
+            rewardPointsSuccess.copyWith(eventType: "makePayment");
         emit(rewardPointsSuccess);
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
@@ -102,11 +111,19 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     emit(RewardPointsInProgress());
     if (!event.setToOpen) {
       rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: false,eventType: "");
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: false, eventType: "");
     } else {
       rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: true,eventType: "");
+          rewardPointsSuccess.copyWith(isRedeemPageOpen: true, eventType: "");
     }
+    emit(rewardPointsSuccess);
+  }
+
+  void _mapChangeSliderPoint(
+      ChangeSliderPoints event, Emitter<RewardPointsState> emit) {
+    emit(RewardPointsInProgress());
+    rewardPointsSuccess =
+        rewardPointsSuccess.copyWith(pointsToShow: event.points);
     emit(rewardPointsSuccess);
   }
 }
