@@ -48,57 +48,55 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                   ),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${earnMoreCredit[index].text}',
-                              style: TextStyle(
-                                fontSize: size(widget.boxConstraints, 14),
-                                fontWeight:
-                                    kIsWeb ? FontWeight.w600 : FontWeight.w500,
-                                fontFamily: "Source Sans Pro",
-                                color: Colors.black,
-                              ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${earnMoreCredit[index].text}',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: size(widget.boxConstraints, 14),
+                              fontWeight:
+                                  kIsWeb ? FontWeight.w600 : FontWeight.w500,
+                              fontFamily: "Source Sans Pro",
+                              color: Colors.black,
                             ),
-                            const SizedBox(height: kIsWeb ? 8 : 4),
-                            Text(
-                              '${earnMoreCredit[index].subText}',
-                              style: TextStyle(
-                                fontSize: size(widget.boxConstraints, 12),
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Source Sans Pro",
-                                color: const Color(0xff7887A5),
-                              ),
+                          ),
+                          const SizedBox(height: kIsWeb ? 8 : 4),
+                          Text(
+                            '${earnMoreCredit[index].subText}',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: size(widget.boxConstraints, 12),
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Source Sans Pro",
+                              color: const Color(0xff7887A5),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      const Spacer(),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              '+ ${earnMoreCredit[index].credit}',
-                              style: TextStyle(
-                                fontSize: size(widget.boxConstraints, 14),
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "Source Sans Pro",
-                                color: const Color(0xff25AA62),
-                              ),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '+ ${earnMoreCredit[index].credit}',
+                            style: TextStyle(
+                              fontSize: size(widget.boxConstraints, 14),
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "Source Sans Pro",
+                              color: const Color(0xff25AA62),
                             ),
-                            const SizedBox(width: 10),
-                            Image.asset(
-                              'packages/loyalty_program_frontend/assets/images/reward_point_coin.png',
-                              width: size(widget.boxConstraints, 20),
-                              height: size(widget.boxConstraints, 20),
-                            )
-                          ],
-                        ),
-                      ),
+                          ),
+                          const SizedBox(width: 10),
+                          Image.asset(
+                            'packages/loyalty_program_frontend/assets/images/reward_point_coin.png',
+                            width: size(widget.boxConstraints, 20),
+                            height: size(widget.boxConstraints, 20),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),

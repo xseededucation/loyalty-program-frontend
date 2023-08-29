@@ -270,6 +270,7 @@ class Transaction {
   String? refNo;
   String? status;
   String? sourceApp;
+  int? denomination;
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -282,6 +283,7 @@ class Transaction {
       this.refNo,
       this.status,
       this.sourceApp,
+      this.denomination,
       this.createdAt,
       this.updatedAt,
       this.iV});
@@ -293,6 +295,7 @@ class Transaction {
     transactionType = json['transactionType'];
     refNo = json['refNo'];
     status = json['status'];
+    denomination = json['denomination'];
     sourceApp = json['sourceApp'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -307,6 +310,7 @@ class Transaction {
     data['transactionType'] = this.transactionType;
     data['refNo'] = this.refNo;
     data['status'] = this.status;
+    data['denomination'] = this.denomination;
     data['sourceApp'] = this.sourceApp;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
