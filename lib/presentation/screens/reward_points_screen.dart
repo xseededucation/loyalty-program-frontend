@@ -173,39 +173,42 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
         EarnPointScreen(boxConstraints: constraints),
         RedeemPointsScreen(boxConstraints: constraints),
-        Container(
-          padding: kIsWeb
-              ? EdgeInsets.only(
-                  left: size(constraints, 50),
-                  right: size(constraints, 50),
-                  top: size(constraints, 40),
-                  bottom: size(constraints, 20),
-                )
-              : const EdgeInsets.all(0),
-          color: const Color(0xffFFEDEC),
-          child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
-            buildWhen: (context, state) {
-              return state is RewardPointsSuccess;
-            },
-            builder: (context, state) {
-              if (state is RewardPointsSuccess) {
-                List<PageDetail> pageDetails =
-                    state.pageInformation!.pageDetails as List<PageDetail>;
+        SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(minHeight: size(constraints, 350)),
+            padding: kIsWeb
+                ? EdgeInsets.only(
+                    left: size(constraints, 50),
+                    right: size(constraints, 50),
+                    top: size(constraints, 40),
+                    bottom: size(constraints, 20),
+                  )
+                : const EdgeInsets.all(0),
+            color: const Color(0xffFFEDEC),
+            child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+              buildWhen: (context, state) {
+                return state is RewardPointsSuccess;
+              },
+              builder: (context, state) {
+                if (state is RewardPointsSuccess) {
+                  List<PageDetail> pageDetails =
+                      state.pageInformation!.pageDetails as List<PageDetail>;
 
-                Terms pageDetail = pageDetails.firstWhere((element) {
-                  return element.toJson()["entityType"] == "Terms";
-                }) as Terms;
-                return Text(
-                  '${pageDetail.text}',
-                  style: TextStyle(
-                    fontSize: size(constraints, 14),
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Source Sans Pro",
-                  ),
-                );
-              }
-              return const SizedBox();
-            },
+                  Terms pageDetail = pageDetails.firstWhere((element) {
+                    return element.toJson()["entityType"] == "Terms";
+                  }) as Terms;
+                  return Text(
+                    '${pageDetail.text}',
+                    style: TextStyle(
+                      fontSize: size(constraints, 14),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Source Sans Pro",
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
           ),
         )
       ],
@@ -261,6 +264,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             if (state.pageInformation!.zeroCreditMessage !=
                                 null) {
                               return ProgressSlider(
+                                actualPoint: state
+                                    .pageInformation!.currentCredit!
+                                    .toDouble(),
                                 tooltipMessageZeroIndex:
                                     state.pageInformation!.zeroCreditMessage ??
                                         "",
@@ -388,6 +394,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                               ?.zeroCreditMessage !=
                                           null
                                       ? ProgressSlider(
+                                          actualPoint: state
+                                              .pageInformation!.currentCredit!
+                                              .toDouble(),
                                           tooltipMessageZeroIndex: state
                                               .pageInformation!
                                               .zeroCreditMessage!,
@@ -411,11 +420,16 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                 const SizedBox(
                                   height: 17,
                                 ),
-                                RewardStatus(
-                                  pointsToShow: state.pointsToShow!,
-                                  pageInformation: state.pageInformation!,
-                                  boxConstraints: constraints,
-                                ),
+                                state.pageInformation != null &&
+                                        state.pointsToShow != null
+                                    ? RewardStatus(
+                                        pointsToShow: state.pointsToShow!,
+                                        pageInformation: state.pageInformation!,
+                                        boxConstraints: constraints,
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
                                 RewardRedeemButton(
                                   boxConstraints: constraints,
                                   onPress: () {
@@ -467,11 +481,13 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       left: 12, right: 12, top: 22),
-                                  child: Text(
-                                    "${pageDetail?.text}",
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      "${pageDetail?.text}",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ),

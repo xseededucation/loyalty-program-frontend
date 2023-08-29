@@ -32,19 +32,17 @@ class RewardPointsSuccess extends RewardPointsState {
           String? eventType,
           List<ProductList>? products,
           bool? isRedeemPageOpen,
-          double? pointsToShow
-          }) =>
+          double? pointsToShow}) =>
       RewardPointsSuccess(
-        pageInformation: pageInformation ?? this.pageInformation,
-        products: products ?? this.products,
-        eventType: eventType ?? this.eventType,
-        isRedeemPageOpen: isRedeemPageOpen ?? this.isRedeemPageOpen,
-        pointsToShow: pointsToShow??this.pointsToShow
-      );
+          pageInformation: pageInformation ?? this.pageInformation,
+          products: products ?? this.products,
+          eventType: eventType ?? this.eventType,
+          isRedeemPageOpen: isRedeemPageOpen ?? this.isRedeemPageOpen,
+          pointsToShow: pointsToShow ?? this.pointsToShow);
 
   @override
   List<Object> get props =>
-      [pageInformation ?? {}, products!, isRedeemPageOpen!,pointsToShow!];
+      [pageInformation ?? {}, products!, isRedeemPageOpen!, pointsToShow ?? 0];
 
   @override
   String toString() => 'RewardPointsSuccess';

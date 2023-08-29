@@ -6,7 +6,6 @@ import 'package:loyalty_program_frontend/presentation/utils/constants/constant.d
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 
 class SuccessDialogBox extends StatelessWidget {
-  
   const SuccessDialogBox({super.key});
 
   @override
@@ -58,46 +57,53 @@ class SuccessDialogBox extends StatelessWidget {
                             : size(constraints, 14),
                       ),
                     ),
-                    Constants.userData?.email.isNotEmpty? TextSpan(
-                      text:
-                          'registered email ID ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        fontSize: kIsWeb
-                            ? size(constraints, 18)
-                            : size(constraints, 14),
-                      ),
-                    ):TextSpan(),
-                    Constants.userData?.email.isNotEmpty? TextSpan(
-                      text: '${Constants.userData?.email ?? ""} ',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: kIsWeb
-                              ? size(constraints, 18)
-                              : size(constraints, 14),
-                          fontWeight: FontWeight.bold),
-                    ):TextSpan(),
-                    Constants.userData?.mobileNumber.isNotEmpty? TextSpan(
-                      text: 'and phone number ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        fontSize: kIsWeb
-                            ? size(constraints, 18)
-                            : size(constraints, 14),
-                      ),
-                    ):TextSpan(),
-                   Constants.userData?.mobileNumber.isNotEmpty? TextSpan(
-                      text:
-                          '+${Constants.userData?.countryCode ?? ""} ${Constants.userData?.mobileNumber ?? ""}. ',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: kIsWeb
-                              ? size(constraints, 18)
-                              : size(constraints, 14),
-                          fontWeight: FontWeight.bold),
-                    ):TextSpan(),
+                    Constants.userData?.email.isNotEmpty
+                        ? TextSpan(
+                            text: 'registered email ID ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                            ),
+                          )
+                        : const TextSpan(),
+                    Constants.userData?.email.isNotEmpty
+                        ? TextSpan(
+                            text: '${Constants.userData?.email ?? ""} ',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: kIsWeb
+                                    ? size(constraints, 18)
+                                    : size(constraints, 14),
+                                fontWeight: FontWeight.bold),
+                          )
+                        : const TextSpan(),
+                    Constants.userData?.mobileNumber.isNotEmpty
+                        ? TextSpan(
+                            text: 'and phone number ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                            ),
+                          )
+                        : const TextSpan(),
+                    Constants.userData?.mobileNumber.isNotEmpty
+                        ? TextSpan(
+                            text:
+                                '+${Constants.userData?.countryCode ?? ""} ${Constants.userData?.mobileNumber ?? ""}. ',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: kIsWeb
+                                    ? size(constraints, 18)
+                                    : size(constraints, 14),
+                                fontWeight: FontWeight.bold),
+                          )
+                        : const TextSpan(),
                   ],
                 ),
               ),

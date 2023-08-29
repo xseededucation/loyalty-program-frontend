@@ -6,6 +6,7 @@ import 'package:loyalty_program_frontend/presentation/utils/external_packages/to
 
 class ProgressSlider extends StatefulWidget {
   final double currentPoint;
+  final double actualPoint;
   final List<ConversionRates> conversionRates;
   final String userName;
   final Function(double) onChange;
@@ -14,6 +15,7 @@ class ProgressSlider extends StatefulWidget {
   const ProgressSlider(
       {super.key,
       required this.currentPoint,
+      required this.actualPoint,
       required this.conversionRates,
       required this.tooltipMessageZeroIndex,
       required this.userName,
@@ -46,6 +48,8 @@ class _ProgressSliderState extends State<ProgressSlider> {
     ToolTipWrapper.initToolTipController();
     addCurrentAmountToList();
     sortMileStoneBasedOnSequence();
+    getCurrentIndex();
+    modifyListBasedOnCurrentPoint();
     getIndexForMotivationMessage();
     showToolTip();
     super.initState();
@@ -55,29 +59,6 @@ class _ProgressSliderState extends State<ProgressSlider> {
   void dispose() {
     ToolTipWrapper.dispose();
     super.dispose();
-  }
-
-  void getIndexForMotivationMessage() {
-    if (widget.currentPoint > mileStones[mileStones.length - 1].points!) {
-      indexOfCurrentStatus = mileStones.length - 1;
-      indexOfSelectedValue = mileStones.length - 1;
-    }
-    for (int i = 0; i < mileStones.length; i++) {
-      if (widget.currentPoint == mileStones[i].points!) {
-        indexOfSelectedValue = i;
-        indexOfCurrentStatus = i;
-        break;
-      } else if (widget.currentPoint < mileStones[i].points!) {
-        indexOfSelectedValue = i - 1;
-        indexOfCurrentStatus = i - 1;
-        break;
-      }
-    }
-    if (indexOfSelectedValue == mileStones.length - 1) {
-      motivationIndex = -1;
-    } else {
-      motivationIndex = indexOfSelectedValue! + 1;
-    }
   }
 
   void addCurrentAmountToList() {
@@ -95,16 +76,48 @@ class _ProgressSliderState extends State<ProgressSlider> {
       }
     }
     if (!isPresent) {
-      mileStones.sort((a, b) => a.points!.compareTo(b.points!));
-      if (widget.currentPoint < widget.conversionRates.first.credit!) {
-        mileStones.add(
-          MileStone(amount: 0, points: widget.currentPoint, sequence: 0),
-        );
-      } else {
-        mileStones.add(
-          MileStone(amount: 0, points: 0, sequence: 0),
-        );
+      mileStones.add(
+        MileStone(amount: 0, points: 0, sequence: 0),
+      );
+    }
+  }
+
+  void getCurrentIndex() {
+    if (widget.actualPoint > mileStones[mileStones.length - 1].points!) {
+      indexOfSelectedValue = mileStones.length - 1;
+      indexOfCurrentStatus = mileStones.length - 1;
+      return;
+    }
+    for (int i = 0; i < mileStones.length; i++) {
+      if (widget.actualPoint == mileStones[i].points!) {
+        indexOfSelectedValue = i;
+        indexOfCurrentStatus = i;
+        break;
+      } else if (widget.actualPoint < mileStones[i].points!) {
+        indexOfSelectedValue = i - 1;
+        indexOfCurrentStatus = i - 1;
+        break;
       }
+    }
+  }
+
+  void modifyListBasedOnCurrentPoint() {
+    final obj = mileStones[indexOfCurrentStatus!];
+    MileStone newObj = MileStone(
+        amount: obj.amount,
+        points: widget.currentPoint,
+        toolTipMessage: obj.toolTipMessage,
+        sequence: obj.sequence);
+    mileStones.removeAt(indexOfCurrentStatus!);
+    mileStones.add(newObj);
+    sortMileStoneBasedOnSequence();
+  }
+
+  void getIndexForMotivationMessage() {
+    if (indexOfSelectedValue == mileStones.length - 1) {
+      motivationIndex = -1;
+    } else {
+      motivationIndex = indexOfSelectedValue! + 1;
     }
   }
 
