@@ -70,7 +70,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                               : size(constraints, 14),
                           fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(
+                   Constants.userData?.email.isNotEmpty? TextSpan(
                       text: 'will be send to your registered email ID ',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -79,8 +79,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                             ? size(constraints, 18)
                             : size(constraints, 14),
                       ),
-                    ),
-                    TextSpan(
+                    ):TextSpan(),
+                    Constants.userData?.email.isNotEmpty?TextSpan(
                       text: '${Constants.userData?.email ?? ""} ',
                       style: TextStyle(
                           color: Colors.black,
@@ -88,8 +88,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                               ? size(constraints, 18)
                               : size(constraints, 14),
                           fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
+                    ):TextSpan(),
+                    Constants.userData?.mobileNumber.isNotEmpty?TextSpan(
                       text: 'and phone number ',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -98,8 +98,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                             ? size(constraints, 18)
                             : size(constraints, 14),
                       ),
-                    ),
-                    TextSpan(
+                    ):TextSpan(),
+                    Constants.userData?.mobileNumber.isNotEmpty?TextSpan(
                       text:
                           '+${Constants.userData?.countryCode ?? ""}  ${Constants.userData?.mobileNumber ?? ""}',
                       style: TextStyle(
@@ -108,7 +108,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                               ? size(constraints, 18)
                               : size(constraints, 14),
                           fontWeight: FontWeight.bold),
-                    ),
+                    ):TextSpan(),
                   ],
                 ),
               ),
