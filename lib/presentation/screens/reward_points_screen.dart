@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,8 +10,6 @@ import 'package:loyalty_program_frontend/presentation/utils/constants/constant.d
 import 'package:loyalty_program_frontend/presentation/utils/external_packages/tooltip_wrapper.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/has_user_achieved_any_milestone.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 
 import 'earn_points_screen.dart';
@@ -28,10 +24,12 @@ class RewardPointScreen extends StatefulWidget {
 
 class _RewardPointScreenState extends State<RewardPointScreen>
     with TickerProviderStateMixin {
+  RewardPointsBloc? _bloc;
   @override
   void initState() {
     Constants.userData = widget.userDetail;
-    BlocProvider.of<RewardPointsBloc>(context).add(FetchPageInformationEvent());
+    _bloc = BlocProvider.of<RewardPointsBloc>(context);
+    _bloc?.add(FetchPageInformationEvent());
 
     super.initState();
   }
@@ -87,7 +85,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     return VerticalTabView(
       onSelect: (int tabIndex) {
         BlocProvider.of<RewardPointsBloc>(context)
-            .add(ToggleRedeemScreen(false));
+            .add(FetchPageInformationEvent());
         if (tabIndex == 0) {
           ToolTipWrapper.showToolTip();
         }
@@ -138,9 +136,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
       ],
       contents: <Widget>[
-        BlocBuilder<RewardPointsBloc, RewardPointsState>(
-          bloc: context.read<RewardPointsBloc>(),
-          builder: (_, state) {
+        BlocBuilder(
+          bloc: _bloc,
+          builder: (context, state) {
             if (state is RewardPointsSuccess) {
               if (state.isRedeemPageOpen != null &&
                   state.isRedeemPageOpen == true) {
@@ -255,10 +253,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                           ),
                         ),
                       ),
-                      child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
-                        buildWhen: (context, state) {
-                          return state is RewardPointsSuccess;
-                        },
+                      child: BlocBuilder(
+                        bloc: _bloc,
                         builder: (context, state) {
                           if (state is RewardPointsSuccess) {
                             if (state.pageInformation!.zeroCreditMessage !=

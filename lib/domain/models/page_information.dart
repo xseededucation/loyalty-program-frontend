@@ -4,6 +4,7 @@ class PageInformation {
   List<EventToCreditMap>? eventToCreditMap;
   List<PageDetail>? pageDetails;
   String? zeroCreditMessage;
+  String? zeroCreditHeaderMessage;
   DebitActivity? debitActivity;
 
   PageInformation(
@@ -21,6 +22,7 @@ class PageInformation {
       });
     }
     zeroCreditMessage = json['zeroCreditMessage'];
+    zeroCreditHeaderMessage = json['zeroCreditHeaderMessage'];
     currentCredit = json['currentCredit'];
     if (json['eventToCreditMap'] != null) {
       eventToCreditMap = <EventToCreditMap>[];
@@ -47,6 +49,7 @@ class PageInformation {
     }
     data['currentCredit'] = this.currentCredit;
     data['zeroCreditMessage'] = this.zeroCreditMessage;
+    data['zeroCreditHeaderMessage'] = this.zeroCreditHeaderMessage;
     if (this.eventToCreditMap != null) {
       data['eventToCreditMap'] =
           this.eventToCreditMap!.map((v) => v.toJson()).toList();
@@ -66,6 +69,7 @@ class ConversionRates {
   int? denomination;
   int? sequenceNo;
   String? toolTipText;
+  String? headerText;
 
   ConversionRates(
       {this.credit, this.denomination, this.sequenceNo, this.toolTipText});
@@ -75,6 +79,7 @@ class ConversionRates {
     denomination = json['denomination'];
     sequenceNo = json['sequenceNo'];
     toolTipText = json['toolTipText'];
+    headerText = json['headerText'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,6 +88,7 @@ class ConversionRates {
     data['denomination'] = this.denomination;
     data['sequenceNo'] = this.sequenceNo;
     data['toolTipText'] = this.toolTipText;
+    data['headerText'] = this.headerText;
     return data;
   }
 }

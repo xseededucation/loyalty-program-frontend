@@ -75,8 +75,10 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
         rewardPointsSuccess = rewardPointsSuccess.copyWith(
             isRedeemPageOpen: false, pageInformation: commonResponse.data!);
         rewardPointsSuccess = rewardPointsSuccess.copyWith(
-            pointsToShow:
-                rewardPointsSuccess.pageInformation!.currentCredit!.toDouble());
+          pointsToShow:
+              rewardPointsSuccess.pageInformation!.currentCredit!.toDouble(),
+          eventType: "",
+        );
       }
       emit(rewardPointsSuccess);
     } catch (e) {
