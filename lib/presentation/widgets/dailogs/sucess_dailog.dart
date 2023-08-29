@@ -117,7 +117,7 @@ class SuccessDialogBox extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     BlocProvider.of<RewardPointsBloc>(context)
-                        .add(ToggleRedeemScreen(false));
+                        .add(FetchPageInformationEvent());
                     Navigator.pop(context);
                   },
                   child: Container(
