@@ -159,7 +159,6 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                           .add(ToggleRedeemScreen(true));
                     }
                   },
-                  message: 'Let’s get started to earn rewards & much more!',
                   boxConstraints: constraints,
                 );
               }
