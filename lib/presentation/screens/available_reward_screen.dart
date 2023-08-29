@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
+import 'package:loyalty_program_frontend/presentation/utils/helpers/has_user_achieved_any_milestone.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart';
@@ -23,7 +24,12 @@ class AvailableRewardPoint extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        constraints: BoxConstraints(minHeight: size(boxConstraints, 497)),
+        constraints: BoxConstraints(
+          minHeight: size(
+            boxConstraints,
+            350,
+          ),
+        ),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -54,6 +60,7 @@ class AvailableRewardPoint extends StatelessWidget {
               pageInformation: pageInformation,
             ),
             RewardRedeemButton(
+              isActive: hasUserAchievedAnyMileStone(pageInformation!),
               boxConstraints: boxConstraints,
               onPress: onPress,
             ),

@@ -6,33 +6,44 @@ class RewardRedeemButton extends StatelessWidget {
   final VoidCallback onPress;
 
   final BoxConstraints boxConstraints;
+  final bool isActive;
   const RewardRedeemButton(
-      {super.key, required this.boxConstraints, required this.onPress});
+      {super.key,
+      required this.boxConstraints,
+      required this.onPress,
+      this.isActive = true});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPress,
+      onTap: () {
+        if (isActive) {
+          onPress();
+        }
+      },
       behavior: HitTestBehavior.opaque,
       child: Container(
         height: kIsWeb ? size(boxConstraints, 50) : 54,
         width: size(boxConstraints, 350),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          gradient: const LinearGradient(
-            colors: [
-              Color(0xFFba181c),
-              Color(0xFF2a4498),
-            ],
-            stops: [0.0, 1.0],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          color: isActive ? null : const Color(0xffa6a6a6),
+          gradient: isActive
+              ? const LinearGradient(
+                  colors: [
+                    Color(0xFFba181c),
+                    Color(0xFF2a4498),
+                  ],
+                  stops: [0.0, 1.0],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                )
+              : null,
         ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
+            color: isActive ? Colors.white : const Color(0xfffefdfc),
           ),
           margin: const EdgeInsets.all(1),
           padding: EdgeInsets.only(
@@ -51,24 +62,30 @@ class RewardRedeemButton extends StatelessWidget {
                       'Redeem Reward Points',
                       overflow: TextOverflow.fade,
                       style: TextStyle(
-                          fontSize: size(boxConstraints, 16),
-                          fontWeight: FontWeight.w500),
+                        fontSize: size(boxConstraints, 16),
+                        fontWeight: FontWeight.w500,
+                        color: isActive ? null : const Color(0xffa6a6a6),
+                      ),
                     ),
                     Text(
                       'Convert your earned points to a gift card',
                       overflow: TextOverflow.fade,
                       style: TextStyle(
                         fontSize: size(boxConstraints, 12),
-                        color: const Color(0xff787F8C),
+                        color: isActive
+                            ? const Color(0xff787F8C)
+                            : const Color(0xffa6a6a6),
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(
+              Icon(
                 size: 18,
                 Icons.chevron_right,
-                color: Color(0xff575757),
+                color: isActive
+                    ? const Color(0xff575757)
+                    : const Color(0xffa6a6a6),
               )
             ],
           ),
