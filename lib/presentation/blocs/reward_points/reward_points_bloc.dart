@@ -98,6 +98,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
         rewardPointsSuccess =
             rewardPointsSuccess.copyWith(eventType: "makePayment");
         emit(rewardPointsSuccess);
+        add(FetchPageInformationEvent());
       } else {
         emit(RewardPointsFailure("${response["message"]}"));
       }

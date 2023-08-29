@@ -49,7 +49,7 @@ class SuccessDialogBox extends StatelessWidget {
                   children: <TextSpan>[
                     TextSpan(
                       text:
-                          'Your coupon code has been successfully sent to your registered email ID ',
+                          'Your coupon code has been successfully sent to your ',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
@@ -58,7 +58,18 @@ class SuccessDialogBox extends StatelessWidget {
                             : size(constraints, 14),
                       ),
                     ),
-                    TextSpan(
+                    Constants.userData?.email.isNotEmpty? TextSpan(
+                      text:
+                          'registered email ID ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontSize: kIsWeb
+                            ? size(constraints, 18)
+                            : size(constraints, 14),
+                      ),
+                    ):TextSpan(),
+                    Constants.userData?.email.isNotEmpty? TextSpan(
                       text: '${Constants.userData?.email ?? ""} ',
                       style: TextStyle(
                           color: Colors.black,
@@ -66,8 +77,8 @@ class SuccessDialogBox extends StatelessWidget {
                               ? size(constraints, 18)
                               : size(constraints, 14),
                           fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
+                    ):TextSpan(),
+                    Constants.userData?.mobileNumber.isNotEmpty? TextSpan(
                       text: 'and phone number ',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -76,8 +87,8 @@ class SuccessDialogBox extends StatelessWidget {
                             ? size(constraints, 18)
                             : size(constraints, 14),
                       ),
-                    ),
-                    TextSpan(
+                    ):TextSpan(),
+                   Constants.userData?.mobileNumber.isNotEmpty? TextSpan(
                       text:
                           '+${Constants.userData?.countryCode ?? ""} ${Constants.userData?.mobileNumber ?? ""}. ',
                       style: TextStyle(
@@ -86,7 +97,7 @@ class SuccessDialogBox extends StatelessWidget {
                               ? size(constraints, 18)
                               : size(constraints, 14),
                           fontWeight: FontWeight.bold),
-                    ),
+                    ):TextSpan(),
                   ],
                 ),
               ),

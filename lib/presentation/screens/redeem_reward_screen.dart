@@ -60,13 +60,15 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                 currentCreditValue.text =
                     state.pageInformation!.currentCredit.toString();
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  currentCreditValue.text =
+                 setState(() {
+                    currentCreditValue.text =
                       RedeemRewardUtils.findNearestLastCredit(convertedList,
                               state.pageInformation?.currentCredit ?? 0)
                           .toString();
                   nearestCurrentCredit =
                       RedeemRewardUtils.findNearestLastCredit(convertedList,
                           state.pageInformation?.currentCredit ?? 0);
+                 });
                 });
               }
               int worthValue = RedeemRewardUtils.findDenomination(

@@ -9,6 +9,7 @@ import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 
 class RedeemPointsScreen extends StatefulWidget {
   final BoxConstraints boxConstraints;
@@ -199,42 +200,63 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                         ? emptyRedeemListBox(state)
                         : emptyRedeemListBoxMobile(state);
                   }
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: listOfKeys.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      List<dynamic> transactions = jsonData
-                          .debitActivityMap[listOfKeys[index]]
-                          .map((dynamic data) {
-                        return Transaction.fromJson(
-                            json.decode(json.encode(data)));
-                      }).toList();
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          redeemPointItemHeader(listOfKeys[index]),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            physics: const ScrollPhysics(),
-                            itemCount: transactions.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return redeemPointItemBody(transactions, index);
-                            },
-                            separatorBuilder: (context, index) {
-                              return const Divider(
-                                height: 1,
-                                color: Color(0xffcccdcd),
-                              );
-                            },
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (kIsWeb) ...[
+                        Text(
+                          "View your redeemed reward points.",
+                          style: TextStyle(
+                            fontSize: size(widget.boxConstraints, 15),
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Source Sans Pro",
+                            color: Colors.black,
                           ),
-                        ],
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(height: 10);
-                    },
+                        ),
+                        const SizedBox(height: 18,)
+                      ],
+                      Expanded(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: listOfKeys.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            List<dynamic> transactions = jsonData
+                                .debitActivityMap[listOfKeys[index]]
+                                .map((dynamic data) {
+                              return Transaction.fromJson(
+                                  json.decode(json.encode(data)));
+                            }).toList();
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                redeemPointItemHeader(listOfKeys[index]),
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  physics: const ScrollPhysics(),
+                                  itemCount: transactions.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return redeemPointItemBody(
+                                        transactions, index);
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const Divider(
+                                      height: 1,
+                                      color: Color(0xffcccdcd),
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(height: 10);
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 }
                 if (state is RewardPointsInProgress ||
@@ -412,7 +434,9 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
           ),
           state.pageInformation!.currentCredit! < 3000
               ? InkWell(
-                  onTap: () {},
+                  onTap: () {
+                  
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     height: size(widget.boxConstraints, 40),
@@ -432,7 +456,9 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                 )
               : RewardRedeemButton(
                   boxConstraints: widget.boxConstraints,
-                  onPress: () {},
+                  onPress: () {
+                  
+                  },
                 )
         ],
       ),
