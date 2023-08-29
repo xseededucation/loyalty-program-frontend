@@ -426,16 +426,24 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                     : const Center(
                                         child: CircularProgressIndicator(),
                                       ),
-                                RewardRedeemButton(
-                                  boxConstraints: constraints,
-                                  onPress: () {
-                                    if (hasUserAchievedAnyMileStone(
-                                        state.pageInformation!)) {
-                                      BlocProvider.of<RewardPointsBloc>(context)
-                                          .add(ToggleRedeemScreen(true));
-                                    }
-                                  },
-                                )
+                                state.pageInformation != null &&
+                                        state.pageInformation!
+                                                .conversionRates !=
+                                            null
+                                    ? RewardRedeemButton(
+                                        isActive: hasUserAchievedAnyMileStone(
+                                            state.pageInformation!),
+                                        boxConstraints: constraints,
+                                        onPress: () {
+                                          if (hasUserAchievedAnyMileStone(
+                                              state.pageInformation!)) {
+                                            BlocProvider.of<RewardPointsBloc>(
+                                                    context)
+                                                .add(ToggleRedeemScreen(true));
+                                          }
+                                        },
+                                      )
+                                    : const SizedBox(),
                               ],
                             ),
                           ),
