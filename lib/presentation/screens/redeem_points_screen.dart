@@ -95,7 +95,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                 ),
                 const SizedBox(height: kIsWeb ? 10 : 6),
                 Text(
-                  'You have redeemed ₹500',
+                  'You have redeemed ₹${transaction.denomination}',
                   style: TextStyle(
                     fontSize: size(widget.boxConstraints, 12),
                     fontWeight: FontWeight.w500,
@@ -213,7 +213,9 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 18,)
+                        const SizedBox(
+                          height: 18,
+                        )
                       ],
                       Expanded(
                         child: ListView.separated(
@@ -434,9 +436,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
           ),
           state.pageInformation!.currentCredit! < 3000
               ? InkWell(
-                  onTap: () {
-                  
-                  },
+                  onTap: () {},
                   child: Container(
                     alignment: Alignment.center,
                     height: size(widget.boxConstraints, 40),
@@ -456,9 +456,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                 )
               : RewardRedeemButton(
                   boxConstraints: widget.boxConstraints,
-                  onPress: () {
-                  
-                  },
+                  onPress: () {},
                 )
         ],
       ),
