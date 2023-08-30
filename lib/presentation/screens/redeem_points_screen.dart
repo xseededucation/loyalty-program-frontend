@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_bloc.dart';
+import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_event.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
@@ -307,7 +308,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
           ),
           state.pageInformation!.currentCredit! < 3000
               ? InkWell(
-                  onTap: () {},
+                  onTap: () {context.read<RewardPointsBloc>().add(ChangeTabIndex(1));},
                   child: Container(
                     alignment: Alignment.center,
                     height: size(widget.boxConstraints, 40),
@@ -341,124 +342,130 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
     return SizedBox(
       height: widget.boxConstraints.maxHeight,
       width: widget.boxConstraints.maxWidth,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (kIsWeb) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  state.pageInformation!.currentCredit! < 3000
-                      ? 'Earn at least 3000 reward points in order to redeem & get a reward.'
-                      : 'Looks like you haven’t yet redeemed any reward points.',
-                  style: TextStyle(
-                    fontSize: size(widget.boxConstraints, 15),
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Source Sans Pro",
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-          ],
-          Text(
-            'Your Reward Points',
-            style: TextStyle(
-              fontSize: size(widget.boxConstraints, 16),
-              fontWeight: FontWeight.w600,
-              color: const Color(0xffba181c),
-            ),
-          ),
-          SizedBox(
-            height: kIsWeb ? size(widget.boxConstraints, 18) : 12,
-          ),
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: Container(
-              height: size(widget.boxConstraints, 180),
-              width: size(widget.boxConstraints, 180),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFFFFFFFF),
-                    Color.fromRGBO(255, 252, 252, 0.94),
-                    Color.fromRGBO(255, 241, 240, 0.66),
-                    Color(0xFFfac8b2),
-                  ],
-                  stops: [0.0, 0.4167, 0.6615, 1.0],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 3,
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (kIsWeb) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    state.pageInformation!.currentCredit! < 3000
+                        ? 'Earn at least 3000 reward points in order to redeem & get a reward.'
+                        : 'Looks like you haven’t yet redeemed any reward points.',
+                    style: TextStyle(
+                      fontSize: size(widget.boxConstraints, 15),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Source Sans Pro",
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: kIsWeb ? size(widget.boxConstraints, 38) : 20,
+              const SizedBox(height: 30),
+            ],
+            Text(
+              'Your Reward Points',
+              style: TextStyle(
+                fontSize: size(widget.boxConstraints, 16),
+                fontWeight: FontWeight.w600,
+                color: const Color(0xffba181c),
+              ),
+            ),
+            SizedBox(
+              height: kIsWeb ? size(widget.boxConstraints, 18) : 12,
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Container(
+                height: size(widget.boxConstraints, 180),
+                width: size(widget.boxConstraints, 180),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFFFFFFFF),
+                      Color.fromRGBO(255, 252, 252, 0.94),
+                      Color.fromRGBO(255, 241, 240, 0.66),
+                      Color(0xFFfac8b2),
+                    ],
+                    stops: [0.0, 0.4167, 0.6615, 1.0],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
-                  SizedBox(
-                    height: kIsWeb ? size(widget.boxConstraints, 65) : 60,
-                    width: size(widget.boxConstraints, 65),
-                    child: Image.asset(
-                      'assets/images/coin.png',
-                      package: 'loyalty_program_frontend',
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 3,
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
                     ),
-                  ),
-                  SizedBox(
-                      height: kIsWeb ? size(widget.boxConstraints, 15) : 8),
-                  Text(
-                    state.pageInformation?.currentCredit.toString() ?? "",
-                    style: TextStyle(
-                      fontSize: kIsWeb ? size(widget.boxConstraints, 20) : 20,
-                      fontWeight: FontWeight.w900,
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: kIsWeb ? size(widget.boxConstraints, 38) : 20,
+                    ),
+                    SizedBox(
+                      height: kIsWeb ? size(widget.boxConstraints, 65) : 60,
+                      width: size(widget.boxConstraints, 65),
+                      child: Image.asset(
+                        'assets/images/coin.png',
+                        package: 'loyalty_program_frontend',
+                      ),
+                    ),
+                    SizedBox(
+                        height: kIsWeb ? size(widget.boxConstraints, 15) : 8),
+                    Text(
+                      state.pageInformation?.currentCredit.toString() ?? "",
+                      style: TextStyle(
+                        fontSize: kIsWeb ? size(widget.boxConstraints, 20) : 20,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size(widget.boxConstraints, 30),
+            ),
+            state.pageInformation!.currentCredit! < 3000
+                ? InkWell(
+                    onTap: () {
+                      context.read<RewardPointsBloc>().add(ChangeTabIndex(1));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: size(widget.boxConstraints, 40),
+                      width: size(widget.boxConstraints, 152),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Color(0xFFba181c)),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: Text(
+                        "Earn More Points",
+                        style: TextStyle(
+                            color: Color(0xFFba181c),
+                            fontSize: size(widget.boxConstraints, 14),
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   )
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: size(widget.boxConstraints, 30),
-          ),
-          state.pageInformation!.currentCredit! < 3000
-              ? InkWell(
-                  onTap: () {},
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: size(widget.boxConstraints, 40),
-                    width: size(widget.boxConstraints, 152),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Color(0xFFba181c)),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text(
-                      "Earn More Points",
-                      style: TextStyle(
-                          color: Color(0xFFba181c),
-                          fontSize: size(widget.boxConstraints, 14),
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                )
-              : RewardRedeemButton(
-                  boxConstraints: widget.boxConstraints,
-                  onPress: () {},
-                )
-        ],
+                : RewardRedeemButton(
+                    boxConstraints: widget.boxConstraints,
+                    onPress: () async{
+                      context.read<RewardPointsBloc>().add(ChangeTabIndex(0));                     
+                    },
+                  )
+          ],
+        ),
       ),
     );
   }

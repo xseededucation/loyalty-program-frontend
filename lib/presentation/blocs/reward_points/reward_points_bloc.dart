@@ -21,12 +21,15 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<TriggerPaymentEvent>(_mapTriggerPayment);
     on<ToggleRedeemScreen>(_mapToggleRedeemScreen);
     on<ChangeSliderPoints>(_mapChangeSliderPoint);
+    on<ChangeTabIndex>(_mapChangeTabIndex);
   }
 
   RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
       products: [],
       pageInformation: PageInformation(),
-      isRedeemPageOpen: false);
+      isRedeemPageOpen: false,
+      isEligibleForReward: false,
+      changeTabIndex: {});
 
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
@@ -44,13 +47,19 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
         response["data"].forEach((product) {
           products.add(ProductList.fromJson(product));
         });
-        rewardPointsSuccess = rewardPointsSuccess.copyWith(products: products);
+        rewardPointsSuccess = rewardPointsSuccess.copyWith(
+            products: products, isEligibleForReward: true);
         return emit(rewardPointsSuccess);
       } else {
-        emit(RewardPointsFailure("${response["message"]}"));
+        rewardPointsSuccess = rewardPointsSuccess
+            .copyWith(products: [], isEligibleForReward: false);
+        emit(rewardPointsSuccess);
+        // emit(RewardPointsFailure("${response["message"]}"));
       }
     } catch (error) {
-      emit(RewardPointsFailure("$error"));
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(products: [], isEligibleForReward: true);
+      return emit(rewardPointsSuccess);
     }
   }
 
@@ -113,11 +122,11 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       ToggleRedeemScreen event, Emitter<RewardPointsState> emit) async {
     emit(RewardPointsInProgress());
     if (!event.setToOpen) {
-      rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: false, eventType: "");
+      rewardPointsSuccess = rewardPointsSuccess
+          .copyWith(isRedeemPageOpen: false, eventType: "", changeTabIndex: {});
     } else {
-      rewardPointsSuccess =
-          rewardPointsSuccess.copyWith(isRedeemPageOpen: true, eventType: "");
+      rewardPointsSuccess = rewardPointsSuccess
+          .copyWith(isRedeemPageOpen: true, eventType: "", changeTabIndex: {});
     }
     emit(rewardPointsSuccess);
   }
@@ -128,5 +137,20 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     rewardPointsSuccess =
         rewardPointsSuccess.copyWith(pointsToShow: event.points);
     emit(rewardPointsSuccess);
+  }
+
+  void _mapChangeTabIndex(
+      ChangeTabIndex event, Emitter<RewardPointsState> emit) {
+    emit(RewardPointsInProgress());
+    rewardPointsSuccess =
+        rewardPointsSuccess.copyWith(changeTabIndex: {"index": event.index});
+    emit(rewardPointsSuccess);
+    rewardPointsSuccess = rewardPointsSuccess.copyWith(changeTabIndex: {});
+    emit(rewardPointsSuccess);
+    if (event.index == 0) {
+      Future.delayed(const Duration(milliseconds: 900), () {
+        add(ToggleRedeemScreen(true));
+      });
+    }
   }
 }
