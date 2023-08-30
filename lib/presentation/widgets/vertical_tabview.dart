@@ -1,6 +1,9 @@
 library flutter_horizontal_vertical_tabview;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_bloc.dart';
+import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
 
 enum IndicatorSide { start, end }
 
@@ -90,133 +93,152 @@ class _VerticalTabViewState extends State<VerticalTabView>
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: widget.direction,
-      child: Container(
-        color: widget.backgroundColor,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: const Color(0xffCCCDCD),
-                        width: 1.0,
+    return BlocListener<RewardPointsBloc, RewardPointsState>(
+      listenWhen: (previous, current) {
+        return previous != current;
+      },
+      listener: (context, state) {
+        if (state is RewardPointsSuccess) {
+          if (state.changeTabIndex?['index'] != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              pageController.jumpToPage(state.changeTabIndex?['index']??0);
+               _selectTab(state.changeTabIndex?['index']??0);
+              setState(() {
+                
+              });
+            });
+          }
+        }
+      },
+      child: Directionality(
+        textDirection: widget.direction,
+        child: Container(
+          color: widget.backgroundColor,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: const Color(0xffCCCDCD),
+                          width: 1.0,
+                        ),
                       ),
-                    ),
-                    width: widget.tabsWidth,
-                    child: ListView.builder(
-                      itemCount: widget.tabs.length,
-                      itemBuilder: (context, index) {
-                        Tab tab = widget.tabs[index];
+                      width: widget.tabsWidth,
+                      child: ListView.builder(
+                        itemCount: widget.tabs.length,
+                        itemBuilder: (context, index) {
+                          Tab tab = widget.tabs[index];
 
-                        Alignment alignment = Alignment.centerLeft;
-                        if (widget.direction == TextDirection.rtl) {
-                          alignment = Alignment.centerRight;
-                        }
+                          Alignment alignment = Alignment.centerLeft;
+                          if (widget.direction == TextDirection.rtl) {
+                            alignment = Alignment.centerRight;
+                          }
 
-                        Widget child;
-                        if (tab.child != null) {
-                          child = tab.child!;
-                        } else {
-                          child = SizedBox(
-                            width: widget.tabsWidth,
-                            child: Text(
-                              tab.text!,
-                              softWrap: true,
-                              style: _selectedIndex == index
-                                  ? widget.selectedTabTextStyle
-                                  : widget.tabTextStyle,
-                            ),
-                          );
-                        }
+                          Widget child;
+                          if (tab.child != null) {
+                            child = tab.child!;
+                          } else {
+                            child = SizedBox(
+                              width: widget.tabsWidth,
+                              child: Text(
+                                tab.text!,
+                                softWrap: true,
+                                style: _selectedIndex == index
+                                    ? widget.selectedTabTextStyle
+                                    : widget.tabTextStyle,
+                              ),
+                            );
+                          }
 
-                        Color itemBGColor = widget.tabBackgroundColor;
-                        if (_selectedIndex == index) {
-                          itemBGColor = widget.selectedTabBackgroundColor;
-                        }
+                          Color itemBGColor = widget.tabBackgroundColor;
+                          if (_selectedIndex == index) {
+                            itemBGColor = widget.selectedTabBackgroundColor;
+                          }
 
-                        late double? left, right;
-                        if (widget.direction == TextDirection.rtl) {
-                          left = (widget.indicatorSide == IndicatorSide.end)
-                              ? 0
-                              : null;
-                          right = (widget.indicatorSide == IndicatorSide.start)
-                              ? 0
-                              : null;
-                        } else {
-                          left = (widget.indicatorSide == IndicatorSide.start)
-                              ? 0
-                              : null;
-                          right = (widget.indicatorSide == IndicatorSide.end)
-                              ? 0
-                              : null;
-                        }
+                          late double? left, right;
+                          if (widget.direction == TextDirection.rtl) {
+                            left = (widget.indicatorSide == IndicatorSide.end)
+                                ? 0
+                                : null;
+                            right =
+                                (widget.indicatorSide == IndicatorSide.start)
+                                    ? 0
+                                    : null;
+                          } else {
+                            left = (widget.indicatorSide == IndicatorSide.start)
+                                ? 0
+                                : null;
+                            right = (widget.indicatorSide == IndicatorSide.end)
+                                ? 0
+                                : null;
+                          }
 
-                        return Stack(
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                _changePageByTapView = true;
-                                setState(() {
-                                  _selectTab(index);
-                                });
-                                pageController.animateToPage(index,
-                                    duration: widget.changePageDuration,
-                                    curve: widget.changePageCurve);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: itemBGColor,
-                                  border: const Border(
-                                    bottom: BorderSide(
-                                      color: Color(0xffCCCDCD),
-                                      width: 1.0,
+                          return Stack(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  _changePageByTapView = true;
+                                  setState(() {
+                                    _selectTab(index);
+                                  });
+                                  pageController.animateToPage(index,
+                                      duration: widget.changePageDuration,
+                                      curve: widget.changePageCurve);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: itemBGColor,
+                                    border: const Border(
+                                      bottom: BorderSide(
+                                        color: Color(0xffCCCDCD),
+                                        width: 1.0,
+                                      ),
                                     ),
                                   ),
+                                  alignment: alignment,
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                    top: 16,
+                                    bottom: 16,
+                                  ),
+                                  child: child,
                                 ),
-                                alignment: alignment,
-                                padding: const EdgeInsets.only(
-                                  left: 20,
-                                  top: 16,
-                                  bottom: 16,
-                                ),
-                                child: child,
                               ),
-                            ),
-                          ],
-                        );
-                      },
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: PageView.builder(
-                      scrollDirection: widget.contentScrollAxis,
-                      physics: NeverScrollableScrollPhysics(),
-                      onPageChanged: (index) {
-                        if (_changePageByTapView == false) {
-                          _selectTab(index);
-                        }
-                        if (_selectedIndex == index) {
-                          _changePageByTapView = false;
-                        }
-                        setState(() {});
-                      },
-                      controller: pageController,
-                      itemCount: widget.contents.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return widget.contents[index];
-                      },
+                    Expanded(
+                      child: PageView.builder(
+                        scrollDirection: widget.contentScrollAxis,
+                        physics: NeverScrollableScrollPhysics(),
+                        onPageChanged: (index) {
+                          if (_changePageByTapView == false) {
+                            _selectTab(index);
+                          }
+                          if (_selectedIndex == index) {
+                            _changePageByTapView = false;
+                          }
+                          setState(() {});
+                        },
+                        controller: pageController,
+                        itemCount: widget.contents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return widget.contents[index];
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

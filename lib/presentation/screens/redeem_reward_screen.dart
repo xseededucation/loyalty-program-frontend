@@ -74,6 +74,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
               int worthValue = RedeemRewardUtils.findDenomination(
                   convertedList, int.parse(currentCreditValue.text));
               return Container(
+                height: constraints.maxHeight,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -87,297 +88,302 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                     end: Alignment.bottomCenter,
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: kIsWeb
-                              ? size(constraints, 50)
-                              : size(constraints, 12),
-                          top: kIsWeb
-                              ? size(constraints, 40)
-                              : size(constraints, 12)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Redeem Reward Points",
-                            style: TextStyle(
-                                fontSize: kIsWeb
-                                    ? size(constraints, 22)
-                                    : size(constraints, 16),
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            height: kIsWeb
-                                ? size(constraints, 8)
-                                : size(constraints, 4),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Create a discount coupon and use it during checkout.",
-                                style: TextStyle(
-                                  fontSize: kIsWeb
-                                      ? size(constraints, 18)
-                                      : size(constraints, 14),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Image.asset(
-                                'packages/loyalty_program_frontend/assets/images/gift_box.png',
-                                width: size(constraints, 25),
-                                height: size(constraints, 26),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: size(constraints, 50),
-                        ),
-                        SizedBox(
-                          height: size(constraints, 200),
-                          child: Stack(
-                            children: [
-                              PageView.builder(
-                                itemCount: state.products?.length ?? 0,
-                                scrollDirection: Axis.horizontal,
-                                onPageChanged: (value) {
-                                  setState(() {
-                                    currentPageIndex = value;
-                                  });
-                                },
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Center(
-                                    child: Image.network(
-                                      state.products?[currentPageIndex].url ??
-                                          "",
-                                      height: size(constraints, 237),
-                                      width: size(constraints, 344),
-                                      fit: BoxFit.contain,
-                                    ),
-                                  );
-                                },
-                              ),
-                              Visibility(
-                                visible: currentPageIndex != 0,
-                                child: Align(
-                                  alignment: kIsWeb
-                                      ? Alignment.center
-                                      : Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        right: kIsWeb
-                                            ? size(constraints, 400)
-                                            : 0),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          currentPageIndex--;
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.arrow_back_ios_outlined,
-                                        size: size(constraints, 20),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: state.products!.length > 1 &&
-                                    currentPageIndex + 1 !=
-                                        state.products!.length,
-                                child: Align(
-                                  alignment: kIsWeb
-                                      ? Alignment.center
-                                      : Alignment.centerRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: kIsWeb
-                                            ? size(constraints, 400)
-                                            : 0),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          currentPageIndex++;
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.arrow_forward_ios_outlined,
-                                        size: size(constraints, 20),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: size(constraints, 10),
-                        ),
-                        SizedBox(
-                          width: kIsWeb ? double.infinity : width * 0.9,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Your points balance is ${currentCreditValue.text} worth of ₹$worthValue. How many points do you want to redeem?",
-                              style: TextStyle(
-                                fontSize: kIsWeb
-                                    ? size(constraints, 20)
-                                    : size(constraints, 16),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: size(constraints, 20)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                            left: kIsWeb
+                                ? size(constraints, 50)
+                                : size(constraints, 12),
+                            top: kIsWeb
+                                ? size(constraints, 40)
+                                : size(constraints, 12)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            InkWell(
-                              key: const Key('decrement'),
-                              onTap: () {
-                                onChangePointsDecrement();
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: size(constraints, 8)),
-                                child: CircleAvatar(
-                                  radius: kIsWeb
-                                      ? size(constraints, 25)
-                                      : size(constraints, 18),
-                                  backgroundColor: Colors.black,
-                                  child: Icon(
-                                    Icons.remove,
-                                    color: Colors.white,
-                                    size: kIsWeb
-                                        ? size(constraints, 25)
-                                        : size(constraints, 20),
-                                  ),
-                                ),
-                              ),
+                            Text(
+                              "Redeem Reward Points",
+                              style: TextStyle(
+                                  fontSize: kIsWeb
+                                      ? size(constraints, 22)
+                                      : size(constraints, 14),
+                                  fontWeight: FontWeight.w600),
                             ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
+                            SizedBox(
+                              height: kIsWeb
+                                  ? size(constraints, 8)
+                                  : size(constraints, 4),
+                            ),
+                            Row(
                               children: [
-                                Container(
-                                  height: size(constraints, 50),
-                                  width: size(constraints, 108),
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: size(constraints, 5),
-                                    horizontal: size(constraints, 20),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                      border:
-                                          Border.all(color: Color(0xffA5A5A5))),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    currentCreditValue.text,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: size(constraints, 22),
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
                                 Text(
-                                  "Worth of ₹${RedeemRewardUtils.findDenomination(convertedList, int.parse(currentCreditValue.text))}",
+                                  "Create a discount coupon and use it during checkout.",
                                   style: TextStyle(
-                                    color: const Color(0xff575757),
                                     fontSize: kIsWeb
-                                        ? size(constraints, 16)
-                                        : size(constraints, 14),
+                                        ? size(constraints, 18)
+                                        : size(constraints, 12),
                                     fontWeight: FontWeight.w500,
                                   ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Image.asset(
+                                  'packages/loyalty_program_frontend/assets/images/gift_box.png',
+                                  width: size(constraints, 22),
+                                  height: size(constraints, 22),
                                 )
                               ],
                             ),
-                            InkWell(
-                              key: const Key('increment'),
-                              onTap: () {
-                                onChangePointsIncrement();
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: size(constraints, 8)),
-                                child: CircleAvatar(
-                                  radius: kIsWeb
-                                      ? size(constraints, 25)
-                                      : size(constraints, 18),
-                                  backgroundColor: Colors.black,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: kIsWeb
-                                        ? size(constraints, 25)
-                                        : size(constraints, 20),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: size(constraints, 50),
+                          ),
+                          SizedBox(
+                            height: size(constraints, 200),
+                            child: Stack(
+                              children: [
+                                PageView.builder(
+                                  itemCount: state.products?.length ?? 0,
+                                  scrollDirection: Axis.horizontal,
+                                  onPageChanged: (value) {
+                                    setState(() {
+                                      currentPageIndex = value;
+                                    });
+                                  },
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return Center(
+                                      child: Image.network(
+                                        state.products?[currentPageIndex].url ??
+                                            "",
+                                        height: size(constraints, 144),
+                                        width: size(constraints, 255),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Visibility(
+                                  visible: currentPageIndex != 0,
+                                  child: Align(
+                                    alignment: kIsWeb
+                                        ? Alignment.center
+                                        : Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          right: kIsWeb
+                                              ? size(constraints, 400)
+                                              : 0),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            currentPageIndex--;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_back_ios_outlined,
+                                          size: size(constraints, 18),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: state.products!.length > 1 &&
+                                      currentPageIndex + 1 !=
+                                          state.products!.length,
+                                  child: Align(
+                                    alignment: kIsWeb
+                                        ? Alignment.center
+                                        : Alignment.centerRight,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: kIsWeb
+                                              ? size(constraints, 400)
+                                              : 0),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            currentPageIndex++;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                          size: size(constraints, 18),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: size(constraints, 10),
+                          ),
+                          Padding(
+                            padding:  EdgeInsets.only(left: kIsWeb ? size(constraints, 15) : 0 ),
+                            child: SizedBox(
+                              width: width * 0.9,
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Your points balance is ${currentCreditValue.text} worth of ₹$worthValue. How many points do you want to redeem?",
+                                  style: TextStyle(
+                                    fontSize: kIsWeb
+                                        ? size(constraints, 20)
+                                        : size(constraints, 14),
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        SizedBox(height: size(constraints, 18)),
-                        InkWell(
-                          onTap: () {
-                            if (int.parse(currentCreditValue.text) > 300) {
-                              _showConfirmationDialog(
-                                  context, constraints, worthValue, () {
-                                context.read<RewardPointsBloc>().add(
-                                    TriggerPaymentEvent(
-                                        int.parse(currentCreditValue.text),
-                                        state.products![currentPageIndex].id!));
-                              });
-                            }
-                          },
-                          child: Container(
-                            height: size(constraints, 64),
-                            width: size(constraints, 436),
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: kIsWeb ? 0 : 10),
-                            padding: EdgeInsets.only(
-                              left: size(constraints, 11),
-                              top: size(constraints, 11),
-                              right: size(constraints, 11),
-                              bottom: size(constraints, 11),
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xffFED945),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: const Color(0xffA5A5A5),
-                              ),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Redeem",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: kIsWeb
-                                    ? size(constraints, 24)
-                                    : size(constraints, 16),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          SizedBox(height: size(constraints, 20)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                key: const Key('decrement'),
+                                onTap: () {
+                                  onChangePointsDecrement();
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: size(constraints, 8)),
+                                  child: CircleAvatar(
+                                    radius: kIsWeb
+                                        ? size(constraints, 20)
+                                        : size(constraints, 16),
+                                    backgroundColor: Colors.black,
+                                    child: Icon(
+                                      Icons.remove,
+                                      color: Colors.white,
+                                      size: kIsWeb
+                                          ? size(constraints, 25)
+                                          : size(constraints, 20),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    height: size(constraints, 50),
+                                    width: size(constraints, 108),
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: size(constraints, 5),
+                                      horizontal: size(constraints, 20),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                        border:
+                                            Border.all(color: Color(0xffA5A5A5))),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      currentCreditValue.text,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: size(constraints, 20),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Worth of ₹${RedeemRewardUtils.findDenomination(convertedList, int.parse(currentCreditValue.text))}",
+                                    style: TextStyle(
+                                      color: const Color(0xff575757),
+                                      fontSize: kIsWeb
+                                          ? size(constraints, 16)
+                                          : size(constraints, 14),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              InkWell(
+                                key: const Key('increment'),
+                                onTap: () {
+                                  onChangePointsIncrement();
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: size(constraints, 8)),
+                                  child: CircleAvatar(
+                                    radius: kIsWeb
+                                        ? size(constraints, 20)
+                                        : size(constraints, 16),
+                                    backgroundColor: Colors.black,
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size: kIsWeb
+                                          ? size(constraints, 25)
+                                          : size(constraints, 20),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: size(constraints, 18)),
+                          InkWell(
+                            onTap: () {
+                              if (int.parse(currentCreditValue.text) > 300) {
+                                _showConfirmationDialog(
+                                    context, constraints, worthValue, () {
+                                  context.read<RewardPointsBloc>().add(
+                                      TriggerPaymentEvent(
+                                          int.parse(currentCreditValue.text),
+                                          state.products![currentPageIndex].id!));
+                                });
+                              }
+                            },
+                            child: Container(
+                              height: kIsWeb ? size(constraints, 50) : size(constraints, 44),
+                              width: size(constraints, 366),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: kIsWeb ? 0 : 10),
+                              padding: EdgeInsets.only(
+                                left: size(constraints, 11),
+                                top: size(constraints, 11),
+                                right: size(constraints, 11),
+                                bottom: size(constraints, 11),
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xffFED945),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: const Color(0xffA5A5A5),
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Redeem",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: kIsWeb
+                                      ? size(constraints, 24)
+                                      : size(constraints, 16),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               );
             } else {

@@ -18,38 +18,50 @@ class RewardPointsSuccess extends RewardPointsState {
   final List<ProductList>? products;
   final String? eventType;
   final bool? isRedeemPageOpen;
+  final bool? isEligibleForReward;
   final double? pointsToShow;
+  final Map<String,dynamic>? changeTabIndex;
 
   const RewardPointsSuccess(
       {this.pageInformation,
       this.eventType,
       this.products,
       this.isRedeemPageOpen,
-      this.pointsToShow});
+      this.isEligibleForReward,
+      this.pointsToShow,
+      this.changeTabIndex
+      });
 
   RewardPointsSuccess copyWith(
           {PageInformation? pageInformation,
           String? eventType,
           List<ProductList>? products,
           bool? isRedeemPageOpen,
-          double? pointsToShow}) =>
+          double? pointsToShow, 
+          bool? isEligibleForReward = false,
+          Map<String,dynamic>? changeTabIndex
+          }) =>
       RewardPointsSuccess(
           pageInformation: pageInformation ?? this.pageInformation,
           products: products ?? this.products,
           eventType: eventType ?? this.eventType,
           isRedeemPageOpen: isRedeemPageOpen ?? this.isRedeemPageOpen,
-          pointsToShow: pointsToShow ?? this.pointsToShow);
+          isEligibleForReward: isEligibleForReward ?? this.isEligibleForReward,
+          pointsToShow: pointsToShow ?? this.pointsToShow,
+          changeTabIndex:  changeTabIndex ?? this.changeTabIndex
+          );
 
   @override
   List<Object> get props =>
-      [pageInformation ?? {}, products!, isRedeemPageOpen!, pointsToShow ?? 0];
+      [pageInformation ?? {}, products!, isRedeemPageOpen!, pointsToShow ?? 0, isEligibleForReward ?? false];
 
   @override
   String toString() => 'RewardPointsSuccess';
 }
 
 class RewardPointsFailure extends RewardPointsState {
-  const RewardPointsFailure(this.error);
+  final bool isEligibleForReward;
+  const RewardPointsFailure(this.error,{this.isEligibleForReward = false,});
 
   final String error;
 

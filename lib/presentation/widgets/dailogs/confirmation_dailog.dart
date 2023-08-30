@@ -21,7 +21,7 @@ class ConfirmationDialogBox extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(0)),
       ),
       content: SizedBox(
-        width: size(constraints, 652),
+        width: size(constraints, 642),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,45 +70,53 @@ class ConfirmationDialogBox extends StatelessWidget {
                               : size(constraints, 14),
                           fontWeight: FontWeight.bold),
                     ),
-                   Constants.userData?.email.isNotEmpty? TextSpan(
-                      text: 'will be send to your registered email ID ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        fontSize: kIsWeb
-                            ? size(constraints, 18)
-                            : size(constraints, 14),
-                      ),
-                    ):TextSpan(),
-                    Constants.userData?.email.isNotEmpty?TextSpan(
-                      text: '${Constants.userData?.email ?? ""} ',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: kIsWeb
-                              ? size(constraints, 18)
-                              : size(constraints, 14),
-                          fontWeight: FontWeight.bold),
-                    ):TextSpan(),
-                    Constants.userData?.mobileNumber.isNotEmpty?TextSpan(
-                      text: 'and phone number ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        fontSize: kIsWeb
-                            ? size(constraints, 18)
-                            : size(constraints, 14),
-                      ),
-                    ):TextSpan(),
-                    Constants.userData?.mobileNumber.isNotEmpty?TextSpan(
-                      text:
-                          '+${Constants.userData?.countryCode ?? ""}  ${Constants.userData?.mobileNumber ?? ""}',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: kIsWeb
-                              ? size(constraints, 18)
-                              : size(constraints, 14),
-                          fontWeight: FontWeight.bold),
-                    ):TextSpan(),
+                    Constants.userData?.email != null
+                        ? TextSpan(
+                            text: 'will be send to your registered email ID ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                            ),
+                          )
+                        : TextSpan(),
+                    Constants.userData?.email.isNotEmpty
+                        ? TextSpan(
+                            text: '${Constants.userData?.email ?? ""} ',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: kIsWeb
+                                    ? size(constraints, 18)
+                                    : size(constraints, 14),
+                                fontWeight: FontWeight.bold),
+                          )
+                        : TextSpan(),
+                    Constants.userData?.mobileNumber.isNotEmpty
+                        ? TextSpan(
+                            text: 'and phone number ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontSize: kIsWeb
+                                  ? size(constraints, 18)
+                                  : size(constraints, 14),
+                            ),
+                          )
+                        : TextSpan(),
+                    Constants.userData?.mobileNumber.isNotEmpty
+                        ? TextSpan(
+                            text:
+                                '+${Constants.userData?.countryCode ?? ""}  ${Constants.userData?.mobileNumber ?? ""}',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: kIsWeb
+                                    ? size(constraints, 18)
+                                    : size(constraints, 14),
+                                fontWeight: FontWeight.bold),
+                          )
+                        : TextSpan(),
                   ],
                 ),
               ),
@@ -116,6 +124,7 @@ class ConfirmationDialogBox extends StatelessWidget {
             SizedBox(
               height: size(constraints, 30),
             ),
+            if(kIsWeb)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -125,10 +134,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                   },
                   child: Container(
                     height:
-                        kIsWeb ? size(constraints, 44) : size(constraints, 34),
-                    width: kIsWeb
-                        ? size(constraints, 258)
-                        : size(constraints, 120),
+                        size(constraints, 44),
+                    width: size(constraints, 258),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
@@ -152,11 +159,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                     onConfirm();
                   },
                   child: Container(
-                    height:
-                        kIsWeb ? size(constraints, 44) : size(constraints, 34),
-                    width: kIsWeb
-                        ? size(constraints, 258)
-                        : size(constraints, 120),
+                    height:size(constraints, 44),
+                    width:size(constraints, 258),
                     decoration: BoxDecoration(
                         color: const Color(0xffBA181C),
                         borderRadius: BorderRadius.circular(2)),
@@ -170,6 +174,56 @@ class ConfirmationDialogBox extends StatelessWidget {
                     ),
                   ),
                 ),
+              ],
+            )else
+             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                 InkWell(
+                  onTap: () {
+                    onConfirm();
+                  },
+                  child: Container(
+                    height: kIsWeb ? size(constraints, 44) : size(constraints, 42),
+                    width:  size(constraints, 258),
+                    decoration: BoxDecoration(
+                        color: const Color(0xffBA181C),
+                        borderRadius: BorderRadius.circular(2)),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Confirm",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: size(constraints, 16)),
+                    ),
+                  ),
+                ),
+                 SizedBox(
+                  height: size(constraints, 20),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: kIsWeb ? size(constraints, 44) : size(constraints, 42),
+                    width: size(constraints, 258),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                            color: const Color(0xffBA181C), width: 1.2),
+                        borderRadius: BorderRadius.circular(2)),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xffBA181C),
+                          fontSize: size(constraints, 16)),
+                    ),
+                  ),
+                ),               
               ],
             )
           ],

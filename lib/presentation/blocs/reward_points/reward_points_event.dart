@@ -36,3 +36,11 @@ class ChangeSliderPoints extends RewardPointsEvent {
   @override
   List<Object?> get props => [points];
 }
+
+class ChangeTabIndex extends RewardPointsEvent {
+  final int index;
+
+  ChangeTabIndex(this.index);
+  @override
+  List<Object?> get props => [index];
+}

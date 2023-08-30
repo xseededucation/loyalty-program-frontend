@@ -334,9 +334,22 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Scaffold(
-          body: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+          body: BlocConsumer<RewardPointsBloc, RewardPointsState>(
             buildWhen: (context, state) {
               return state is RewardPointsSuccess;
+            },
+            listenWhen: (previous, current) {
+              return previous != current;
+            },
+            listener: (context, state) {
+              if (state is RewardPointsSuccess) {
+                if (state.changeTabIndex?['index'] != null) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    tabController.index = state.changeTabIndex?['index'] ?? 0;
+                    setState(() {});
+                  });
+                }
+              }
             },
             builder: (context, state) {
               if (state is RewardPointsSuccess) {

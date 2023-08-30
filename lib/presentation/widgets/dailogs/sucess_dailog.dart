@@ -122,7 +122,7 @@ class SuccessDialogBox extends StatelessWidget {
                   },
                   child: Container(
                     height: size(constraints, 44),
-                    width: size(constraints, 258),
+                    width: kIsWeb ? size(constraints, 258): size(constraints, 200),
                     decoration: BoxDecoration(
                         color: const Color(0xffBA181C),
                         borderRadius: BorderRadius.circular(2)),
