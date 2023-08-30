@@ -361,7 +361,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 24),
           ],
           Text(
             'Your Reward Points',
@@ -371,17 +371,15 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
               color: const Color(0xffba181c),
             ),
           ),
-          SizedBox(
-            height: kIsWeb ? size(widget.boxConstraints, 18) : 12,
-          ),
+          SizedBox(height: kIsWeb ? size(widget.boxConstraints, 18) : 12),
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
             ),
             child: Container(
-              height: size(widget.boxConstraints, 180),
-              width: size(widget.boxConstraints, 180),
+              height: size(widget.boxConstraints, 150),
+              width: size(widget.boxConstraints, 150),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,
@@ -408,10 +406,9 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: kIsWeb ? size(widget.boxConstraints, 38) : 20,
-                  ),
+                      height: kIsWeb ? size(widget.boxConstraints, 26) : 20),
                   SizedBox(
-                    height: kIsWeb ? size(widget.boxConstraints, 65) : 60,
+                    height: kIsWeb ? size(widget.boxConstraints, 54) : 60,
                     width: size(widget.boxConstraints, 65),
                     child: Image.asset(
                       'assets/images/coin.png',
@@ -419,7 +416,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                     ),
                   ),
                   SizedBox(
-                      height: kIsWeb ? size(widget.boxConstraints, 15) : 8),
+                      height: kIsWeb ? size(widget.boxConstraints, 14) : 8),
                   Text(
                     state.pageInformation?.currentCredit.toString() ?? "",
                     style: TextStyle(
@@ -432,7 +429,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
             ),
           ),
           SizedBox(
-            height: size(widget.boxConstraints, 30),
+            height: size(widget.boxConstraints, 24),
           ),
           state.pageInformation!.currentCredit! < 3000
               ? InkWell(

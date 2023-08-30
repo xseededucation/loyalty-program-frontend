@@ -36,7 +36,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
 
   Widget header(BoxConstraints constraints) {
     return Container(
-      height: size(constraints, 120),
+      height: size(constraints, 100),
       constraints: const BoxConstraints(minHeight: 102),
       width: size(constraints, 300),
       decoration: const BoxDecoration(
@@ -177,7 +177,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 ? EdgeInsets.only(
                     left: size(constraints, 50),
                     right: size(constraints, 50),
-                    top: size(constraints, 40),
+                    top: size(constraints, 20),
                     bottom: size(constraints, 20),
                   )
                 : const EdgeInsets.all(0),
@@ -234,7 +234,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   Expanded(
                     child: Container(
                       constraints: const BoxConstraints(minHeight: 102),
-                      height: size(constraints, 120),
+                      height: size(constraints, 100),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         border: Border(
@@ -301,7 +301,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           padding: EdgeInsets.only(
             left: (constraints.maxWidth / 6),
             right: (constraints.maxWidth / 6),
-            top: (constraints.maxWidth / 30),
+            top: (constraints.maxWidth / 50),
             bottom: (constraints.maxWidth / 100),
           ),
           child: Column(
@@ -368,20 +368,18 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const SizedBox(height: 17),
+                                SizedBox(height: size(constraints, 20)),
                                 Text(
                                   "${Constants.userData?.name ?? ""}",
                                   style: const TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 6,
-                                ),
+                                const SizedBox(height: 6),
                                 const Text(
                                   "Let's get started to earn rewards & much more!",
-                                  style: TextStyle(fontSize: 12),
+                                  style: TextStyle(fontSize: 14),
                                 ),
                                 SizedBox(
                                   height: 130,
@@ -411,9 +409,6 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                           },
                                         )
                                       : const SizedBox(),
-                                ),
-                                const SizedBox(
-                                  height: 17,
                                 ),
                                 state.pageInformation != null &&
                                         state.pointsToShow != null
@@ -447,12 +442,16 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             ),
                           ),
                           Container(
-                            height: 45,
+                            height: 44,
                             decoration: const BoxDecoration(
                               color: Color(0xFFfff2f1),
                             ),
+                            padding: const EdgeInsets.only(top: 10),
                             child: TabBar(
                               controller: tabController,
+                              indicatorPadding: EdgeInsets.zero,
+                              labelPadding: EdgeInsets.zero,
+                              padding: EdgeInsets.zero,
                               indicator: const BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
@@ -481,14 +480,15 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                               children: [
                                 EarnPointScreen(boxConstraints: constraints),
                                 RedeemPointsScreen(boxConstraints: constraints),
-                                Padding(
+                                Container(
                                   padding: const EdgeInsets.only(
-                                      left: 12, right: 12, top: 22),
+                                      left: 12, right: 12),
+                                  margin: const EdgeInsets.only(top: 10),
                                   child: SingleChildScrollView(
                                     child: Text(
                                       "${pageDetail?.text}",
-                                      style: const TextStyle(
-                                        fontSize: 12,
+                                      style: TextStyle(
+                                        fontSize: size(constraints, 12),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),

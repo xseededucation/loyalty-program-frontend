@@ -93,7 +93,7 @@ class AvailableRewardPoint extends StatelessWidget {
         ),
         child: Column(
           children: [
-            SizedBox(height: size(boxConstraints, 40)),
+            SizedBox(height: size(boxConstraints, 26)),
             Text(
               message!,
               style: TextStyle(
@@ -101,7 +101,7 @@ class AvailableRewardPoint extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: size(boxConstraints, 30)),
+            SizedBox(height: size(boxConstraints, 24)),
             RewardStatus(
               boxConstraints: boxConstraints,
               pointsToShow: currentAchievementLevel,
@@ -112,9 +112,7 @@ class AvailableRewardPoint extends StatelessWidget {
               boxConstraints: boxConstraints,
               onPress: onPress,
             ),
-            SizedBox(
-              height: size(boxConstraints, 10),
-            ),
+            SizedBox(height: size(boxConstraints, 54)),
           ],
         ),
       ),
