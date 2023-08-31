@@ -8,7 +8,6 @@ import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_event.dart';
 import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/reward_redeem_button.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 
@@ -308,7 +307,9 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
           ),
           state.pageInformation!.currentCredit! < 3000
               ? InkWell(
-                  onTap: () {context.read<RewardPointsBloc>().add(ChangeTabIndex(1));},
+                  onTap: () {
+                    context.read<RewardPointsBloc>().add(ChangeTabIndex(1));
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     height: size(widget.boxConstraints, 40),
@@ -460,8 +461,8 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                   )
                 : RewardRedeemButton(
                     boxConstraints: widget.boxConstraints,
-                    onPress: () async{
-                      context.read<RewardPointsBloc>().add(ChangeTabIndex(0));                     
+                    onPress: () async {
+                      context.read<RewardPointsBloc>().add(ChangeTabIndex(0));
                     },
                   )
           ],

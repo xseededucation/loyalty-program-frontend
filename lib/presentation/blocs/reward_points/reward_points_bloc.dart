@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
 import 'package:loyalty_program_frontend/domain/models/common.dart';
@@ -25,11 +23,11 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   }
 
   RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
-      products: [],
+      products: const [],
       pageInformation: PageInformation(),
       isRedeemPageOpen: false,
       isEligibleForReward: false,
-      changeTabIndex: {});
+      changeTabIndex: const {});
 
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
@@ -54,7 +52,6 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
         rewardPointsSuccess = rewardPointsSuccess
             .copyWith(products: [], isEligibleForReward: false);
         emit(rewardPointsSuccess);
-        // emit(RewardPointsFailure("${response["message"]}"));
       }
     } catch (error) {
       rewardPointsSuccess =
