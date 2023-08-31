@@ -93,9 +93,7 @@ class SuccessDialogBox extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: size(constraints, 30),
-            ),
+            SizedBox(height: kIsWeb ? 30 : 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -106,10 +104,8 @@ class SuccessDialogBox extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Container(
-                    height: size(constraints, 44),
-                    width: kIsWeb
-                        ? size(constraints, 258)
-                        : size(constraints, 200),
+                    height: kIsWeb ? 44 : 40,
+                    width: kIsWeb ? 200 : 140,
                     decoration: BoxDecoration(
                         color: const Color(0xffBA181C),
                         borderRadius: BorderRadius.circular(2)),
@@ -119,7 +115,7 @@ class SuccessDialogBox extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
-                          fontSize: size(constraints, 18)),
+                          fontSize: kIsWeb ? 18 : 16),
                     ),
                   ),
                 ),

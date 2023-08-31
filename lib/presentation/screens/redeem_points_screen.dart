@@ -359,15 +359,15 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
               ),
               const SizedBox(height: 30),
             ],
-            Text(
+            const Text(
               'Your Reward Points',
               style: TextStyle(
                 fontSize: kIsWeb ? 16 : 14,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xffba181c),
+                color: Color(0xffba181c),
               ),
             ),
-            SizedBox(height: kIsWeb ? 16 : 12),
+            const SizedBox(height: kIsWeb ? 16 : 12),
             Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
