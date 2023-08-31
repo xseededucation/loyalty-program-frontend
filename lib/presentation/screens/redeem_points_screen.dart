@@ -272,6 +272,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
 
   Container emptyRedeemListBoxMobile(RewardPointsSuccess state) {
     return Container(
+      padding: const EdgeInsets.only(left: 8, right: 8),
       height: widget.boxConstraints.maxHeight,
       width: widget.boxConstraints.maxWidth,
       color: Colors.white,
@@ -295,8 +296,8 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
             state.pageInformation!.currentCredit! < 3000
                 ? "packages/loyalty_program_frontend/assets/images/coin.png"
                 : "packages/loyalty_program_frontend/assets/images/confused.png",
-            height: kIsWeb ? 32 : 28,
-            width: kIsWeb ? 32 : 28,
+            height: kIsWeb ? 32 : 35,
+            width: kIsWeb ? 32 : 35,
           ),
           const SizedBox(height: 18),
           state.pageInformation!.currentCredit! < 3000
