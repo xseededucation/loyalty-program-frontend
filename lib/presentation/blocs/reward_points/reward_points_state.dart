@@ -19,8 +19,9 @@ class RewardPointsSuccess extends RewardPointsState {
   final String? eventType;
   final bool? isRedeemPageOpen;
   final bool? isEligibleForReward;
+  final bool? isHeaderTextVisible;
   final double? pointsToShow;
-  final Map<String,dynamic>? changeTabIndex;
+  final Map<String, dynamic>? changeTabIndex;
 
   const RewardPointsSuccess(
       {this.pageInformation,
@@ -28,32 +29,38 @@ class RewardPointsSuccess extends RewardPointsState {
       this.products,
       this.isRedeemPageOpen,
       this.isEligibleForReward,
+      this.isHeaderTextVisible,
       this.pointsToShow,
-      this.changeTabIndex
-      });
+      this.changeTabIndex});
 
   RewardPointsSuccess copyWith(
           {PageInformation? pageInformation,
           String? eventType,
           List<ProductList>? products,
           bool? isRedeemPageOpen,
-          double? pointsToShow, 
+          bool? isHeaderTextVisible,
+          double? pointsToShow,
           bool? isEligibleForReward = false,
-          Map<String,dynamic>? changeTabIndex
-          }) =>
+          Map<String, dynamic>? changeTabIndex}) =>
       RewardPointsSuccess(
+          isHeaderTextVisible: isHeaderTextVisible ?? this.isHeaderTextVisible,
           pageInformation: pageInformation ?? this.pageInformation,
           products: products ?? this.products,
           eventType: eventType ?? this.eventType,
           isRedeemPageOpen: isRedeemPageOpen ?? this.isRedeemPageOpen,
           isEligibleForReward: isEligibleForReward ?? this.isEligibleForReward,
           pointsToShow: pointsToShow ?? this.pointsToShow,
-          changeTabIndex:  changeTabIndex ?? this.changeTabIndex
-          );
+          changeTabIndex: changeTabIndex ?? this.changeTabIndex);
 
   @override
-  List<Object> get props =>
-      [pageInformation ?? {}, products!, isRedeemPageOpen!, pointsToShow ?? 0, isEligibleForReward ?? false];
+  List<Object> get props => [
+        pageInformation ?? {},
+        products!,
+        isRedeemPageOpen!,
+        pointsToShow ?? 0,
+        isEligibleForReward ?? false,
+        isHeaderTextVisible ?? true
+      ];
 
   @override
   String toString() => 'RewardPointsSuccess';
@@ -61,7 +68,10 @@ class RewardPointsSuccess extends RewardPointsState {
 
 class RewardPointsFailure extends RewardPointsState {
   final bool isEligibleForReward;
-  const RewardPointsFailure(this.error,{this.isEligibleForReward = false,});
+  const RewardPointsFailure(
+    this.error, {
+    this.isEligibleForReward = false,
+  });
 
   final String error;
 

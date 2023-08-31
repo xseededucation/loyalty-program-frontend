@@ -5,7 +5,7 @@ class Constants {
   static const String baseUrl =
       "https://loyalty-program-apis.xseeddigital.info/api/";
   static dynamic userData;
-  static BoxConstraints redeemRewardContraints = const BoxConstraints();     
+  static BoxConstraints redeemRewardConstraints = const BoxConstraints();
 }
 
 printLog(dynamic log) {

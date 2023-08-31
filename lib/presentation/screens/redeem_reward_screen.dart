@@ -5,8 +5,8 @@ import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/dailogs/confirmation_dailog.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/dialogs/confirmation_dialog.dart';
+import 'package:loyalty_program_frontend/presentation/widgets/dialogs/success_dialog.dart';
 
 import '../utils/helpers/redeem_reward_utils.dart';
 
@@ -24,7 +24,6 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
 
   List<ConversionRates> convertedList = [];
 
-  // Triggered when plus button click
   onChangePointsIncrement() {
     if (int.parse(currentCreditValue.text) < nearestCurrentCredit) {
       int nextValue = RedeemRewardUtils.getNextCredit(
@@ -37,7 +36,6 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
     }
   }
 
-// Triggered when minus button click
   onChangePointsDecrement() {
     setState(() {
       currentCreditValue.text = RedeemRewardUtils.getPrevCredit(
@@ -53,22 +51,22 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
       builder: (context, constraints) {
         return BlocConsumer<RewardPointsBloc, RewardPointsState>(
           builder: (context, state) {
-            Constants.redeemRewardContraints = constraints;
+            Constants.redeemRewardConstraints = constraints;
             if (state is RewardPointsSuccess) {
               if (convertedList.isEmpty) {
                 convertedList = state.pageInformation!.conversionRates!;
                 currentCreditValue.text =
                     state.pageInformation!.currentCredit.toString();
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                 setState(() {
+                  setState(() {
                     currentCreditValue.text =
-                      RedeemRewardUtils.findNearestLastCredit(convertedList,
-                              state.pageInformation?.currentCredit ?? 0)
-                          .toString();
-                  nearestCurrentCredit =
-                      RedeemRewardUtils.findNearestLastCredit(convertedList,
-                          state.pageInformation?.currentCredit ?? 0);
-                 });
+                        RedeemRewardUtils.findNearestLastCredit(convertedList,
+                                state.pageInformation?.currentCredit ?? 0)
+                            .toString();
+                    nearestCurrentCredit =
+                        RedeemRewardUtils.findNearestLastCredit(convertedList,
+                            state.pageInformation?.currentCredit ?? 0);
+                  });
                 });
               }
               int worthValue = RedeemRewardUtils.findDenomination(
@@ -144,9 +142,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: size(constraints, 50),
-                          ),
+                          SizedBox(height: size(constraints, 50)),
                           SizedBox(
                             height: size(constraints, 200),
                             child: Stack(
@@ -159,7 +155,8 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                       currentPageIndex = value;
                                     });
                                   },
-                                  itemBuilder: (BuildContext context, int index) {
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
                                     return Center(
                                       child: Image.network(
                                         state.products?[currentPageIndex].url ??
@@ -230,7 +227,8 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                             height: size(constraints, 10),
                           ),
                           Padding(
-                            padding:  EdgeInsets.only(left: kIsWeb ? size(constraints, 15) : 0 ),
+                            padding: EdgeInsets.only(
+                                left: kIsWeb ? size(constraints, 15) : 0),
                             child: SizedBox(
                               width: width * 0.9,
                               child: Container(
@@ -287,8 +285,8 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(5),
-                                        border:
-                                            Border.all(color: Color(0xffA5A5A5))),
+                                        border: Border.all(
+                                            color: const Color(0xffA5A5A5))),
                                     alignment: Alignment.center,
                                     child: Text(
                                       currentCreditValue.text,
@@ -345,12 +343,15 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                   context.read<RewardPointsBloc>().add(
                                       TriggerPaymentEvent(
                                           int.parse(currentCreditValue.text),
-                                          state.products![currentPageIndex].id!));
+                                          state.products![currentPageIndex]
+                                              .id!));
                                 });
                               }
                             },
                             child: Container(
-                              height: kIsWeb ? size(constraints, 50) : size(constraints, 44),
+                              height: kIsWeb
+                                  ? size(constraints, 50)
+                                  : size(constraints, 44),
                               width: size(constraints, 366),
                               margin: const EdgeInsets.symmetric(
                                   horizontal: kIsWeb ? 0 : 10),

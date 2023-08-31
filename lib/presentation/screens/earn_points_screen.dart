@@ -2,10 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
+import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_bloc.dart';
+import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/loader.dart';
-
-import '../../loyalty_program_frontend.dart';
 
 class EarnPointScreen extends StatefulWidget {
   BoxConstraints boxConstraints;
@@ -76,7 +75,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                           ),
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [

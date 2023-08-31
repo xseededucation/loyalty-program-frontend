@@ -4,9 +4,10 @@ class MileStones {
   final int? sequenceNo;
   final String? toolTipText;
 
-  MileStones(
-      {required this.credit,
-      required this.denomination,
-      required this.sequenceNo,
-      required this.toolTipText});
+  MileStones({
+    required this.credit,
+    required this.denomination,
+    required this.sequenceNo,
+    required this.toolTipText,
+  });
 }

@@ -1,33 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
-import 'package:loyalty_program_frontend/presentation/widgets/dailogs/sucess_dailog.dart';
 
-class ConfirmationDialogBox extends StatelessWidget {
-  final BoxConstraints constraints;
-  final String denomination;
-  final VoidCallback onConfirm;
-  const ConfirmationDialogBox(
-      {super.key,
-      required this.constraints,
-      required this.onConfirm,
-      required this.denomination});
+class SuccessDialogBox extends StatelessWidget {
+  const SuccessDialogBox({super.key});
 
   @override
   Widget build(BuildContext context) {
+    BoxConstraints constraints = Constants.redeemRewardConstraints;
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(0)),
       ),
       content: SizedBox(
-        width: size(constraints, 642),
+        width: size(constraints, 652),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Coupon Code",
+              "Congratulations!",
               style: TextStyle(
                   fontSize: size(constraints, 22), fontWeight: FontWeight.w600),
             ),
@@ -35,7 +30,7 @@ class ConfirmationDialogBox extends StatelessWidget {
               height: size(constraints, 10),
             ),
             Image.asset(
-              'packages/loyalty_program_frontend/assets/images/coupon.png',
+              'packages/loyalty_program_frontend/assets/images/offer.png',
               width: size(constraints, 64),
               height: size(constraints, 64),
             ),
@@ -52,7 +47,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                   style: DefaultTextStyle.of(context).style,
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Coupon code worth ',
+                      text:
+                          'Your coupon code has been successfully sent to your ',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
@@ -61,18 +57,9 @@ class ConfirmationDialogBox extends StatelessWidget {
                             : size(constraints, 14),
                       ),
                     ),
-                    TextSpan(
-                      text: '₹${denomination} ',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: kIsWeb
-                              ? size(constraints, 18)
-                              : size(constraints, 14),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Constants.userData?.email != null
+                    Constants.userData?.email.isNotEmpty
                         ? TextSpan(
-                            text: 'will be send to your registered email ID ',
+                            text: 'registered email ID ',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
@@ -81,7 +68,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                                   : size(constraints, 14),
                             ),
                           )
-                        : TextSpan(),
+                        : const TextSpan(),
                     Constants.userData?.email.isNotEmpty
                         ? TextSpan(
                             text: '${Constants.userData?.email ?? ""} ',
@@ -92,7 +79,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                                     : size(constraints, 14),
                                 fontWeight: FontWeight.bold),
                           )
-                        : TextSpan(),
+                        : const TextSpan(),
                     Constants.userData?.mobileNumber.isNotEmpty
                         ? TextSpan(
                             text: 'and phone number ',
@@ -104,11 +91,11 @@ class ConfirmationDialogBox extends StatelessWidget {
                                   : size(constraints, 14),
                             ),
                           )
-                        : TextSpan(),
+                        : const TextSpan(),
                     Constants.userData?.mobileNumber.isNotEmpty
                         ? TextSpan(
                             text:
-                                '+${Constants.userData?.countryCode ?? ""}  ${Constants.userData?.mobileNumber ?? ""}',
+                                '+${Constants.userData?.countryCode ?? ""} ${Constants.userData?.mobileNumber ?? ""}. ',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: kIsWeb
@@ -116,7 +103,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                                     : size(constraints, 14),
                                 fontWeight: FontWeight.bold),
                           )
-                        : TextSpan(),
+                        : const TextSpan(),
                   ],
                 ),
               ),
@@ -124,106 +111,33 @@ class ConfirmationDialogBox extends StatelessWidget {
             SizedBox(
               height: size(constraints, 30),
             ),
-            if(kIsWeb)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
                   onTap: () {
+                    BlocProvider.of<RewardPointsBloc>(context)
+                        .add(FetchPageInformationEvent());
                     Navigator.pop(context);
                   },
                   child: Container(
-                    height:
-                        size(constraints, 44),
-                    width: size(constraints, 258),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            color: const Color(0xffBA181C), width: 1.2),
-                        borderRadius: BorderRadius.circular(2)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xffBA181C),
-                          fontSize: size(constraints, 16)),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: size(constraints, 20),
-                ),
-                InkWell(
-                  onTap: () {
-                    onConfirm();
-                  },
-                  child: Container(
-                    height:size(constraints, 44),
-                    width:size(constraints, 258),
+                    height: size(constraints, 44),
+                    width: kIsWeb
+                        ? size(constraints, 258)
+                        : size(constraints, 200),
                     decoration: BoxDecoration(
                         color: const Color(0xffBA181C),
                         borderRadius: BorderRadius.circular(2)),
                     alignment: Alignment.center,
                     child: Text(
-                      "Confirm",
+                      "OK",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
-                          fontSize: size(constraints, 16)),
+                          fontSize: size(constraints, 18)),
                     ),
                   ),
                 ),
-              ],
-            )else
-             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                 InkWell(
-                  onTap: () {
-                    onConfirm();
-                  },
-                  child: Container(
-                    height: kIsWeb ? size(constraints, 44) : size(constraints, 42),
-                    width:  size(constraints, 258),
-                    decoration: BoxDecoration(
-                        color: const Color(0xffBA181C),
-                        borderRadius: BorderRadius.circular(2)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Confirm",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          fontSize: size(constraints, 16)),
-                    ),
-                  ),
-                ),
-                 SizedBox(
-                  height: size(constraints, 20),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: kIsWeb ? size(constraints, 44) : size(constraints, 42),
-                    width: size(constraints, 258),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            color: const Color(0xffBA181C), width: 1.2),
-                        borderRadius: BorderRadius.circular(2)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xffBA181C),
-                          fontSize: size(constraints, 16)),
-                    ),
-                  ),
-                ),               
               ],
             )
           ],

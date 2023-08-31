@@ -101,11 +101,9 @@ class _VerticalTabViewState extends State<VerticalTabView>
         if (state is RewardPointsSuccess) {
           if (state.changeTabIndex?['index'] != null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              pageController.jumpToPage(state.changeTabIndex?['index']??0);
-               _selectTab(state.changeTabIndex?['index']??0);
-              setState(() {
-                
-              });
+              pageController.jumpToPage(state.changeTabIndex?['index'] ?? 0);
+              _selectTab(state.changeTabIndex?['index'] ?? 0);
+              setState(() {});
             });
           }
         }
@@ -217,7 +215,7 @@ class _VerticalTabViewState extends State<VerticalTabView>
                     Expanded(
                       child: PageView.builder(
                         scrollDirection: widget.contentScrollAxis,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         onPageChanged: (index) {
                           if (_changePageByTapView == false) {
                             _selectTab(index);
