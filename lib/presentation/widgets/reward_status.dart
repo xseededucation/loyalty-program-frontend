@@ -165,8 +165,8 @@ class RewardStatus extends StatelessWidget {
                     children: [
                       SizedBox(height: kIsWeb ? size(boxConstraints, 18) : 20),
                       SizedBox(
-                        height: kIsWeb ? size(boxConstraints, 65) : 45,
-                        width: 44,
+                        height: kIsWeb ? size(boxConstraints, 65) : 60,
+                        width: size(boxConstraints, 65),
                         child: Image.asset(
                           'assets/images/coin.png',
                           package: 'loyalty_program_frontend',
@@ -184,9 +184,7 @@ class RewardStatus extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: kIsWeb ? 30 : 20,
-              )
+              const SizedBox(height: kIsWeb ? 30 : 20)
             ],
           ),
         )
