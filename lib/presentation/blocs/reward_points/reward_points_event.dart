@@ -44,3 +44,11 @@ class ChangeTabIndex extends RewardPointsEvent {
   @override
   List<Object?> get props => [index];
 }
+
+class SetHeaderTextVisible extends RewardPointsEvent {
+  final bool setVisible;
+
+  SetHeaderTextVisible(this.setVisible);
+  @override
+  List<Object?> get props => [setVisible];
+}

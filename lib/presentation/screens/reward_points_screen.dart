@@ -151,6 +151,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   );
                 }
                 return AvailableRewardPoint(
+                  isHeaderMessageVisible: state.isHeaderTextVisible!,
+                  originalPoint:
+                      state.pageInformation!.currentCredit!.toDouble(),
                   pageInformation: state.pageInformation,
                   currentAchievementLevel: state.pointsToShow!,
                   onPress: () {
@@ -270,6 +273,12 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                     state.pageInformation!.conversionRates!,
                                 userName: "${Constants.userData?.name ?? ""}",
                                 onChange: (double value) {
+                                  if (state.isHeaderTextVisible!) {
+                                    BlocProvider.of<RewardPointsBloc>(context)
+                                        .add(
+                                      SetHeaderTextVisible(false),
+                                    );
+                                  }
                                   context.read<RewardPointsBloc>().add(
                                         ChangeSliderPoints(value),
                                       );
@@ -279,7 +288,8 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             }
                           }
                           return const Center(
-                              child: CircularProgressIndicator());
+                            child: CircularProgressIndicator(),
+                          );
                         },
                       ),
                     ),
