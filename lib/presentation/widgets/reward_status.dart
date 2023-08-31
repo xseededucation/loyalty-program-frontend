@@ -101,7 +101,7 @@ class RewardStatus extends StatelessWidget {
               Text(
                 message,
                 style: TextStyle(
-                  fontSize: kIsWeb ? size(boxConstraints, 16) : 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: const Color(0xffba181c),
                 ),
@@ -147,17 +147,17 @@ class RewardStatus extends StatelessWidget {
                       SizedBox(height: kIsWeb ? size(boxConstraints, 18) : 20),
                       SizedBox(
                         height: kIsWeb ? size(boxConstraints, 65) : 45,
-                        width: size(boxConstraints, 45),
+                        width: 44,
                         child: Image.asset(
                           'assets/images/coin.png',
                           package: 'loyalty_program_frontend',
                         ),
                       ),
-                      SizedBox(height: kIsWeb ? size(boxConstraints, 14) : 8),
+                      SizedBox(height: kIsWeb ? 14 : 8),
                       Text(
                         formatPoints(pointsToShow.toInt()),
                         style: TextStyle(
-                          fontSize: kIsWeb ? size(boxConstraints, 20) : 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.w900,
                         ),
                       )
@@ -166,7 +166,7 @@ class RewardStatus extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: kIsWeb ? size(boxConstraints, 30) : 20,
+                height: kIsWeb ? 30 : 20,
               )
             ],
           ),

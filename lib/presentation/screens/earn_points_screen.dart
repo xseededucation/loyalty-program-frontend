@@ -41,9 +41,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                     border: kIsWeb
                         ? Border.all(color: Colors.grey, width: 0.5)
                         : null,
-                    borderRadius: BorderRadius.circular(
-                      size(widget.boxConstraints, 4),
-                    ),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   child: Row(
                     children: [
@@ -55,7 +53,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                             '${earnMoreCredit[index].text}',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: size(widget.boxConstraints, 14),
+                              fontSize: kIsWeb ? 16 : 14,
                               fontWeight:
                                   kIsWeb ? FontWeight.w600 : FontWeight.w500,
                               fontFamily: "Source Sans Pro",
@@ -67,7 +65,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                             '${earnMoreCredit[index].subText}',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: size(widget.boxConstraints, 12),
+                              fontSize: kIsWeb ? 14 : 12,
                               fontWeight: FontWeight.w500,
                               fontFamily: "Source Sans Pro",
                               color: const Color(0xff7887A5),
@@ -82,7 +80,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                           Text(
                             '+ ${earnMoreCredit[index].credit}',
                             style: TextStyle(
-                              fontSize: size(widget.boxConstraints, 14),
+                              fontSize: kIsWeb ? 14 : 12,
                               fontWeight: FontWeight.w700,
                               fontFamily: "Source Sans Pro",
                               color: const Color(0xff25AA62),
@@ -91,8 +89,8 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
                           const SizedBox(width: 10),
                           Image.asset(
                             'packages/loyalty_program_frontend/assets/images/reward_point_coin.png',
-                            width: size(widget.boxConstraints, 20),
-                            height: size(widget.boxConstraints, 20),
+                            width: kIsWeb ? 20 : 18,
+                            height: kIsWeb ? 20 : 18,
                           )
                         ],
                       )
@@ -129,7 +127,7 @@ class _EarnPointScreenState extends State<EarnPointScreen> {
             Text(
               "Everytime you complete a lesson plan, you’ll earn more points.",
               style: TextStyle(
-                fontSize: size(widget.boxConstraints, 15),
+                fontSize: kIsWeb ? 16 : 14,
                 fontWeight: FontWeight.w600,
                 fontFamily: "Source Sans Pro",
                 color: Colors.black,

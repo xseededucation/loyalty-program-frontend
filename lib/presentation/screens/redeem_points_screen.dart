@@ -35,7 +35,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
         child: Text(
           '$text',
           style: TextStyle(
-            fontSize: size(widget.boxConstraints, 12),
+            fontSize: kIsWeb ? 16 : 14,
             fontWeight: FontWeight.w600,
             fontFamily: "Source Sans Pro",
             color: const Color(0xff8896B3),
@@ -87,7 +87,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                 Text(
                   'Reward points redeemed',
                   style: TextStyle(
-                    fontSize: size(widget.boxConstraints, 14),
+                    fontSize: kIsWeb ? 16 : 14,
                     fontWeight: kIsWeb ? FontWeight.w600 : FontWeight.w500,
                     fontFamily: "Source Sans Pro",
                     color: Colors.black,
@@ -97,7 +97,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                 Text(
                   'You have redeemed ₹${transaction.denomination}',
                   style: TextStyle(
-                    fontSize: size(widget.boxConstraints, 12),
+                    fontSize: kIsWeb ? 14 : 12,
                     fontWeight: FontWeight.w500,
                     fontFamily: "Source Sans Pro",
                     color: const Color(0xff7887A5),
@@ -117,7 +117,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                       child: Text(
                         '- ${transaction.credit}',
                         style: TextStyle(
-                          fontSize: size(widget.boxConstraints, 14),
+                          fontSize: kIsWeb ? 16 : 14,
                           fontWeight: FontWeight.w700,
                           fontFamily: "Source Sans Pro",
                           color: const Color(0xffDC5F67),
@@ -127,8 +127,8 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                     const SizedBox(width: 10),
                     Image.asset(
                       'packages/loyalty_program_frontend/assets/images/reward_point_coin.png',
-                      width: size(widget.boxConstraints, 20),
-                      height: size(widget.boxConstraints, 20),
+                      width: kIsWeb ? 20 : 16,
+                      height: kIsWeb ? 20 : 16,
                     )
                   ],
                 ),
@@ -175,8 +175,6 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
           ? EdgeInsets.only(
               left: size(widget.boxConstraints, 50),
               right: size(widget.boxConstraints, 50),
-              top: size(widget.boxConstraints, 40),
-              bottom: size(widget.boxConstraints, 20),
             )
           : const EdgeInsets.all(0),
       color: const Color(0xffFFEDEC),
@@ -207,15 +205,13 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                         Text(
                           "View your redeemed reward points.",
                           style: TextStyle(
-                            fontSize: size(widget.boxConstraints, 15),
+                            fontSize: kIsWeb ? 16 : 14,
                             fontWeight: FontWeight.w600,
                             fontFamily: "Source Sans Pro",
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(
-                          height: 18,
-                        )
+                        const SizedBox(height: 18)
                       ],
                       Expanded(
                         child: ListView.separated(
@@ -282,15 +278,15 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
-            height: 18,
-          ),
+          const SizedBox(height: 16),
           Text(
             state.pageInformation!.currentCredit! < 3000
                 ? "Earn at least 3000 reward points in order to redeem & get a reward."
                 : "Looks like you haven’t yet redeemed any reward points.",
             style: const TextStyle(
-                fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),
+                fontSize: kIsWeb ? 16 : 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black),
           ),
           const SizedBox(
             height: 18,
@@ -299,12 +295,10 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
             state.pageInformation!.currentCredit! < 3000
                 ? "packages/loyalty_program_frontend/assets/images/coin.png"
                 : "packages/loyalty_program_frontend/assets/images/confused.png",
-            height: 33,
-            width: 33,
+            height: kIsWeb ? 32 : 28,
+            width: kIsWeb ? 32 : 28,
           ),
-          const SizedBox(
-            height: 18,
-          ),
+          const SizedBox(height: 18),
           state.pageInformation!.currentCredit! < 3000
               ? InkWell(
                   onTap: () {
@@ -341,13 +335,12 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
 
   SizedBox emptyRedeemListBox(RewardPointsSuccess state) {
     return SizedBox(
-      height: widget.boxConstraints.maxHeight,
-      width: widget.boxConstraints.maxWidth,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (kIsWeb) ...[
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -355,8 +348,8 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                     state.pageInformation!.currentCredit! < 3000
                         ? 'Earn at least 3000 reward points in order to redeem & get a reward.'
                         : 'Looks like you haven’t yet redeemed any reward points.',
-                    style: TextStyle(
-                      fontSize: size(widget.boxConstraints, 15),
+                    style: const TextStyle(
+                      fontSize: kIsWeb ? 18 : 16,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Source Sans Pro",
                       color: Colors.black,
@@ -369,14 +362,12 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
             Text(
               'Your Reward Points',
               style: TextStyle(
-                fontSize: size(widget.boxConstraints, 16),
+                fontSize: kIsWeb ? 16 : 14,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xffba181c),
               ),
             ),
-            SizedBox(
-              height: kIsWeb ? size(widget.boxConstraints, 18) : 12,
-            ),
+            SizedBox(height: kIsWeb ? 16 : 12),
             Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -434,9 +425,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                 ),
               ),
             ),
-            SizedBox(
-              height: size(widget.boxConstraints, 30),
-            ),
+            SizedBox(height: size(widget.boxConstraints, 30)),
             state.pageInformation!.currentCredit! < 3000
                 ? InkWell(
                     onTap: () {
@@ -444,7 +433,7 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      height: size(widget.boxConstraints, 40),
+                      height: kIsWeb ? 40 : 36,
                       width: size(widget.boxConstraints, 152),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -464,7 +453,8 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
                     onPress: () async {
                       context.read<RewardPointsBloc>().add(ChangeTabIndex(0));
                     },
-                  )
+                  ),
+            SizedBox(height: kIsWeb ? 16 : 12),
           ],
         ),
       ),

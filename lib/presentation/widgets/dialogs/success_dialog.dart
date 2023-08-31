@@ -16,27 +16,22 @@ class SuccessDialogBox extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(0)),
       ),
       content: SizedBox(
-        width: size(constraints, 652),
+        width: MediaQuery.of(context).size.width * 0.3,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Congratulations!",
-              style: TextStyle(
-                  fontSize: size(constraints, 22), fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             ),
-            SizedBox(
-              height: size(constraints, 10),
-            ),
+            SizedBox(height: 10),
             Image.asset(
               'packages/loyalty_program_frontend/assets/images/offer.png',
-              width: size(constraints, 64),
-              height: size(constraints, 64),
+              width: kIsWeb ? 60 : 40,
+              height: kIsWeb ? 60 : 40,
             ),
-            SizedBox(
-              height: size(constraints, 20),
-            ),
+            SizedBox(height: kIsWeb ? 20 : 16),
             Padding(
               padding: EdgeInsets.only(
                   left: kIsWeb ? size(constraints, 28) : 0,
@@ -52,9 +47,7 @@ class SuccessDialogBox extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
-                        fontSize: kIsWeb
-                            ? size(constraints, 18)
-                            : size(constraints, 14),
+                        fontSize: kIsWeb ? 18 : 14,
                       ),
                     ),
                     Constants.userData?.email.isNotEmpty
@@ -63,9 +56,7 @@ class SuccessDialogBox extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
-                              fontSize: kIsWeb
-                                  ? size(constraints, 18)
-                                  : size(constraints, 14),
+                              fontSize: kIsWeb ? 18 : 14,
                             ),
                           )
                         : const TextSpan(),
@@ -74,9 +65,7 @@ class SuccessDialogBox extends StatelessWidget {
                             text: '${Constants.userData?.email ?? ""} ',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: kIsWeb
-                                    ? size(constraints, 18)
-                                    : size(constraints, 14),
+                                fontSize: kIsWeb ? 18 : 14,
                                 fontWeight: FontWeight.bold),
                           )
                         : const TextSpan(),
@@ -86,9 +75,7 @@ class SuccessDialogBox extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
-                              fontSize: kIsWeb
-                                  ? size(constraints, 18)
-                                  : size(constraints, 14),
+                              fontSize: kIsWeb ? 18 : 14,
                             ),
                           )
                         : const TextSpan(),
@@ -98,9 +85,7 @@ class SuccessDialogBox extends StatelessWidget {
                                 '+${Constants.userData?.countryCode ?? ""} ${Constants.userData?.mobileNumber ?? ""}. ',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: kIsWeb
-                                    ? size(constraints, 18)
-                                    : size(constraints, 14),
+                                fontSize: kIsWeb ? 18 : 14,
                                 fontWeight: FontWeight.bold),
                           )
                         : const TextSpan(),

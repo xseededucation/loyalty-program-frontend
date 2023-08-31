@@ -20,31 +20,27 @@ class ConfirmationDialogBox extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(0)),
       ),
       content: SizedBox(
-        width: size(constraints, 642),
+        width: MediaQuery.of(context).size.width * 0.3,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Coupon Code",
-              style: TextStyle(
-                  fontSize: size(constraints, 22), fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             ),
-            SizedBox(
-              height: size(constraints, 10),
-            ),
+            SizedBox(height: 10),
             Image.asset(
               'packages/loyalty_program_frontend/assets/images/coupon.png',
-              width: size(constraints, 64),
-              height: size(constraints, 64),
+              width: kIsWeb ? 60 : 40,
+              height: kIsWeb ? 60 : 40,
             ),
-            SizedBox(
-              height: size(constraints, 20),
-            ),
+            SizedBox(height: kIsWeb ? 20 : 16),
             Padding(
               padding: EdgeInsets.only(
-                  left: kIsWeb ? size(constraints, 28) : 0,
-                  right: kIsWeb ? size(constraints, 10) : 0),
+                left: kIsWeb ? size(constraints, 28) : 0,
+                right: kIsWeb ? size(constraints, 10) : 0,
+              ),
               child: RichText(
                 text: TextSpan(
                   text: '',
@@ -53,20 +49,15 @@ class ConfirmationDialogBox extends StatelessWidget {
                     TextSpan(
                       text: 'Coupon code worth ',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        fontSize: kIsWeb
-                            ? size(constraints, 18)
-                            : size(constraints, 14),
-                      ),
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontSize: kIsWeb ? 18 : 14),
                     ),
                     TextSpan(
                       text: '₹${denomination} ',
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: kIsWeb
-                              ? size(constraints, 18)
-                              : size(constraints, 14),
+                          fontSize: kIsWeb ? 18 : 14,
                           fontWeight: FontWeight.bold),
                     ),
                     Constants.userData?.email != null
@@ -75,9 +66,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
-                              fontSize: kIsWeb
-                                  ? size(constraints, 18)
-                                  : size(constraints, 14),
+                              fontSize: kIsWeb ? 18 : 14,
                             ),
                           )
                         : TextSpan(),
@@ -86,9 +75,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                             text: '${Constants.userData?.email ?? ""} ',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: kIsWeb
-                                    ? size(constraints, 18)
-                                    : size(constraints, 14),
+                                fontSize: kIsWeb ? 18 : 14,
                                 fontWeight: FontWeight.bold),
                           )
                         : TextSpan(),
@@ -98,9 +85,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
-                              fontSize: kIsWeb
-                                  ? size(constraints, 18)
-                                  : size(constraints, 14),
+                              fontSize: kIsWeb ? 18 : 14,
                             ),
                           )
                         : TextSpan(),
@@ -110,9 +95,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                                 '+${Constants.userData?.countryCode ?? ""}  ${Constants.userData?.mobileNumber ?? ""}',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: kIsWeb
-                                    ? size(constraints, 18)
-                                    : size(constraints, 14),
+                                fontSize: kIsWeb ? 18 : 14,
                                 fontWeight: FontWeight.bold),
                           )
                         : TextSpan(),
@@ -120,9 +103,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: size(constraints, 30),
-            ),
+            SizedBox(height: kIsWeb ? 30 : 26),
             if (kIsWeb)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -132,8 +113,8 @@ class ConfirmationDialogBox extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      height: size(constraints, 44),
-                      width: size(constraints, 258),
+                      height: 44,
+                      width: 150,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(
@@ -145,20 +126,18 @@ class ConfirmationDialogBox extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: const Color(0xffBA181C),
-                            fontSize: size(constraints, 16)),
+                            fontSize: 16),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: size(constraints, 20),
-                  ),
+                  SizedBox(width: 20),
                   InkWell(
                     onTap: () {
                       onConfirm();
                     },
                     child: Container(
-                      height: size(constraints, 44),
-                      width: size(constraints, 258),
+                      height: 44,
+                      width: 150,
                       decoration: BoxDecoration(
                           color: const Color(0xffBA181C),
                           borderRadius: BorderRadius.circular(2)),
@@ -168,7 +147,7 @@ class ConfirmationDialogBox extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
-                            fontSize: size(constraints, 16)),
+                            fontSize: 16),
                       ),
                     ),
                   ),
@@ -183,47 +162,42 @@ class ConfirmationDialogBox extends StatelessWidget {
                       onConfirm();
                     },
                     child: Container(
-                      height: kIsWeb
-                          ? size(constraints, 44)
-                          : size(constraints, 42),
-                      width: size(constraints, 258),
+                      height: 44,
+                      width: 258,
                       decoration: BoxDecoration(
                           color: const Color(0xffBA181C),
                           borderRadius: BorderRadius.circular(2)),
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         "Confirm",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
-                            fontSize: size(constraints, 16)),
+                            fontSize: 16),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: size(constraints, 20),
-                  ),
+                  SizedBox(height: size(constraints, 20)),
                   InkWell(
                     onTap: () {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      height: kIsWeb
-                          ? size(constraints, 44)
-                          : size(constraints, 42),
-                      width: size(constraints, 258),
+                      height: 44,
+                      width: 258,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(
                               color: const Color(0xffBA181C), width: 1.2),
                           borderRadius: BorderRadius.circular(2)),
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         "Cancel",
                         style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xffBA181C),
-                            fontSize: size(constraints, 16)),
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xffBA181C),
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
