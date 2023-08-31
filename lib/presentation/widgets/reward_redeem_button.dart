@@ -23,8 +23,8 @@ class RewardRedeemButton extends StatelessWidget {
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
-        height: size(boxConstraints, kIsWeb ? 50 : 48),
-        width: size(boxConstraints, kIsWeb ? 350 : 280),
+        height: kIsWeb ? 50 : 48,
+        width: kIsWeb ? 350 : 280,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: isActive ? null : const Color(0xffa6a6a6),
@@ -62,7 +62,7 @@ class RewardRedeemButton extends StatelessWidget {
                       'Redeem Reward Points',
                       overflow: TextOverflow.fade,
                       style: TextStyle(
-                        fontSize: size(boxConstraints, kIsWeb ? 16 : 14),
+                        fontSize: kIsWeb ? 16 : 14,
                         fontWeight: FontWeight.w500,
                         color: isActive ? null : const Color(0xffa6a6a6),
                       ),
@@ -71,7 +71,7 @@ class RewardRedeemButton extends StatelessWidget {
                       'Convert your earned points to a gift card',
                       overflow: TextOverflow.fade,
                       style: TextStyle(
-                        fontSize: size(boxConstraints, kIsWeb ? 14 : 12),
+                        fontSize: kIsWeb ? 14 : 12,
                         color: isActive
                             ? const Color(0xff787F8C)
                             : const Color(0xffa6a6a6),

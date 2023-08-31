@@ -93,46 +93,33 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                     children: [
                       Container(
                         padding: EdgeInsets.only(
-                            left: kIsWeb
-                                ? size(constraints, 50)
-                                : size(constraints, 12),
-                            top: kIsWeb
-                                ? size(constraints, 40)
-                                : size(constraints, 12)),
+                            left: kIsWeb ? 50 : 12, top: kIsWeb ? 24 : 12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Redeem Reward Points",
                               style: TextStyle(
-                                  fontSize: kIsWeb
-                                      ? size(constraints, 22)
-                                      : size(constraints, 14),
+                                  fontSize: kIsWeb ? 22 : 16,
                                   fontWeight: FontWeight.w600),
                             ),
                             SizedBox(
-                              height: kIsWeb
-                                  ? size(constraints, 8)
-                                  : size(constraints, 4),
+                              height: kIsWeb ? 8 : 4,
                             ),
                             Row(
                               children: [
                                 Text(
                                   "Create a discount coupon and use it during checkout.",
                                   style: TextStyle(
-                                    fontSize: kIsWeb
-                                        ? size(constraints, 18)
-                                        : size(constraints, 12),
+                                    fontSize: kIsWeb ? 18 : 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
+                                const SizedBox(width: 5),
                                 Image.asset(
                                   'packages/loyalty_program_frontend/assets/images/gift_box.png',
-                                  width: size(constraints, 22),
-                                  height: size(constraints, 22),
+                                  width: 20,
+                                  height: 20,
                                 )
                               ],
                             ),
@@ -161,8 +148,8 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                       child: Image.network(
                                         state.products?[currentPageIndex].url ??
                                             "",
-                                        height: size(constraints, 144),
-                                        width: size(constraints, 255),
+                                        height: kIsWeb ? 144 : 120,
+                                        width: kIsWeb ? 256 : 200,
                                         fit: BoxFit.contain,
                                       ),
                                     );
@@ -176,9 +163,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                         : Alignment.centerLeft,
                                     child: Padding(
                                       padding: EdgeInsets.only(
-                                          right: kIsWeb
-                                              ? size(constraints, 400)
-                                              : 0),
+                                          right: kIsWeb ? 400 : 0),
                                       child: IconButton(
                                         onPressed: () {
                                           setState(() {
@@ -203,9 +188,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                         : Alignment.centerRight,
                                     child: Padding(
                                       padding: EdgeInsets.only(
-                                          left: kIsWeb
-                                              ? size(constraints, 400)
-                                              : 0),
+                                          left: kIsWeb ? 400 : 0),
                                       child: IconButton(
                                         onPressed: () {
                                           setState(() {
@@ -214,7 +197,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                         },
                                         icon: Icon(
                                           Icons.arrow_forward_ios_outlined,
-                                          size: size(constraints, 18),
+                                          size: kIsWeb ? 18 : 16,
                                         ),
                                       ),
                                     ),
@@ -223,12 +206,9 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: size(constraints, 10),
-                          ),
+                          SizedBox(height: 10),
                           Padding(
-                            padding: EdgeInsets.only(
-                                left: kIsWeb ? size(constraints, 15) : 0),
+                            padding: EdgeInsets.only(left: kIsWeb ? 16 : 0),
                             child: SizedBox(
                               width: width * 0.9,
                               child: Container(
@@ -236,9 +216,7 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                 child: Text(
                                   "Your points balance is ${currentCreditValue.text} worth of ₹$worthValue. How many points do you want to redeem?",
                                   style: TextStyle(
-                                    fontSize: kIsWeb
-                                        ? size(constraints, 20)
-                                        : size(constraints, 14),
+                                    fontSize: kIsWeb ? 18 : 14,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -255,19 +233,14 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                   onChangePointsDecrement();
                                 },
                                 child: Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: size(constraints, 8)),
+                                  padding: EdgeInsets.only(bottom: 8),
                                   child: CircleAvatar(
-                                    radius: kIsWeb
-                                        ? size(constraints, 20)
-                                        : size(constraints, 16),
+                                    radius: kIsWeb ? 18 : 14,
                                     backgroundColor: Colors.black,
                                     child: Icon(
                                       Icons.remove,
                                       color: Colors.white,
-                                      size: kIsWeb
-                                          ? size(constraints, 25)
-                                          : size(constraints, 20),
+                                      size: kIsWeb ? 24 : 20,
                                     ),
                                   ),
                                 ),
@@ -318,16 +291,12 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                   padding: EdgeInsets.only(
                                       bottom: size(constraints, 8)),
                                   child: CircleAvatar(
-                                    radius: kIsWeb
-                                        ? size(constraints, 20)
-                                        : size(constraints, 16),
+                                    radius: kIsWeb ? 18 : 14,
                                     backgroundColor: Colors.black,
                                     child: Icon(
                                       Icons.add,
                                       color: Colors.white,
-                                      size: kIsWeb
-                                          ? size(constraints, 25)
-                                          : size(constraints, 20),
+                                      size: kIsWeb ? 24 : 20,
                                     ),
                                   ),
                                 ),
@@ -355,12 +324,6 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                               width: size(constraints, 366),
                               margin: const EdgeInsets.symmetric(
                                   horizontal: kIsWeb ? 0 : 10),
-                              padding: EdgeInsets.only(
-                                left: size(constraints, 11),
-                                top: size(constraints, 11),
-                                right: size(constraints, 11),
-                                bottom: size(constraints, 11),
-                              ),
                               decoration: BoxDecoration(
                                 color: const Color(0xffFED945),
                                 borderRadius: BorderRadius.circular(5),
@@ -373,14 +336,13 @@ class _RedeemRewardScreenState extends State<RedeemRewardScreen> {
                                 "Redeem",
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: kIsWeb
-                                      ? size(constraints, 24)
-                                      : size(constraints, 16),
+                                  fontSize: kIsWeb ? 18 : 16,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
-                          )
+                          ),
+                          SizedBox(height: size(constraints, 18)),
                         ],
                       )
                     ],

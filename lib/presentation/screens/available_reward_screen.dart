@@ -117,7 +117,7 @@ class AvailableRewardPoint extends StatelessWidget {
               boxConstraints: boxConstraints,
               onPress: onPress,
             ),
-            SizedBox(height: size(boxConstraints, 54)),
+            SizedBox(height: size(boxConstraints, 100)),
           ],
         ),
       ),

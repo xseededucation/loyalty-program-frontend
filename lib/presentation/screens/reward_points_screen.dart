@@ -62,7 +62,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
             "Reward Points",
             softWrap: true,
             style: TextStyle(
-              fontSize: size(constraints, 16),
+              fontSize: 16,
               fontFamily: "Source Sans Pro",
               color: Colors.white,
             ),
@@ -71,7 +71,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
             "Hi, ${Constants.userData?.name ?? ""}",
             softWrap: true,
             style: TextStyle(
-              fontSize: size(constraints, 14),
+              fontSize: 14,
               fontFamily: "Source Sans Pro",
               color: Colors.white,
             ),
@@ -98,7 +98,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           child: Text(
             'Available Reward Points',
             style: TextStyle(
-              fontSize: size(constraints, 14),
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               fontFamily: "Source Sans Pro",
             ),
@@ -108,7 +108,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           child: Text(
             'Earn More Points',
             style: TextStyle(
-              fontSize: size(constraints, 14),
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               fontFamily: "Source Sans Pro",
             ),
@@ -118,7 +118,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           child: Text(
             'Redeemed Points',
             style: TextStyle(
-              fontSize: size(constraints, 14),
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               fontFamily: "Source Sans Pro",
             ),
@@ -128,7 +128,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           child: Text(
             'Terms & Conditions',
             style: TextStyle(
-              fontSize: size(constraints, 14),
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               fontFamily: "Source Sans Pro",
             ),
@@ -200,7 +200,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                   return Text(
                     '${pageDetail.text}',
                     style: TextStyle(
-                      fontSize: size(constraints, 14),
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Source Sans Pro",
                     ),
@@ -321,7 +321,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 "Teach, Earn & Be Rewarded",
                 key: const Key('teachEarnRewardedText'),
                 style: TextStyle(
-                  fontSize: size(constraints, 18),
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
                   fontFamily: "Source Sans Pro",
                 ),
