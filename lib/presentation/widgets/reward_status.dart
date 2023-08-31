@@ -25,11 +25,12 @@ class RewardStatus extends StatelessWidget {
     if (pageInformation?.conversionRates != null) {
       for (int i = 0; i < pageInformation!.conversionRates!.length; i++) {
         final MileStones obj = MileStones(
-            credit: pageInformation?.conversionRates![i].credit!.toDouble(),
-            denomination:
-                pageInformation?.conversionRates![i].denomination!.toDouble(),
-            sequenceNo: pageInformation?.conversionRates![i].sequenceNo,
-            toolTipText: pageInformation?.conversionRates![i].toolTipText);
+          credit: pageInformation?.conversionRates![i].credit!.toDouble(),
+          denomination:
+              pageInformation?.conversionRates![i].denomination!.toDouble(),
+          sequenceNo: pageInformation?.conversionRates![i].sequenceNo,
+          toolTipText: pageInformation?.conversionRates![i].toolTipText,
+        );
         list.add(obj);
       }
     }
@@ -54,9 +55,27 @@ class RewardStatus extends StatelessWidget {
       }
     }
 
+    int? currentStatus;
+    void getCurrentStatusOfUser() {
+      int currentCredit = pageInformation!.currentCredit!;
+      if (currentCredit > list.last.credit!) {
+        currentStatus = list.length - 1;
+      }
+      for (int i = 0; i < list.length; i++) {
+        if (currentCredit < list[i].credit!) {
+          currentStatus = i - 1;
+          break;
+        } else if (currentCredit == list[i].credit!) {
+          currentStatus = i;
+          break;
+        }
+      }
+    }
+
     getPoints();
+    getCurrentStatusOfUser();
     String getMessage() {
-      if (currentSliderPoint == 0) {
+      if (currentSliderPoint == currentStatus) {
         return 'Your Reward Points';
       } else {
         MileStones? obj;
@@ -100,10 +119,10 @@ class RewardStatus extends StatelessWidget {
             children: [
               Text(
                 message,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: const Color(0xffba181c),
+                  color: Color(0xffba181c),
                 ),
               ),
               SizedBox(height: kIsWeb ? size(boxConstraints, 18) : 12),
@@ -153,10 +172,10 @@ class RewardStatus extends StatelessWidget {
                           package: 'loyalty_program_frontend',
                         ),
                       ),
-                      SizedBox(height: kIsWeb ? 14 : 8),
+                      const SizedBox(height: kIsWeb ? 14 : 8),
                       Text(
                         formatPoints(pointsToShow.toInt()),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
                         ),
@@ -165,7 +184,7 @@ class RewardStatus extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: kIsWeb ? 30 : 20,
               )
             ],
