@@ -7,16 +7,19 @@ import 'package:loyalty_program_frontend/presentation/widgets/reward_status.dart
 
 class AvailableRewardPoint extends StatelessWidget {
   final VoidCallback onPress;
+  final bool isHeaderMessageVisible;
   final BoxConstraints boxConstraints;
   final double currentAchievementLevel;
+  final double originalPoint;
   final PageInformation? pageInformation;
-  const AvailableRewardPoint({
-    super.key,
-    required this.onPress,
-    required this.boxConstraints,
-    required this.currentAchievementLevel,
-    required this.pageInformation,
-  });
+  const AvailableRewardPoint(
+      {super.key,
+      required this.onPress,
+      required this.boxConstraints,
+      required this.currentAchievementLevel,
+      required this.originalPoint,
+      required this.pageInformation,
+      this.isHeaderMessageVisible = true});
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +57,15 @@ class AvailableRewardPoint extends StatelessWidget {
         );
       }
       list.sort((a, b) => a.sequenceNo!.compareTo(b.sequenceNo!));
-      if (currentAchievementLevel > list.last.credit!) {
+      if (originalPoint > list.last.credit!) {
         message = list.last.message;
         return;
       }
       for (int i = 0; i < list.length; i++) {
-        if (currentAchievementLevel < list[i].credit!) {
+        if (originalPoint < list[i].credit!) {
           message = list[i - 1].message;
           break;
-        } else if (currentAchievementLevel == list[i].credit!) {
+        } else if (originalPoint == list[i].credit!) {
           message = list[i].message;
           break;
         }
@@ -94,13 +97,15 @@ class AvailableRewardPoint extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: size(boxConstraints, 26)),
-            Text(
-              message!,
-              style: TextStyle(
-                fontSize: size(boxConstraints, 16),
-                fontWeight: FontWeight.w600,
+            if (isHeaderMessageVisible) ...{
+              Text(
+                message!,
+                style: TextStyle(
+                  fontSize: size(boxConstraints, 16),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
+            },
             SizedBox(height: size(boxConstraints, 24)),
             RewardStatus(
               boxConstraints: boxConstraints,

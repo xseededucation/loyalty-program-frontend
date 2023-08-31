@@ -22,6 +22,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<ToggleRedeemScreen>(_mapToggleRedeemScreen);
     on<ChangeSliderPoints>(_mapChangeSliderPoint);
     on<ChangeTabIndex>(_mapChangeTabIndex);
+    on<SetHeaderTextVisible>(_mapSetHeaderTextVisible);
   }
 
   RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
@@ -87,6 +88,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
           pointsToShow:
               rewardPointsSuccess.pageInformation!.currentCredit!.toDouble(),
           eventType: "",
+          isHeaderTextVisible: true,
         );
       }
       emit(rewardPointsSuccess);
@@ -152,5 +154,18 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
         add(ToggleRedeemScreen(true));
       });
     }
+  }
+
+  void _mapSetHeaderTextVisible(
+      SetHeaderTextVisible event, Emitter<RewardPointsState> emit) {
+    emit(RewardPointsInProgress());
+    if (event.setVisible == true) {
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(isHeaderTextVisible: true);
+    } else {
+      rewardPointsSuccess =
+          rewardPointsSuccess.copyWith(isHeaderTextVisible: false);
+    }
+    emit(rewardPointsSuccess);
   }
 }

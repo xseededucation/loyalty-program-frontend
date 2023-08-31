@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loyalty_program_frontend/domain/models/mile_stone.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
+import 'package:loyalty_program_frontend/presentation/utils/external_packages/intl_wrapper.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/confetti_selector.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/format_points.dart';
 import 'package:loyalty_program_frontend/presentation/utils/helpers/size_helper.dart';
@@ -19,6 +20,7 @@ class RewardStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? message;
     List<MileStones> list = [];
     if (pageInformation?.conversionRates != null) {
       for (int i = 0; i < pageInformation!.conversionRates!.length; i++) {
@@ -53,6 +55,30 @@ class RewardStatus extends StatelessWidget {
     }
 
     getPoints();
+    String getMessage() {
+      if (currentSliderPoint == 0) {
+        return 'Your Reward Points';
+      } else {
+        MileStones? obj;
+        if (pointsToShow > list.last.credit!) {
+          obj = list.last;
+          return "Earn ${obj.credit} points & get a reward worth ${IntlWrapper.formatIndianCurrency(obj.denomination!)}";
+        }
+        for (int i = 0; i < list.length; i++) {
+          if (pointsToShow < list[i].credit!) {
+            obj = list[i - 1];
+            break;
+          } else if (pointsToShow == list[i].credit!) {
+            obj = list[i];
+            break;
+          }
+        }
+        return "Earn ${obj?.credit} points & get a reward worth ${IntlWrapper.formatIndianCurrency(obj!.denomination!)}";
+      }
+    }
+
+    message = getMessage();
+
     Size sizeForMobile = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,9 +99,9 @@ class RewardStatus extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Your Reward Points',
+                message,
                 style: TextStyle(
-                  fontSize: size(boxConstraints, 12),
+                  fontSize: kIsWeb ? size(boxConstraints, 16) : 12,
                   fontWeight: FontWeight.w500,
                   color: const Color(0xffba181c),
                 ),
