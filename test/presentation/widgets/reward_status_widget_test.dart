@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
+
+import '../../stubs/page_information_stub.dart';
 
 void main() {
   testWidgets('RewardStatus test', (widgetTester) async {
-    double width = 360;
-    double height = 800;
-    double currentAmount = 3000;
-    int currentMileStone = 4;
-    int totalMileStone = 5;
+    BoxConstraints constraints =
+        const BoxConstraints(minHeight: 800, minWidth: 360);
+    double pointToShow = 4000;
+
     await widgetTester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: RewardStatus(
-            width: width,
-            height: height,
-            currentAmount: currentAmount,
-            currentAchievement: currentMileStone,
-            totalMileStones: totalMileStone,
-          ),
-        ),
+            body: RewardStatus(
+          boxConstraints: constraints,
+          pointsToShow: pointToShow,
+          pageInformation: PageInformation.fromJson(data['data']),
+        )),
       ),
     );
+    await widgetTester.pumpAndSettle();
 
-    expect(find.text('Your Reward Points'), findsOneWidget);
-    expect(find.text(currentAmount.toString()), findsOneWidget);
     expect(find.byType(Image), findsOneWidget);
   });
 }

@@ -28,8 +28,10 @@ void main() {
     expect(find.text('This is a tooltip message'), findsOneWidget);
 
     ToolTipWrapper.hideToolTip();
+
     await tester.pumpAndSettle();
 
     expect(find.text('This is a tooltip message'), findsNothing);
+    ToolTipWrapper.dispose();
   });
 }

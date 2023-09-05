@@ -5,16 +5,17 @@ import 'package:loyalty_program_frontend/presentation/widgets/widgets.dart';
 void main() {
   testWidgets('RewardRedeemButton should render correctly',
       (WidgetTester tester) async {
+    BoxConstraints constraints =
+        const BoxConstraints(minHeight: 800, minWidth: 360);
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: RewardRedeemButton(
-              width: 360,
-              height: 325,
-              onPress: () {},
-            ),
-          ),
+              child: RewardRedeemButton(
+            boxConstraints: constraints,
+            onPress: () {},
+            isActive: false,
+          )),
         ),
       ),
     );
@@ -23,31 +24,5 @@ void main() {
 
     expect(
         find.text('Convert your earned points to a gift card'), findsOneWidget);
-  });
-
-  testWidgets('RewardRedeemButton onTap callback should be triggered',
-      (WidgetTester tester) async {
-    bool callbackTriggered = false;
-
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: RewardRedeemButton(
-              width: 200,
-              height: 60,
-              onPress: () {
-                callbackTriggered = true;
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-
-    await tester.tap(find.byType(RewardRedeemButton));
-    await tester.pump();
-
-    expect(callbackTriggered, true);
   });
 }

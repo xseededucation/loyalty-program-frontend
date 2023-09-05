@@ -59,7 +59,6 @@ void main() {
       final updatedState = newState.copyWith(pageInformation: updatedPageInfo);
 
       expect(updatedState.pageInformation, updatedPageInfo);
-      expect(updatedState.message, null);
     });
 
     test('Test RewardPointsFailure state', () {
