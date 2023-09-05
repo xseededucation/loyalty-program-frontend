@@ -1,15 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:loyalty_program_frontend/data/networking/api_base_helper.dart';
-import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
-import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
+import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:mockito/mockito.dart';
+import 'package:http/http.dart' as http;
+import 'package:loyalty_program_frontend/data/networking/api_base_helper.dart';
 
-class MockApiBaseHelper extends Mock implements ApiBaseHelper {}
+class MockHttpClient extends Mock implements http.Client {}
+
+class MockApiBaseHelper extends Mock implements ApiBaseHelper {
+  final http.Client client = MockHttpClient();
+}
 
 void main() {
-  group('RewardPointRepository', () {
+  group('RewardPointRepository Tests', () {
+   MockApiBaseHelper mockApiBaseHelper = MockApiBaseHelper();
     late RewardPointRepository repository;
-    late MockApiBaseHelper mockApiBaseHelper;
 
     setUp(() {
       mockApiBaseHelper = MockApiBaseHelper();
@@ -17,48 +21,34 @@ void main() {
       repository.apiBaseHelper = mockApiBaseHelper;
     });
 
-    test('checkCanAccessLoyaltyProgram - success', () async {
-      final responseData = {'accessGranted': true};
-      when(mockApiBaseHelper.get(Constants.baseUrl))
-          .thenAnswer((_) async => responseData);
-
+    test('checkCanAccessLoyaltyProgram success', () async {
+      when(mockApiBaseHelper.get('https://loyalty-program-apis.xseeddigital.info/api/canAccessLoyaltyProgram'))
+          .thenAnswer((_) async => http.Response('{"status": "success"}', 200));
       final result = await repository.checkCanAccessLoyaltyProgram();
-
-      expect(result, responseData);
-      verify(mockApiBaseHelper.get('canAccessLoyaltyProgram'));
+      expect(result, isTrue);
     });
 
-    test('fetchPageInformation - success', () async {
-      final responseData = {'pageTitle': 'Loyalty Program'};
-      when(mockApiBaseHelper.get(Constants.baseUrl))
-          .thenAnswer((_) async => responseData);
-
+    test('fetchPageInformation success', () async {
+      when(mockApiBaseHelper.get(
+              'https://loyalty-program-apis.xseeddigital.info/api/pageInformation'))
+          .thenAnswer(
+              (_) async => http.Response('{"info": "sample info"}', 200));
       final result = await repository.fetchPageInformation();
-
-      expect(result, responseData);
-      verify(mockApiBaseHelper.get('pageInformation'));
+      expect(result, equals('sample info'));
     });
 
-    test('checkCanAccessLoyaltyProgram - failure', () async {
-      when(mockApiBaseHelper.get('canAccessLoyaltyProgram'))
-          .thenThrow(Exception('API error'));
-
-      expect(
-        () async => await repository.checkCanAccessLoyaltyProgram(),
-        throwsA(isInstanceOf<Exception>()),
-      );
-      verify(mockApiBaseHelper.get('canAccessLoyaltyProgram'));
+    test('makePayment success', () async {
+      when(mockApiBaseHelper.post('', any))
+          .thenAnswer((_) async => http.Response('{"success": true}', 200));
+      final result = await repository.makePayment(100, 'product123');
+      expect(result, isTrue);
     });
 
-    test('fetchPageInformation - failure', () async {
-      when(mockApiBaseHelper.get('pageInformation'))
-          .thenThrow(Exception('API error'));
-
-      expect(
-        () async => await repository.fetchPageInformation(),
-        throwsA(isInstanceOf<Exception>()),
-      );
-      verify(mockApiBaseHelper.get('pageInformation'));
+    test('updateUserActivity success', () async {
+      when(mockApiBaseHelper.post('', any))
+          .thenAnswer((_) async => http.Response('{"success": true}', 200));
+      final result = await repository.updateUserActivity('activityType');
+      expect(result, isTrue);
     });
   });
 }

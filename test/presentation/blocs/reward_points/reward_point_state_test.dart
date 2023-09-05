@@ -4,6 +4,7 @@ import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 
 void main() {
   group('RewardPointsState Tests', () {
+    
     test('Test RewardPointsSuccess state copyWith', () {
       final initialPageInfo = PageInformation.fromJson({});
 
@@ -59,7 +60,7 @@ void main() {
       final updatedState = newState.copyWith(pageInformation: updatedPageInfo);
 
       expect(updatedState.pageInformation, updatedPageInfo);
-      expect(updatedState.message, null);
+      expect(updatedState.eventType, null);
     });
 
     test('Test RewardPointsFailure state', () {

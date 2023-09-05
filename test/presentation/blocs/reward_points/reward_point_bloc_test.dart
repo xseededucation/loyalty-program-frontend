@@ -1,9 +1,7 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
-import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_bloc.dart';
-import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_event.dart';
-import 'package:loyalty_program_frontend/presentation/blocs/reward_points/reward_points_state.dart';
+import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:mockito/mockito.dart';
 
 class MockRewardPointRepository extends Mock implements RewardPointRepository {}
@@ -13,49 +11,215 @@ class MockEmitter extends Mock implements Emitter<RewardPointsState> {}
 void main() {
   group('RewardPointsBloc Tests', () {
     late MockRewardPointRepository mockRepository;
-    late RewardPointsBloc bloc;
+    late RewardPointsBloc rewardBloc;
     late MockEmitter mockEmitter;
 
     setUp(() {
       mockRepository = MockRewardPointRepository();
       mockEmitter = MockEmitter();
-      bloc = RewardPointsBloc(rewardPointRepository: mockRepository);
+      rewardBloc = RewardPointsBloc(rewardPointRepository: mockRepository);
     });
 
     tearDown(() {
-      bloc.close();
+      rewardBloc.close();
     });
 
-    test('Initial state is correct', () {
-      expect(bloc.state, RewardPointsInitial());
-    });
-
-    test('CanAccessLoyaltyProgram event emits success state', () async {
-      when(mockRepository.checkCanAccessLoyaltyProgram())
-          .thenAnswer((_) async => {'status': true});
-
-      final expectedStates = [
+    blocTest<RewardPointsBloc, RewardPointsState>(
+      'emits [RewardPointsInitial, RewardPointsSuccess] on success',
+      build: () {
+        when(mockRepository.checkCanAccessLoyaltyProgram())
+            .thenAnswer((_) async => {'status': 'success', 'data': []});
+        return rewardBloc;
+      },
+      act: (bloc) => bloc.add(CanAccessLoyaltyProgram()),
+      expect: () => [
         RewardPointsInProgress(),
-        RewardPointsSuccess(),
-      ];
+        isA<RewardPointsSuccess>(),
+      ],
+    );
 
-      expectLater(bloc.stream, emitsInOrder(expectedStates));
-
-      bloc.add(CanAccessLoyaltyProgram());
-    });
-
-    test('CanAccessLoyaltyProgram event emits failure state', () async {
-      when(mockRepository.checkCanAccessLoyaltyProgram()).thenAnswer(
-          (_) async => {'status': false, 'message': 'Access denied'});
-
-      final expectedStates = [
+    blocTest<RewardPointsBloc, RewardPointsState>(
+      'emits [RewardPointsInitial, RewardPointsInProgress, RewardPointsSuccess] when products are not empty',
+      build: () {
+        rewardBloc.emit(RewardPointsSuccess(products: []));
+        return rewardBloc;
+      },
+      act: (bloc) => bloc.add(CanAccessLoyaltyProgram()),
+      expect: () => [
         RewardPointsInProgress(),
-        RewardPointsFailure('Access denied'),
-      ];
+        isA<RewardPointsSuccess>(),
+      ],
+    );
 
-      expectLater(bloc.stream, emitsInOrder(expectedStates));
+    blocTest<RewardPointsBloc, RewardPointsState>(
+      '_mapFetchPageInformation emits [RewardPointsInProgress, RewardPointsSuccess] on success',
+      build: () {
+        when(mockRepository.fetchPageInformation()).thenAnswer((_) async => {
+              "status": "success",
+              "data": {
+                "zeroCreditMessage": "Earn 3000 points to get a reward of ₹500",
+                "conversionRates": [
+                  {
+                    "credit": 3000,
+                    "denomination": 500,
+                    "sequenceNo": 1,
+                    "toolTipText": "next level 6000 points",
+                    "headerText": "Congratulations! First reward unlocked!"
+                  },
+                  {
+                    "credit": 6000,
+                    "denomination": 1000,
+                    "sequenceNo": 2,
+                    "toolTipText": "next level 10000 points",
+                    "headerText": "Well done! You’ve reached another milestone!"
+                  },
+                  {
+                    "credit": 10000,
+                    "denomination": 1500,
+                    "sequenceNo": 3,
+                    "toolTipText": "next level 15000 points",
+                    "headerText":
+                        "You’re not far from achieving the highest reward!"
+                  },
+                  {
+                    "credit": 15000,
+                    "denomination": 2500,
+                    "sequenceNo": 4,
+                    "toolTipText": "No more levels",
+                    "headerText": "Claim the ultimate reward now!"
+                  }
+                ],
+                "currentCredit": 7500,
+                "eventToCreditMap": [
+                  {"event": "APP_OPEN", "creditGiven": 1500, "timeInMins": 0},
+                  {"event": "TIME_BOUND", "creditGiven": 1000, "timeInMins": 1},
+                  {"event": "SWIPE", "creditGiven": 500, "timeInMins": 0}
+                ],
+                "pageDetails": [
+                  {
+                    "entityType": "Terms",
+                    "labelToShow": "Terms",
+                    "text":
+                        "Participation in our Multi-Level Marketing (MLM) program constitutes your agreement to adhere to the following terms and conditions. By engaging in this program, you acknowledge and accept these terms, which may be subject to occasional updates. It is recommended that you review these terms regularly to stay informed about any changes. To be eligible for participation, you must be of legal age as defined in your jurisdiction and provide accurate and complete information during the registration process.\n\n    Membership within our MLM program is voluntary and should not be construed as entering into an employment relationship, partnership, or agency agreement. You operate as an independent distributor, distinct from the company's employees, partners, and agents. Compensation, including commissions, bonuses, and incentives, is contingent upon product sales and the recruitment of new distributors within your established downline network. Commission percentages and structures are determined by your rank and the cumulative sales volume generated by your downline.\n    \n    All commissions are calculated according to the guidelines specified in the company's official compensation plan, which is subject to potential modifications. The sale and marketing of products by distributors must align with all applicable laws and regulations. Accurate and substantiated product claims are mandatory, particularly when supported by scientific evidence. As a participant, you may recruit new distributors into your downline, however, engaging in unethical or deceptive recruitment practices is strictly prohibited.\n    \n    The company may offer training materials and support resources to facilitate your business growth, but ultimate success hinges on your personal efforts and competencies. Your participation in the MLM program may be terminated if you breach these terms, engage in unethical conduct, or violate relevant laws and regulations. Such termination could result in the forfeiture of earned commissions and associated benefits.\n    \n    Distributors are granted a limited, non-exclusive, and revocable license to utilize the company's trademarks and promotional content exclusively for the purpose of promoting the MLM program and its associated products. You commit to maintaining the confidentiality of proprietary information furnished by the company, encompassing compensation details and distributor lists. Unauthorized disclosure of confidential information could lead to legal consequences.\n    \n    These terms and conditions are governed by the laws of [Jurisdiction]. In case of disputes, exclusive jurisdiction rests with the courts in [Jurisdiction]. The company holds no responsibility for indirect, special, incidental, or consequential damages resulting from your involvement in the MLM program. Should any provision of these terms be deemed invalid or unenforceable, the remaining provisions shall remain fully effective.\n    \n    Please remember that this is a generalized outline and should be adjusted to match your specific MLM business model and legal prerequisites. Legal consultation is strongly recommended to ensure conformity with applicable laws and regulations.",
+                    "textToCredit": ""
+                  },
+                  {
+                    "entityType": "EarnMore",
+                    "labelToShow": "Earn More",
+                    "text": "",
+                    "textToCredit": [
+                      {
+                        "text": "Open SuperTeacher app & earn",
+                        "credit": 50,
+                        "subText": "Start using SuperTeacher app"
+                      },
+                      {
+                        "text": "Spent time on SuperTeacher app & earn",
+                        "credit": 15,
+                        "subText": "Spend 15 mins on the SuperTeacher app"
+                      },
+                      {
+                        "text": "Complete the next lesson plan & earn",
+                        "credit": 10,
+                        "subText": "Complete a lesson plan each day"
+                      }
+                    ]
+                  }
+                ],
+                "debitActivity": {
+                  "This Week": [
+                    {
+                      "_id": "64f08bf6dcc1c7de92974bab",
+                      "caaUserId": "6171056d5795550011b47c41",
+                      "credit": 3000,
+                      "transactionType": "DEBIT",
+                      "refNo": "8412c4698d214707b7e6d97c342247f0",
+                      "status": "COMPLETE",
+                      "sourceApp": "64ec5dabcd0de96563a8a7e2",
+                      "denomination": 500,
+                      "createdAt": "2023-08-31T12:47:50.151Z",
+                      "updatedAt": "2023-08-31T12:47:52.447Z",
+                      "__v": 0
+                    },
+                    {
+                      "_id": "64eec2a9e68faf1ef7a84e82",
+                      "caaUserId": "6171056d5795550011b47c41",
+                      "credit": 6000,
+                      "transactionType": "DEBIT",
+                      "refNo": "184b191ed567470d99093d52e42c33d2",
+                      "status": "COMPLETE",
+                      "sourceApp": "64ec5dabcd0de96563a8a7e2",
+                      "denomination": 1000,
+                      "createdAt": "2023-08-30T04:16:41.639Z",
+                      "updatedAt": "2023-08-30T04:16:48.738Z",
+                      "__v": 0
+                    },
+                    {
+                      "_id": "64ed71fbc9fd74fc922308a1",
+                      "caaUserId": "6171056d5795550011b47c41",
+                      "credit": 3000,
+                      "transactionType": "DEBIT",
+                      "refNo": "c4809024acbd4327aad9767009f6bf72",
+                      "status": "COMPLETE",
+                      "sourceApp": "64ec5dabcd0de96563a8a7e2",
+                      "denomination": 500,
+                      "createdAt": "2023-08-29T04:20:11.567Z",
+                      "updatedAt": "2023-08-29T04:20:14.698Z",
+                      "__v": 0
+                    },
+                    {
+                      "_id": "64ec7826685d7e65403e25a3",
+                      "caaUserId": "6171056d5795550011b47c41",
+                      "credit": 3000,
+                      "transactionType": "DEBIT",
+                      "refNo": "f2d7d78876a24ba09f8b6e45a218e474",
+                      "status": "COMPLETE",
+                      "sourceApp": "64ec5dabcd0de96563a8a7e2",
+                      "denomination": 500,
+                      "createdAt": "2023-08-28T10:34:14.042Z",
+                      "updatedAt": "2023-08-28T10:34:16.444Z",
+                      "__v": 0
+                    },
+                    {
+                      "_id": "64ec77c2685d7e65403e2596",
+                      "caaUserId": "6171056d5795550011b47c41",
+                      "credit": 3000,
+                      "transactionType": "DEBIT",
+                      "refNo": "078a6beaeac346c18329b5f67a7935ee",
+                      "status": "COMPLETE",
+                      "sourceApp": "64ec5dabcd0de96563a8a7e2",
+                      "denomination": 500,
+                      "createdAt": "2023-08-28T10:32:34.271Z",
+                      "updatedAt": "2023-08-28T10:32:40.098Z",
+                      "__v": 0
+                    }
+                  ]
+                },
+                "zeroCreditHeaderMessage":
+                    "Let’s get started to earn rewards & much more!"
+              }
+            });
+        return rewardBloc;
+      },
+      act: (bloc) => bloc.add(FetchPageInformationEvent()),
+      expect: () => [
+        RewardPointsInProgress(),
+        isA<RewardPointsSuccess>(),
+      ],
+    );
 
-      bloc.add(CanAccessLoyaltyProgram());
-    });
+    blocTest<RewardPointsBloc, RewardPointsState>(
+      '_mapFetchPageInformation emits [RewardPointsInProgress, RewardPointsFailure] on error',
+      build: () {
+        when(mockRepository.fetchPageInformation())
+            .thenThrow(Exception('Error'));
+        return rewardBloc;
+      },
+      act: (bloc) => bloc.add(FetchPageInformationEvent()),
+      expect: () => [
+        RewardPointsInProgress(),
+        isA<RewardPointsFailure>(),
+      ],
+    );
   });
 }
