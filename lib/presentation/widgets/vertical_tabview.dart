@@ -180,13 +180,21 @@ class _VerticalTabViewState extends State<VerticalTabView>
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  _changePageByTapView = true;
-                                  setState(() {
-                                    _selectTab(index);
-                                  });
-                                  pageController.animateToPage(index,
-                                      duration: widget.changePageDuration,
-                                      curve: widget.changePageCurve);
+                                  RewardPointsState state =
+                                      BlocProvider.of<RewardPointsBloc>(context)
+                                          .state;
+
+                                  if (state is RewardPointsSuccess) {
+                                    if (state.optInStatus == "ACCEPTED") {
+                                      _changePageByTapView = true;
+                                      setState(() {
+                                        _selectTab(index);
+                                      });
+                                      pageController.animateToPage(index,
+                                          duration: widget.changePageDuration,
+                                          curve: widget.changePageCurve);
+                                    }
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -218,6 +226,7 @@ class _VerticalTabViewState extends State<VerticalTabView>
                         physics: const NeverScrollableScrollPhysics(),
                         onPageChanged: (index) {
                           if (_changePageByTapView == false) {
+                            print("VerticalTabView : _selectTab3 : called");
                             _selectTab(index);
                           }
                           if (_selectedIndex == index) {

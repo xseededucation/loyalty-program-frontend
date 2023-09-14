@@ -5,7 +5,7 @@ class Common<T> {
   Common({this.status, this.data});
 
   Common.fromJson(Map<String, dynamic> json, T Function(dynamic) fromJsonT) {
-    status = json['status'];    
+    status = json['status'];
     if (json['data'] != null) {
       data = fromJsonT(json['data']);
     }

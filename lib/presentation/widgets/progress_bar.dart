@@ -168,7 +168,7 @@ class _ProgressSliderState extends State<ProgressSlider> {
                                                 widget.userName.isEmpty
                                                     ? ""
                                                     : widget.userName[0]
-                                                        .toString(),
+                                                        .toUpperCase(),
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                     fontSize: 14,

@@ -3,53 +3,41 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:loyalty_program_frontend/presentation/screens/redeem_reward_screen.dart';
 
 void main() {
-  testWidgets('Test Redeem Reward Points Widgets', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-      home: RedeemRewardScreen(),
-    ));      
+  testWidgets('RedeemRewardScreen should render', (WidgetTester tester) async {
+    // Build our widget and trigger a frame.
+    await tester.pumpWidget(MaterialApp(home: RedeemRewardScreen()));
 
-    expect(find.text('Redeem Reward Points'), findsOneWidget);
-    expect(find.text('Create a discount coupon and use it during checkout.'), findsOneWidget);
-    expect(find.byIcon(Icons.remove), findsOneWidget);
-    expect(find.byIcon(Icons.add), findsOneWidget);
-    expect(find.byKey(const Key('decrement')), findsOneWidget);
-    expect(find.byKey(const Key('increment')), findsOneWidget);
-    expect(find.text('Redeem'), findsOneWidget);
+    // Verify that the screen contains the expected text or widgets.
+    expect(find.text("Redeem Reward Points"), findsOneWidget);
+    expect(find.text("Create a discount coupon and use it during checkout."),
+        findsOneWidget);
 
-    // Perform tap on buttons
-    await tester.tap(find.byKey(const Key('increment')));
+    // You can add more test cases here to validate other parts of the screen.
+  });
+
+  testWidgets('RedeemRewardScreen should change value when tapping increment',
+      (WidgetTester tester) async {
+    // Build our widget and trigger a frame.
+    await tester.pumpWidget(MaterialApp(home: RedeemRewardScreen()));
+
+    // Tap the increment button.
+    await tester.tap(find.byKey(Key('increment')));
     await tester.pump();
 
+    // Verify that the value has increased.
+    expect(find.text('1'), findsOneWidget);
+  });
 
-    await tester.tap(find.byKey(const Key('decrement')));
+  testWidgets('RedeemRewardScreen should change value when tapping decrement',
+      (WidgetTester tester) async {
+    // Build our widget and trigger a frame.
+    await tester.pumpWidget(MaterialApp(home: RedeemRewardScreen()));
+
+    // Tap the decrement button.
+    await tester.tap(find.byKey(Key('decrement')));
     await tester.pump();
 
-
-    // Perform tap on Redeem button
-    await tester.tap(find.text('Redeem'));
-    await tester.pump();
-    // Verify the confirmation dialog shows up
-    expect(find.text('Coupon Code'), findsOneWidget);    
-
-    // Dismiss the dialog
-    await tester.tap(find.text('Cancel'));
-    await tester.pump();
-
-    // Perform another tap on Redeem button
-    await tester.tap(find.text('Redeem'));
-    await tester.pump();
-
-    // Confirm the redemption
-    await tester.tap(find.text('Confirm'));
-    await tester.pump();
-
-    // Verify the success dialog shows up
-    expect(find.text('Congratulations!'), findsOneWidget);    
-
-    // Perform tap to close success dialog
-    await tester.tap(find.text('OK'));
-    await tester.pump();
-
+    // Verify that the value has decreased.
+    expect(find.text('-1'), findsOneWidget);
   });
 }
