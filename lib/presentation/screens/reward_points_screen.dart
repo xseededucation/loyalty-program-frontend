@@ -58,7 +58,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             "Reward Points",
             softWrap: true,
             style: TextStyle(
@@ -70,7 +70,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           Text(
             "Hi, ${Constants.userData?.name ?? ""}",
             softWrap: true,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
               fontFamily: "Source Sans Pro",
               color: Colors.white,
@@ -81,19 +81,23 @@ class _RewardPointScreenState extends State<RewardPointScreen>
     );
   }
 
-  Widget verticalTab(BoxConstraints constraints) {
+  Widget verticalTab(BoxConstraints constraints, RewardPointsState state) {
     return VerticalTabView(
       onSelect: (int tabIndex) {
-        BlocProvider.of<RewardPointsBloc>(context)
-            .add(FetchPageInformationEvent());
-        if (tabIndex == 0) {
-          ToolTipWrapper.showToolTip();
+        if (state is RewardPointsSuccess) {
+          if (state.optInStatus == "ACCEPTED") {
+            BlocProvider.of<RewardPointsBloc>(context)
+                .add(FetchPageInformationEvent());
+            if (tabIndex == 0) {
+              ToolTipWrapper.showToolTip();
+            }
+          }
         }
       },
       backgroundColor: Colors.white,
       tabsWidth: size(constraints, 300),
       tabTextStyle: TextStyle(fontSize: constraints.maxHeight / 42),
-      tabs: <Tab>[
+      tabs: const <Tab>[
         Tab(
           child: Text(
             'Available Reward Points',
@@ -140,6 +144,11 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           bloc: _bloc,
           builder: (context, state) {
             if (state is RewardPointsSuccess) {
+              if (state.optInStatus == "NOT_ANSWERED" ||
+                  state.optInStatus == "DECLINED") {
+                context.read<RewardPointsBloc>().add(ChangeTabIndex(3));
+              }
+
               if (state.isRedeemPageOpen != null &&
                   state.isRedeemPageOpen == true) {
                 return const RedeemRewardScreen();
@@ -173,44 +182,122 @@ class _RewardPointScreenState extends State<RewardPointScreen>
         ),
         EarnPointScreen(boxConstraints: constraints),
         RedeemPointsScreen(boxConstraints: constraints),
-        SingleChildScrollView(
-          child: Container(
-            constraints: BoxConstraints(minHeight: size(constraints, 350)),
-            padding: kIsWeb
-                ? EdgeInsets.only(
-                    left: size(constraints, 50),
-                    right: size(constraints, 50),
-                    top: size(constraints, 20),
-                    bottom: size(constraints, 20),
-                  )
-                : const EdgeInsets.all(0),
-            color: const Color(0xffFFEDEC),
-            child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
-              buildWhen: (context, state) {
-                return state is RewardPointsSuccess;
-              },
-              builder: (context, state) {
-                if (state is RewardPointsSuccess) {
-                  List<PageDetail> pageDetails =
-                      state.pageInformation!.pageDetails as List<PageDetail>;
-
-                  Terms pageDetail = pageDetails.firstWhere((element) {
-                    return element.toJson()["entityType"] == "Terms";
-                  }) as Terms;
-                  return Text(
-                    '${pageDetail.text}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: "Source Sans Pro",
-                    ),
+        BlocBuilder(
+          bloc: _bloc,
+          builder: (context, state) {
+            if (state is RewardPointsSuccess) {
+              if (state.isRedeemPageOpen != null &&
+                  state.isRedeemPageOpen == true) {
+                return const RedeemRewardScreen();
+              } else {
+                if (state.pageInformation == null ||
+                    state.pageInformation?.currentCredit == null) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
-                return const SizedBox();
-              },
-            ),
-          ),
-        )
+                return SingleChildScrollView(
+                  child: Container(
+                    constraints:
+                        BoxConstraints(minHeight: size(constraints, 350)),
+                    padding: kIsWeb
+                        ? EdgeInsets.only(
+                            left: size(constraints, 50),
+                            right: size(constraints, 50),
+                            top: size(constraints, 20),
+                            bottom: size(constraints, 20),
+                          )
+                        : const EdgeInsets.all(0),
+                    color: const Color(0xffFFEDEC),
+                    child: BlocBuilder<RewardPointsBloc, RewardPointsState>(
+                      buildWhen: (context, state) {
+                        return state is RewardPointsSuccess;
+                      },
+                      builder: (context, state) {
+                        if (state is RewardPointsSuccess) {
+                          List<PageDetail> pageDetails = state
+                              .pageInformation!.pageDetails as List<PageDetail>;
+
+                          Terms pageDetail = pageDetails.firstWhere((element) {
+                            return element.toJson()["entityType"] == "Terms";
+                          }) as Terms;
+
+                          return Column(
+                            children: [
+                              Text(
+                                '${pageDetail.text}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Source Sans Pro",
+                                ),
+                              ),
+                              if (state.optInStatus == "NOT_ANSWERED" ||
+                                  state.optInStatus == "DECLINED") ...[
+                                const SizedBox(height: 20),
+                                Container(
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      OutlinedButton(
+                                        onPressed: () {
+                                          context.read<RewardPointsBloc>().add(
+                                              UpdateOptForUser("DECLINED"));
+                                        },
+                                        style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                              color: Color(0xFFBB151B)),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 70, vertical: 16),
+                                        ),
+                                        child: const Text(
+                                          'Decline',
+                                          style: TextStyle(
+                                            fontSize: kIsWeb ? 16 : 12,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Source Sans Pro",
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          context.read<RewardPointsBloc>().add(
+                                              UpdateOptForUser("ACCEPTED"));
+                                        },
+                                        style: OutlinedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 70, vertical: 16),
+                                        ),
+                                        child: const Text(
+                                          'Accept',
+                                          style: TextStyle(
+                                            fontSize: kIsWeb ? 16 : 12,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Source Sans Pro",
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ]
+                            ],
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                  ),
+                );
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ],
     );
   }
@@ -297,7 +384,14 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 ],
               ),
             ),
-            Expanded(child: verticalTab(constraints))
+            Expanded(
+              child: BlocBuilder(
+                bloc: _bloc,
+                builder: (BuildContext context, RewardPointsState state) {
+                  return verticalTab(constraints, state);
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -317,9 +411,9 @@ class _RewardPointScreenState extends State<RewardPointScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Teach, Earn & Be Rewarded",
-                key: const Key('teachEarnRewardedText'),
+                key: Key('teachEarnRewardedText'),
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -327,9 +421,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                 ),
               ),
               const SizedBox(height: 10),
-              Expanded(
-                child: rewardPointCardView(constraints),
-              )
+              Expanded(child: rewardPointCardView(constraints))
             ],
           ),
         );

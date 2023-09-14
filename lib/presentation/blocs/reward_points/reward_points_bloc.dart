@@ -21,6 +21,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     on<ChangeSliderPoints>(_mapChangeSliderPoint);
     on<ChangeTabIndex>(_mapChangeTabIndex);
     on<SetHeaderTextVisible>(_mapSetHeaderTextVisible);
+    on<UpdateOptForUser>(_mapUpdateOptForUser);
   }
 
   RewardPointsSuccess rewardPointsSuccess = RewardPointsSuccess(
@@ -43,11 +44,13 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       var response = await rewardPointRepository.checkCanAccessLoyaltyProgram();
       if (response["status"] == "success") {
         List<ProductList> products = [];
-        response["data"].forEach((product) {
+        response["data"]["productList"].forEach((product) {
           products.add(ProductList.fromJson(product));
         });
         rewardPointsSuccess = rewardPointsSuccess.copyWith(
-            products: products, isEligibleForReward: true);
+            products: products,
+            optInStatus: response["data"]["optInStatus"],
+            isEligibleForReward: true);
         return emit(rewardPointsSuccess);
       } else {
         rewardPointsSuccess = rewardPointsSuccess
@@ -164,5 +167,24 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
           rewardPointsSuccess.copyWith(isHeaderTextVisible: false);
     }
     emit(rewardPointsSuccess);
+  }
+
+  Future<void> _mapUpdateOptForUser(
+      UpdateOptForUser event, Emitter<RewardPointsState> emit) async {
+    try {
+      emit(RewardPointsInProgress());
+
+      var response = await rewardPointRepository.updateOptForUser(event.status);
+      if (response["status"] == "success") {
+        rewardPointsSuccess =
+            rewardPointsSuccess.copyWith(optInStatus: event.status);
+        add(ChangeTabIndex(0));
+        emit(rewardPointsSuccess);
+      } else {
+        emit(RewardPointsFailure("${response["message"]}"));
+      }
+    } catch (e) {
+      emit(RewardPointsFailure("$e"));
+    }
   }
 }

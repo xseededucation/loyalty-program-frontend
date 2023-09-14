@@ -52,3 +52,11 @@ class SetHeaderTextVisible extends RewardPointsEvent {
   @override
   List<Object?> get props => [setVisible];
 }
+
+class UpdateOptForUser extends RewardPointsEvent {
+  final String status;
+
+  UpdateOptForUser(this.status);
+  @override
+  List<Object?> get props => [status];
+}

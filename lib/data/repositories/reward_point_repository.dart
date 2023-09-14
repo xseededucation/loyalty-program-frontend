@@ -28,4 +28,10 @@ class RewardPointRepository {
     var response = await apiBaseHelper.post(url, {"activityType": activity});
     return response;
   }
+
+  updateOptForUser(String status) async {
+    var url = "updateOptForUser";
+    var response = await apiBaseHelper.post(url, {"optStatus": status});
+    return response;
+  }
 }

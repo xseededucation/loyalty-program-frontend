@@ -21,6 +21,7 @@ class RewardPointsSuccess extends RewardPointsState {
   final bool? isEligibleForReward;
   final bool? isHeaderTextVisible;
   final double? pointsToShow;
+  final String? optInStatus;
   final Map<String, dynamic>? changeTabIndex;
 
   const RewardPointsSuccess(
@@ -31,6 +32,7 @@ class RewardPointsSuccess extends RewardPointsState {
       this.isEligibleForReward,
       this.isHeaderTextVisible,
       this.pointsToShow,
+      this.optInStatus,
       this.changeTabIndex});
 
   RewardPointsSuccess copyWith(
@@ -40,6 +42,7 @@ class RewardPointsSuccess extends RewardPointsState {
           bool? isRedeemPageOpen,
           bool? isHeaderTextVisible,
           double? pointsToShow,
+          String? optInStatus,
           bool? isEligibleForReward = false,
           Map<String, dynamic>? changeTabIndex}) =>
       RewardPointsSuccess(
@@ -50,6 +53,7 @@ class RewardPointsSuccess extends RewardPointsState {
           isRedeemPageOpen: isRedeemPageOpen ?? this.isRedeemPageOpen,
           isEligibleForReward: isEligibleForReward ?? this.isEligibleForReward,
           pointsToShow: pointsToShow ?? this.pointsToShow,
+          optInStatus: optInStatus ?? this.optInStatus,
           changeTabIndex: changeTabIndex ?? this.changeTabIndex);
 
   @override
