@@ -222,6 +222,18 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                             return element.toJson()["entityType"] == "Terms";
                           }) as Terms;
 
+                          if (pageDetail.text == null) {
+                            return const Center(
+                                child: Text(
+                              'Loading...',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Source Sans Pro",
+                              ),
+                            ));
+                          }
+
                           return Column(
                             children: [
                               Text(
