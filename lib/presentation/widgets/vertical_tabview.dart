@@ -226,7 +226,6 @@ class _VerticalTabViewState extends State<VerticalTabView>
                         physics: const NeverScrollableScrollPhysics(),
                         onPageChanged: (index) {
                           if (_changePageByTapView == false) {
-                            print("VerticalTabView : _selectTab3 : called");
                             _selectTab(index);
                           }
                           if (_selectedIndex == index) {

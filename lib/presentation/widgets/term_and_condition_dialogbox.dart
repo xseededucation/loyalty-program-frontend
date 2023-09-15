@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 
 class TermsAndConditionDialogBox extends StatelessWidget {
   Function updateStatus;
+  final VoidCallback? onClickTermsAndConditionCallback;
 
-  TermsAndConditionDialogBox({
-    super.key,
-    required this.updateStatus,
-  });
+  TermsAndConditionDialogBox(
+      {Key? key,
+      required this.updateStatus,
+      this.onClickTermsAndConditionCallback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +106,7 @@ class TermsAndConditionDialogBox extends StatelessWidget {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          print('Link clicked!');
+                          onClickTermsAndConditionCallback!();
                         },
                     ),
                     const TextSpan(
