@@ -93,7 +93,6 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
       }
       emit(rewardPointsSuccess);
     } catch (e) {
-      print("RewardPointsFailure : $e");
       emit(RewardPointsFailure("$e"));
     }
   }

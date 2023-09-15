@@ -16,7 +16,11 @@ import 'earn_points_screen.dart';
 
 class RewardPointScreen extends StatefulWidget {
   final dynamic userDetail;
-  const RewardPointScreen({super.key, required this.userDetail});
+  final VoidCallback declinedCallback;
+
+  const RewardPointScreen(
+      {Key? key, required this.userDetail, required this.declinedCallback})
+      : super(key: key);
 
   @override
   State<RewardPointScreen> createState() => _RewardPointScreenState();
@@ -254,6 +258,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                                     children: [
                                       OutlinedButton(
                                         onPressed: () {
+                                          widget.declinedCallback();
                                           context.read<RewardPointsBloc>().add(
                                               UpdateOptForUser("DECLINED"));
                                         },
