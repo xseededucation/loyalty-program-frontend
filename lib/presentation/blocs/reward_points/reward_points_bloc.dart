@@ -51,6 +51,8 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
             products: products,
             optInStatus: response["data"]["optInStatus"],
             isEligibleForReward: true);
+
+        add(FetchPageInformationEvent());
         return emit(rewardPointsSuccess);
       } else {
         rewardPointsSuccess = rewardPointsSuccess
