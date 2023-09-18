@@ -17,6 +17,11 @@ dependencies:
   shared_preferences: ^2.2.0
   just_the_tooltip: ^0.0.12
   get_it: ^7.2.0
+  flutter_common_widgets:
+    # LIVE, always use version number
+    git:
+      url: git@github.com:xseededucation/flutter-common-widgets.git
+      version: 0.0.44
 
 dev_dependencies:
   flutter_test:
