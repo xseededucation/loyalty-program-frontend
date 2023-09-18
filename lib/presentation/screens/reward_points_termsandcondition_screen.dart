@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_common_widgets/widgets/RichTextRenderer/rich_text_renderer.dart';
 import 'package:loyalty_program_frontend/domain/models/page_information.dart';
 import 'package:loyalty_program_frontend/loyalty_program_frontend.dart';
 import 'package:loyalty_program_frontend/presentation/utils/constants/constant.dart';
@@ -67,13 +68,13 @@ class _RewardPointTermsAndConditionScreenState
                   padding: const EdgeInsets.only(left: 12, right: 12),
                   margin: const EdgeInsets.only(top: 10),
                   child: SingleChildScrollView(
-                    child: Text(
-                      pageDetail?.text ?? "Loading...",
-                      style: TextStyle(
+                    child: RichTextRenderer(
+                      pageDetail?.text ??
+                          '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text", text: "Loading..."}]}]}',
+                      forceTextStyle: TextStyle(
                         fontSize: size(constraints, 12),
-                        fontWeight: FontWeight.w500,
                       ),
-                    ),
+                    ).documentToWidgetTree,
                   ),
                 );
               }
