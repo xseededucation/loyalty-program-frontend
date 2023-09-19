@@ -154,32 +154,32 @@ class _RewardPointScreenState extends State<RewardPointScreen>
               if (state.optInStatus == "NOT_ANSWERED" ||
                   state.optInStatus == "DECLINED") {
                 context.read<RewardPointsBloc>().add(ChangeTabIndex(3));
-              }
-
-              if (state.isRedeemPageOpen != null &&
-                  state.isRedeemPageOpen == true) {
-                return const RedeemRewardScreen();
               } else {
-                if (state.pageInformation == null ||
-                    state.pageInformation?.currentCredit == null) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                if (state.isRedeemPageOpen != null &&
+                    state.isRedeemPageOpen == true) {
+                  return const RedeemRewardScreen();
+                } else {
+                  if (state.pageInformation == null ||
+                      state.pageInformation?.currentCredit == null) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return AvailableRewardPoint(
+                    isHeaderMessageVisible: state.isHeaderTextVisible!,
+                    originalPoint:
+                        state.pageInformation!.currentCredit!.toDouble(),
+                    pageInformation: state.pageInformation,
+                    currentAchievementLevel: state.pointsToShow!,
+                    onPress: () {
+                      if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
+                        BlocProvider.of<RewardPointsBloc>(context)
+                            .add(ToggleRedeemScreen(true));
+                      }
+                    },
+                    boxConstraints: constraints,
                   );
                 }
-                return AvailableRewardPoint(
-                  isHeaderMessageVisible: state.isHeaderTextVisible!,
-                  originalPoint:
-                      state.pageInformation!.currentCredit!.toDouble(),
-                  pageInformation: state.pageInformation,
-                  currentAchievementLevel: state.pointsToShow!,
-                  onPress: () {
-                    if (hasUserAchievedAnyMileStone(state.pageInformation!)) {
-                      BlocProvider.of<RewardPointsBloc>(context)
-                          .add(ToggleRedeemScreen(true));
-                    }
-                  },
-                  boxConstraints: constraints,
-                );
               }
             }
             return const Center(
