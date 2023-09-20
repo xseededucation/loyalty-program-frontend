@@ -19,9 +19,11 @@ class LoyaltyProgramEvent {
     String currentDate = _getCurrentDate();
     String lastOpenedDate = _getAppLastOpenedDate();
     if (lastOpenedDate != currentDate) {
-      _setLastOpenedDate(currentDate);
-      _clearTimeBoundPref();
-      _triggerApiCall(APP_OPEN);
+      try {
+        await _triggerApiCall(APP_OPEN);
+        _setLastOpenedDate(currentDate);
+        _clearTimeBoundPref();
+      } catch (e) {}
     }
   }
 
