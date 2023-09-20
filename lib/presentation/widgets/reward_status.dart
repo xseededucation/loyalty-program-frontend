@@ -81,7 +81,7 @@ class RewardStatus extends StatelessWidget {
         MileStones? obj;
         if (pointsToShow > list.last.credit!) {
           obj = list.last;
-          return "Earn ${obj.credit} points & get a reward worth ${IntlWrapper.formatIndianCurrency(obj.denomination!)}";
+          return "Earn ${obj.credit?.toStringAsFixed(0)} points & get a reward worth ${IntlWrapper.formatIndianCurrency(obj.denomination!)}";
         }
         for (int i = 0; i < list.length; i++) {
           if (pointsToShow < list[i].credit!) {
@@ -92,7 +92,7 @@ class RewardStatus extends StatelessWidget {
             break;
           }
         }
-        return "Earn ${obj?.credit} points & get a reward worth ${IntlWrapper.formatIndianCurrency(obj!.denomination!)}";
+        return "Earn ${obj?.credit?.toStringAsFixed(0)} points & get a reward worth ${IntlWrapper.formatIndianCurrency(obj!.denomination!)}";
       }
     }
 

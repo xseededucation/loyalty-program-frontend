@@ -14,6 +14,12 @@ printLog(dynamic log) {
   }
 }
 
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}
+
 const String APP_OPEN = 'APP_OPEN';
 const String SWIPE = 'SWIPE';
 const String TIME_BOUND = 'TIME_BOUND';
