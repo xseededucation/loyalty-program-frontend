@@ -75,7 +75,7 @@ class _RewardPointScreenState extends State<RewardPointScreen>
             ),
           ),
           Text(
-            "Hi, ${Constants.userData?.name ?? ""}",
+            "Hi, ${Constants.userData?.name.toString().capitalize() ?? ""}",
             softWrap: true,
             style: const TextStyle(
               fontSize: 14,
@@ -506,7 +506,10 @@ class _RewardPointScreenState extends State<RewardPointScreen>
                               children: [
                                 SizedBox(height: size(constraints, 20)),
                                 Text(
-                                  "${Constants.userData?.name ?? ""}",
+                                  Constants.userData?.name
+                                          .toString()
+                                          .capitalize() ??
+                                      "",
                                   style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,

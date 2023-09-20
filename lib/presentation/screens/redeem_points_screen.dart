@@ -276,60 +276,61 @@ class _RedeemPointsScreenState extends State<RedeemPointsScreen> {
       height: widget.boxConstraints.maxHeight,
       width: widget.boxConstraints.maxWidth,
       color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 16),
-          Text(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              state.pageInformation!.currentCredit! < 3000
+                  ? "Earn at least 3000 reward points in order to redeem & get a reward."
+                  : "Looks like you haven’t yet redeemed any reward points.",
+              style: const TextStyle(
+                  fontSize: kIsWeb ? 16 : 14,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            ),
+            const SizedBox(height: 18),
+            Image.asset(
+              state.pageInformation!.currentCredit! < 3000
+                  ? "packages/loyalty_program_frontend/assets/images/coin.png"
+                  : "packages/loyalty_program_frontend/assets/images/confused.png",
+              height: kIsWeb ? 32 : 35,
+              width: kIsWeb ? 32 : 35,
+            ),
+            const SizedBox(height: 18),
             state.pageInformation!.currentCredit! < 3000
-                ? "Earn at least 3000 reward points in order to redeem & get a reward."
-                : "Looks like you haven’t yet redeemed any reward points.",
-            style: const TextStyle(
-                fontSize: kIsWeb ? 16 : 14,
-                fontWeight: FontWeight.w400,
-                color: Colors.black),
-          ),
-          const SizedBox(
-            height: 18,
-          ),
-          Image.asset(
-            state.pageInformation!.currentCredit! < 3000
-                ? "packages/loyalty_program_frontend/assets/images/coin.png"
-                : "packages/loyalty_program_frontend/assets/images/confused.png",
-            height: kIsWeb ? 32 : 35,
-            width: kIsWeb ? 32 : 35,
-          ),
-          const SizedBox(height: 18),
-          state.pageInformation!.currentCredit! < 3000
-              ? InkWell(
-                  onTap: () {
-                    context.read<RewardPointsBloc>().add(ChangeTabIndex(1));
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: size(widget.boxConstraints, 40),
-                    width: size(widget.boxConstraints, 144),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Color(0xFFba181c)),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text(
-                      "Earn More Points",
-                      style: TextStyle(
-                          color: Color(0xFFba181c),
-                          fontSize: size(widget.boxConstraints, 12),
-                          fontWeight: FontWeight.w500),
+                ? InkWell(
+                    onTap: () {
+                      context.read<RewardPointsBloc>().add(ChangeTabIndex(1));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: size(widget.boxConstraints, 40),
+                      width: size(widget.boxConstraints, 144),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Color(0xFFba181c)),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: Text(
+                        "Earn More Points",
+                        style: TextStyle(
+                            color: Color(0xFFba181c),
+                            fontSize: size(widget.boxConstraints, 12),
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
+                  )
+                : const Text(
+                    "Tap ‘Redeem Reward Points’ to explore more.",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500),
                   ),
-                )
-              : const Text(
-                  "Tap ‘Redeem Reward Points’ to explore more.",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500),
-                )
-        ],
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
