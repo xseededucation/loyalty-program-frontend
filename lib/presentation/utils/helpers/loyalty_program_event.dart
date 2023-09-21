@@ -36,6 +36,7 @@ class LoyaltyProgramEvent {
   }
 
   Future<void> _startTimer(int mins) async {
+    appOpened();
     if (_timer != null) {
       return;
     }
