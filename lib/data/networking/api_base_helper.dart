@@ -21,7 +21,7 @@ class ApiBaseHelper {
   setToken(token) async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-    sharedPreferences.setString('token', token);
+    await sharedPreferences.setString('token', token);
     return token;
   }
 

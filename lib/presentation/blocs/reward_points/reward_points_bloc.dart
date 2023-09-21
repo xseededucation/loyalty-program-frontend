@@ -34,12 +34,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
     try {
-      if (rewardPointsSuccess.products != null &&
-          rewardPointsSuccess.products!.isNotEmpty) {
-        emit(RewardPointsInitial());
-        emit(rewardPointsSuccess);
-        return;
-      }
+    
       emit(RewardPointsInProgress());
       var response = await rewardPointRepository.checkCanAccessLoyaltyProgram();
       if (response["status"] == "success") {
