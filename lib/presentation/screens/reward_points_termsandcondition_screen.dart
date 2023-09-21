@@ -65,7 +65,8 @@ class _RewardPointTermsAndConditionScreenState
                   }) as Terms;
                 }
                 return Container(
-                  padding: const EdgeInsets.only(left: 12, right: 12),
+                  padding:
+                      const EdgeInsets.only(left: 12, right: 12, bottom: 120),
                   margin: const EdgeInsets.only(top: 10),
                   child: SingleChildScrollView(
                     child: RichTextRenderer(
