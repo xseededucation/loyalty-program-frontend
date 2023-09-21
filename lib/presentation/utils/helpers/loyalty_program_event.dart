@@ -57,7 +57,10 @@ class LoyaltyProgramEvent {
   }
 
   Future<void> _triggerApiCall(String event) async {
-    _rewardPointRepository!.updateUserActivity(event);
+    final response = await _rewardPointRepository!.updateUserActivity(event);
+    if (response == null) {
+      throw Exception();
+    }
   }
 
   void _clearTimeBoundPref() {
