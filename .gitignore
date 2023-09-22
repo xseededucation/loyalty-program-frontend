@@ -78,3 +78,7 @@ build/
 **/lib/components/components
 **/test/test
 .fvm/flutter_sdk
+/coverage
+/coverage_report
+.flutter-plugins
+.flutter-plugins-dependencies

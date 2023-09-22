@@ -8,24 +8,43 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^7.3.0
+  http: ^0.13.5
+  intl: ^0.18.0
+  shared_preferences: ^2.2.0
+  just_the_tooltip: ^0.0.12
+  get_it: ^7.2.0
+  flutter_common_widgets:
+    # LIVE, always use version number
+    git:
+      url: git@github.com:xseededucation/flutter-common-widgets.git
+      version: 0.0.44
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  test: ^1.17.10
+  bloc_test: ^8.5.0
+  mockito: ^5.0.17
+  build_runner: ^2.3.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
 
   # To add assets to your package, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/images/confetti/
+    - assets/images/
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
