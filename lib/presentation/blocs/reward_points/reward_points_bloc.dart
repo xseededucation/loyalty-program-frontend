@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loyalty_program_frontend/data/repositories/reward_point_repository.dart';
 import 'package:loyalty_program_frontend/domain/models/common.dart';
@@ -34,7 +35,6 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
   void _mapCanAccessLoyaltyProgram(
       CanAccessLoyaltyProgram event, Emitter<RewardPointsState> emit) async {
     try {
-    
       emit(RewardPointsInProgress());
       var response = await rewardPointRepository.checkCanAccessLoyaltyProgram();
       if (response["status"] == "success") {
@@ -145,7 +145,7 @@ class RewardPointsBloc extends Bloc<RewardPointsEvent, RewardPointsState> {
     emit(rewardPointsSuccess);
     rewardPointsSuccess = rewardPointsSuccess.copyWith(changeTabIndex: {});
     emit(rewardPointsSuccess);
-    if (event.index == 0) {
+    if (event.index == 0 && kIsWeb) {
       Future.delayed(const Duration(milliseconds: 900), () {
         add(ToggleRedeemScreen(true));
       });
